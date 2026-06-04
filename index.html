@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix Cup Season 1 - Single Elimination Tournament</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #6d28d9;
+            --accent: #a78bfa;
+            --bg-dark: #0a0a0f;
+            --bg-card: #13131f;
+            --bg-card-hover: #1a1a2e;
+            --border: #2d2d44;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at top, #1a103c 0%, #0a0a0f 50%, #000000 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(167, 139, 250, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Header */
+        .header {
+            background: rgba(19, 19, 31, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px; height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .logo-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .live-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(139, 92, 246, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.8); }
+        }
+
+        .live-dot {
+            width: 8px; height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content .subtitle {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .info-badge i { color: var(--primary); }
+
+        .hero-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .prize-pool {
+            text-align: center;
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prize-pool::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .prize-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .prize-amount {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+            position: relative;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .trophy-icon {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.5));
+            position: relative;
+        }
+
+        /* Bracket Section */
+        .bracket-section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i { color: var(--primary); }
+
+        .bracket-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            overflow-x: auto;
+        }
+
+        .bracket {
+            display: flex;
+            justify-content: space-between;
+            min-width: 1100px;
+            gap: 2rem;
+        }
+
+        .round {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .round-title {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .round-date {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .match {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .match:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(139, 92, 246, 0.2);
+        }
+
+        .match.winner-selected .team.winner {
+            background: rgba(139, 92, 246, 0.15);
+            border-left: 3px solid var(--primary);
+        }
+
+        .match-number {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 10px;
+            z-index: 2;
+        }
+
+        .team {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            gap: 10px;
+            transition: all 0.3s;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .team:last-child { border-bottom: none; }
+
+        .team-logo {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .team-name {
+            flex: 1;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .team-score {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .match-time {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 0.5rem;
+            background: rgba(139, 92, 246, 0.05);
+            border-top: 1px solid var(--border);
+        }
+
+        .connector {
+            position: relative;
+        }
+
+        /* Teams Grid */
+        .teams-section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .team-card:hover::before { transform: scaleX(1); }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
+        }
+
+        .team-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .team-card-logo {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .team-card-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .team-card-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .team-card-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .view-roster-btn {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.7rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .view-roster-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Schedule Section */
+        .schedule-section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+        }
+
+        .schedule-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .schedule-card:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .schedule-time {
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .schedule-time .time {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .schedule-time .date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .schedule-vs {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .vs-team {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .vs-divider {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .schedule-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-upcoming { background: rgba(139, 92, 246, 0.15); color: var(--primary); }
+        .status-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); animation: pulse 2s infinite; }
+        .status-finished { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-team-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-team-logo {
+            width: 60px; height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-team-text h2 {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .modal-team-text p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .modal-close {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .leader-section {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .leader-section h3 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .leader-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .leader-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .leader-avatar {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .leader-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .leader-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+        }
+
+        .roster-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .roster-table th {
+            text-align: left;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .roster-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .roster-table tr:last-child td { border-bottom: none; }
+
+        .roster-table tr:hover td {
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .role-exp { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .role-jungle { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        .role-mid { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .role-gold { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+        .role-roam { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+
+        .player-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .player-wa {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .wa-link {
+            color: #25d366;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .wa-link:hover {
+            color: #128c7e;
+            text-decoration: underline;
+        }
+
+        /* Info Section */
+        .info-section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .info-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i { color: var(--primary); }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row:last-child { border-bottom: none; }
+
+        .info-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer-social a {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .hero-info { justify-content: center; }
+            .prize-pool { order: -1; }
+            .info-section { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 968px) {
+            .mobile-menu-btn { display: block; }
+        }
+
+        /* Winner Modal */
+        .winner-modal .modal-body {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .winner-crown {
+            font-size: 5rem;
+            color: #eab308;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .winner-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #eab308, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .winner-prize {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px; height: 10px;
+            background: var(--primary);
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-fire"></i></div>
+                <div class="logo-text">
+                    <h1>PHOENIX CUP</h1>
+                    <span>SEASON 1</span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#beranda" class="active">Beranda</a></li>
+                <li><a href="#bracket">Turnamen</a></li>
+                <li><a href="#teams">Tim</a></li>
+                <li><a href="#schedule">Jadwal</a></li>
+                <li><a href="#info">Info</a></li>
+            </ul>
+            <button class="live-btn" onclick="showLiveStream()">
+                <span class="live-dot"></span>
+                LIVE STREAM
+            </button>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="beranda">
+        <div class="hero-content">
+            <h2>PHOENIX CUP SEASON 1</h2>
+            <div class="subtitle">SINGLE ELIMINATION</div>
+            <div class="hero-info">
+                <div class="info-badge"><i class="fas fa-users"></i> 16 TIM</div>
+                <div class="info-badge"><i class="fas fa-sitemap"></i> SINGLE ELIMINATION</div>
+                <div class="info-badge"><i class="fas fa-calendar"></i> 18 - 25 MEI 2024</div>
+                <div class="info-badge"><i class="fas fa-wifi"></i> ONLINE</div>
+            </div>
+            <p class="hero-desc">
+                Turnamen Mobile Legends: Bang Bang untuk komunitas esports menjadi yang terbaik dan raih kejayaan! 
+                16 tim terbaik akan bertarung dalam format single elimination untuk memperebutkan total hadiah jutaan rupiah.
+            </p>
+        </div>
+        <div class="prize-pool">
+            <div class="trophy-icon"><i class="fas fa-trophy"></i></div>
+            <div class="prize-label">Total Prize Pool</div>
+            <div class="prize-amount">Rp 2.000.000</div>
+        </div>
+    </section>
+
+    <!-- Bracket -->
+    <section class="bracket-section" id="bracket">
+        <h2 class="section-title"><i class="fas fa-sitemap"></i> BRACKET SINGLE ELIMINATION (16 TIM)</h2>
+        <div class="bracket-container">
+            <div class="bracket" id="bracketTree">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Teams -->
+    <section class="teams-section" id="teams">
+        <h2 class="section-title"><i class="fas fa-users"></i> DAFTAR TIM & ROSTER</h2>
+        <div class="teams-grid" id="teamsGrid">
+            <!-- Generated by JS -->
+        </div>
+    </section>
+
+    <!-- Schedule -->
+    <section class="schedule-section" id="schedule">
+        <h2 class="section-title"><i class="fas fa-clock"></i> JADWAL PERTANDINGAN</h2>
+        <div class="schedule-grid" id="scheduleGrid">
+            <!-- Generated by JS -->
+        </div>
+    </section>
+
+    <!-- Info -->
+    <section class="info-section" id="info">
+        <div class="info-card">
+            <h3><i class="fas fa-info-circle"></i> Informasi Turnamen</h3>
+            <div class="info-row"><span class="info-label">Mode</span><span class="info-value">Custom</span></div>
+            <div class="info-row"><span class="info-label">Map</span><span class="info-value">Land of Dawn</span></div>
+            <div class="info-row"><span class="info-label">Ban Hero</span><span class="info-value">On</span></div>
+            <div class="info-row"><span class="info-label">Draft Pick</span><span class="info-value">On</span></div>
+            <div class="info-row"><span class="info-label">Emblem</span><span class="info-value">Bebas</span></div>
+            <div class="info-row"><span class="info-label">Skin</span><span class="info-value">Bebas</span></div>
+            <div class="info-row"><span class="info-label">Peraturan Lengkap</span><span class="info-value" style="color: var(--primary); cursor: pointer;">Lihat disini</span></div>
+        </div>
+        <div class="info-card">
+            <h3><i class="fas fa-handshake"></i> Media Partner & Sponsor</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 10px; text-align: center; font-weight: 700; color: var(--text-muted);">ESPORTS ID</div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 10px; text-align: center; font-weight: 700; color: var(--text-muted);">MLBB</div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 10px; text-align: center; font-weight: 700; color: var(--text-muted);">GAMING.ID</div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 10px; text-align: center; font-weight: 700; color: var(--text-muted);">REXUS</div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 10px; text-align: center; font-weight: 700; color: var(--text-muted);">SPIN ESPORTS</div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 10px; text-align: center; font-weight: 700; color: var(--text-muted);">TOPUP GAME</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p> 2024 Phoenix Cup. All Rights Reserved.</p>
+        <div class="footer-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+    </footer>
+
+    <!-- Roster Modal -->
+    <div class="modal-overlay" id="rosterModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-team-info">
+                    <div class="modal-team-logo" id="modalTeamLogo">A</div>
+                    <div class="modal-team-text">
+                        <h2 id="modalTeamName">Team Alpha</h2>
+                        <p id="modalTeamDesc">5 Pemain</p>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="leader-section">
+                    <h3>Leader Tim</h3>
+                    <div class="leader-info">
+                        <div class="leader-detail">
+                            <div class="leader-avatar" id="leaderAvatar">R</div>
+                            <div>
+                                <div class="leader-name" id="leaderName">Rizky Pratama</div>
+                                <div class="leader-role">Kontak Leader</div>
+                            </div>
+                        </div>
+                        <a href="#" class="whatsapp-btn" id="leaderWA" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            Hubungi Leader
+                        </a>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Roster Pemain</h3>
+                <table class="roster-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Role</th>
+                            <th>Nama</th>
+                            <th>No. WhatsApp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rosterTableBody">
+                        <!-- Generated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winner Modal -->
+    <div class="modal-overlay" id="winnerModal">
+        <div class="modal winner-modal">
+            <div class="modal-body">
+                <div class="winner-crown"><i class="fas fa-crown"></i></div>
+                <div class="winner-name" id="winnerTeamName">TEAM ALPHA</div>
+                <div class="winner-prize">Juara Phoenix Cup Season 1</div>
+                <p style="color: var(--text-muted); margin-top: 1rem;">Selamat atas kemenangannya!</p>
+                <button class="whatsapp-btn" style="margin-top: 2rem; border: none; cursor: pointer;" onclick="closeWinnerModal()">
+                    <i class="fas fa-check"></i> Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data 16 Teams
+        const teams = [
+            {
+                id: 1, name: "Team Alpha", short: "TA", color: "#8b5cf6", bg: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+                leader: { name: "Rizky Pratama", wa: "081234567890" },
+                roster: [
+                    { role: "EXP", name: "Rizky Pratama", wa: "081234567890" },
+                    { role: "JUNGLE", name: "Dimas Maulana", wa: "082134567891" },
+                    { role: "MID", name: "Fajar Ramadhan", wa: "083134567892" },
+                    { role: "GOLD", name: "Andi Setiawan", wa: "084134567893" },
+                    { role: "ROAM", name: "Wahyu Aji", wa: "085134567894" }
+                ]
+            },
+            {
+                id: 2, name: "Team Bravo", short: "TB", color: "#ef4444", bg: "linear-gradient(135deg, #ef4444, #b91c1c)",
+                leader: { name: "Budi Santoso", wa: "081234567891" },
+                roster: [
+                    { role: "EXP", name: "Budi Santoso", wa: "081234567891" },
+                    { role: "JUNGLE", name: "Agus Wijaya", wa: "082234567892" },
+                    { role: "MID", name: "Citra Lestari", wa: "083234567893" },
+                    { role: "GOLD", name: "Dedi Kurniawan", wa: "084234567894" },
+                    { role: "ROAM", name: "Eka Putri", wa: "085234567895" }
+                ]
+            },
+            {
+                id: 3, name: "Team Charlie", short: "TC", color: "#f59e0b", bg: "linear-gradient(135deg, #f59e0b, #b45309)",
+                leader: { name: "Candra Wibowo", wa: "081234567892" },
+                roster: [
+                    { role: "EXP", name: "Candra Wibowo", wa: "081234567892" },
+                    { role: "JUNGLE", name: "Hendra Gunawan", wa: "082334567893" },
+                    { role: "MID", name: "Indah Permata", wa: "083334567894" },
+                    { role: "GOLD", name: "Joko Susilo", wa: "084334567895" },
+                    { role: "ROAM", name: "Kartika Sari", wa: "085334567896" }
+                ]
+            },
+            {
+                id: 4, name: "Team Delta", short: "TD", color: "#3b82f6", bg: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+                leader: { name: "Dani Firmansyah", wa: "081234567893" },
+                roster: [
+                    { role: "EXP", name: "Dani Firmansyah", wa: "081234567893" },
+                    { role: "JUNGLE", name: "Lina Marlina", wa: "082434567894" },
+                    { role: "MID", name: "Maman Abdurahman", wa: "083434567895" },
+                    { role: "GOLD", name: "Nina Agustina", wa: "084434567896" },
+                    { role: "ROAM", name: "Oki Setiana", wa: "085434567897" }
+                ]
+            },
+            {
+                id: 5, name: "Team Echo", short: "TE", color: "#10b981", bg: "linear-gradient(135deg, #10b981, #047857)",
+                leader: { name: "Eko Prasetyo", wa: "081234567894" },
+                roster: [
+                    { role: "EXP", name: "Eko Prasetyo", wa: "081234567894" },
+                    { role: "JUNGLE", name: "Panca Dewa", wa: "082534567895" },
+                    { role: "MID", name: "Qori Andini", wa: "083534567896" },
+                    { role: "GOLD", name: "Rudi Hartono", wa: "084534567897" },
+                    { role: "ROAM", name: "Sari Melati", wa: "085534567898" }
+                ]
+            },
+            {
+                id: 6, name: "Team Foxtrot", short: "TF", color: "#ec4899", bg: "linear-gradient(135deg, #ec4899, #be185d)",
+                leader: { name: "Fajar Nugroho", wa: "081234567895" },
+                roster: [
+                    { role: "EXP", name: "Fajar Nugroho", wa: "081234567895" },
+                    { role: "JUNGLE", name: "Tina Toon", wa: "082634567896" },
+                    { role: "MID", name: "Udin Sedunia", wa: "083634567897" },
+                    { role: "GOLD", name: "Vina Panduwinata", wa: "084634567898" },
+                    { role: "ROAM", name: "Wawan S", wa: "085634567899" }
+                ]
+            },
+            {
+                id: 7, name: "Team Gamma", short: "TG", color: "#6366f1", bg: "linear-gradient(135deg, #6366f1, #4338ca)",
+                leader: { name: "Gatot Kaca", wa: "081234567896" },
+                roster: [
+                    { role: "EXP", name: "Gatot Kaca", wa: "081234567896" },
+                    { role: "JUNGLE", name: "Xena Warrior", wa: "082734567897" },
+                    { role: "MID", name: "Yanto K", wa: "083734567898" },
+                    { role: "GOLD", name: "Zara Larsson", wa: "084734567899" },
+                    { role: "ROAM", name: "Asep S", wa: "085734567890" }
+                ]
+            },
+            {
+                id: 8, name: "Team Hotel", short: "TH", color: "#14b8a6", bg: "linear-gradient(135deg, #14b8a6, #0f766e)",
+                leader: { name: "Herman J", wa: "081234567897" },
+                roster: [
+                    { role: "EXP", name: "Herman J", wa: "081234567897" },
+                    { role: "JUNGLE", name: "Bambang P", wa: "082834567898" },
+                    { role: "MID", name: "Cici P", wa: "083834567899" },
+                    { role: "GOLD", name: "Dodo S", wa: "084834567890" },
+                    { role: "ROAM", name: "Euis N", wa: "085834567891" }
+                ]
+            },
+            {
+                id: 9, name: "Team Indigo", short: "TI", color: "#8b5cf6", bg: "linear-gradient(135deg, #7c3aed, #5b21b6)",
+                leader: { name: "Iwan Fals", wa: "081234567898" },
+                roster: [
+                    { role: "EXP", name: "Iwan Fals", wa: "081234567898" },
+                    { role: "JUNGLE", name: "Jajang N", wa: "082934567899" },
+                    { role: "MID", name: "Kiki A", wa: "083934567890" },
+                    { role: "GOLD", name: "Lala K", wa: "084934567891" },
+                    { role: "ROAM", name: "Mimi P", wa: "085934567892" }
+                ]
+            },
+            {
+                id: 10, name: "Team Juliet", short: "TJ", color: "#f43f5e", bg: "linear-gradient(135deg, #f43f5e, #be123c)",
+                leader: { name: "Joko W", wa: "081234567899" },
+                roster: [
+                    { role: "EXP", name: "Joko W", wa: "081234567899" },
+                    { role: "JUNGLE", name: "Nana M", wa: "082034567890" },
+                    { role: "MID", name: "Oon S", wa: "083034567891" },
+                    { role: "GOLD", name: "Pipin Q", wa: "084034567892" },
+                    { role: "ROAM", name: "Qomar U", wa: "085034567893" }
+                ]
+            },
+            {
+                id: 11, name: "Team Kilo", short: "TK", color: "#84cc16", bg: "linear-gradient(135deg, #84cc16, #4d7c0f)",
+                leader: { name: "Kiki L", wa: "081234567880" },
+                roster: [
+                    { role: "EXP", name: "Kiki L", wa: "081234567880" },
+                    { role: "JUNGLE", name: "Rara R", wa: "082134567881" },
+                    { role: "MID", name: "Sasa T", wa: "083134567882" },
+                    { role: "GOLD", name: "Tata U", wa: "084134567883" },
+                    { role: "ROAM", name: "Uus V", wa: "085134567884" }
+                ]
+            },
+            {
+                id: 12, name: "Team Lima", short: "TL", color: "#06b6d4", bg: "linear-gradient(135deg, #06b6d4, #0891b2)",
+                leader: { name: "Lala M", wa: "081234567881" },
+                roster: [
+                    { role: "EXP", name: "Lala M", wa: "081234567881" },
+                    { role: "JUNGLE", name: "Vivi W", wa: "082234567882" },
+                    { role: "MID", name: "Wawan X", wa: "083234567883" },
+                    { role: "GOLD", name: "Xena Y", wa: "084234567884" },
+                    { role: "ROAM", name: "Yaya Z", wa: "085234567885" }
+                ]
+            },
+            {
+                id: 13, name: "Team Mike", short: "TM", color: "#d946ef", bg: "linear-gradient(135deg, #d946ef, #a21caf)",
+                leader: { name: "Maman S", wa: "081234567882" },
+                roster: [
+                    { role: "EXP", name: "Maman S", wa: "081234567882" },
+                    { role: "JUNGLE", name: "Nunung A", wa: "082334567883" },
+                    { role: "MID", name: "Oon B", wa: "083334567884" },
+                    { role: "GOLD", name: "Pepeng C", wa: "084334567885" },
+                    { role: "ROAM", name: "Qonita D", wa: "085334567886" }
+                ]
+            },
+            {
+                id: 14, name: "Team November", short: "TN", color: "#f97316", bg: "linear-gradient(135deg, #f97316, #c2410c)",
+                leader: { name: "Nana K", wa: "081234567883" },
+                roster: [
+                    { role: "EXP", name: "Nana K", wa: "081234567883" },
+                    { role: "JUNGLE", name: "Oom E", wa: "082434567884" },
+                    { role: "MID", name: "Pepeng F", wa: "083434567885" },
+                    { role: "GOLD", name: "Qiqi G", wa: "084434567886" },
+                    { role: "ROAM", name: "Rere H", wa: "085434567887" }
+                ]
+            },
+            {
+                id: 15, name: "Team Oscar", short: "TO", color: "#64748b", bg: "linear-gradient(135deg, #64748b, #475569)",
+                leader: { name: "Oscar P", wa: "081234567884" },
+                roster: [
+                    { role: "EXP", name: "Oscar P", wa: "081234567884" },
+                    { role: "JUNGLE", name: "Paijo I", wa: "082534567885" },
+                    { role: "MID", name: "Qomar J", wa: "083534567886" },
+                    { role: "GOLD", name: "Rojali K", wa: "084534567887" },
+                    { role: "ROAM", name: "Sukirman L", wa: "085534567888" }
+                ]
+            },
+            {
+                id: 16, name: "Team Papa", short: "TP", color: "#0ea5e9", bg: "linear-gradient(135deg, #0ea5e9, #0369a1)",
+                leader: { name: "Papa Z", wa: "081234567885" },
+                roster: [
+                    { role: "EXP", name: "Papa Z", wa: "081234567885" },
+                    { role: "JUNGLE", name: "Qori M", wa: "082634567886" },
+                    { role: "MID", name: "Rini N", wa: "083634567887" },
+                    { role: "GOLD", name: "Santi O", wa: "084634567888" },
+                    { role: "ROAM", name: "Tati P", wa: "085634567889" }
+                ]
+            }
+        ];
+
+        // Bracket Data
+        const bracketData = {
+            roundOf16: [
+                { id: 1, team1: 1, team2: 2, time: "18 MEI - 13:00 WIB", score1: null, score2: null, winner: null },
+                { id: 2, team1: 3, team2: 4, time: "18 MEI - 14:30 WIB", score1: null, score2: null, winner: null },
+                { id: 3, team1: 5, team2: 6, time: "18 MEI - 16:00 WIB", score1: null, score2: null, winner: null },
+                { id: 4, team1: 7, team2: 8, time: "18 MEI - 17:30 WIB", score1: null, score2: null, winner: null },
+                { id: 5, team1: 9, team2: 10, time: "18 MEI - 19:00 WIB", score1: null, score2: null, winner: null },
+                { id: 6, team1: 11, team2: 12, time: "18 MEI - 20:30 WIB", score1: null, score2: null, winner: null },
+                { id: 7, team1: 13, team2: 14, time: "18 MEI - 22:00 WIB", score1: null, score2: null, winner: null },
+                { id: 8, team1: 15, team2: 16, time: "18 MEI - 23:30 WIB", score1: null, score2: null, winner: null }
+            ],
+            quarterFinals: [
+                { id: "QF1", match1: 1, match2: 2, time: "19 MEI - 13:00 WIB", team1: null, team2: null, score1: null, score2: null, winner: null },
+                { id: "QF2", match1: 3, match2: 4, time: "19 MEI - 14:30 WIB", team1: null, team2: null, score1: null, score2: null, winner: null },
+                { id: "QF3", match1: 5, match2: 6, time: "19 MEI - 16:00 WIB", team1: null, team2: null, score1: null, score2: null, winner: null },
+                { id: "QF4", match1: 7, match2: 8, time: "19 MEI - 17:30 WIB", team1: null, team2: null, score1: null, score2: null, winner: null }
+            ],
+            semiFinals: [
+                { id: "SF1", match1: "QF1", match2: "QF2", time: "22 MEI - 19:00 WIB", team1: null, team2: null, score1: null, score2: null, winner: null },
+                { id: "SF2", match1: "QF3", match2: "QF4", time: "22 MEI - 20:30 WIB", team1: null, team2: null, score1: null, score2: null, winner: null }
+            ],
+            grandFinal: [
+                { id: "GF", match1: "SF1", match2: "SF2", time: "25 MEI - 20:00 WIB", team1: null, team2: null, score1: null, score2: null, winner: null }
+            ]
+        };
+
+        // Schedule Data
+        const scheduleData = [
+            { time: "13:00", date: "18 MEI", team1: 1, team2: 2, status: "finished", round: "Round of 16" },
+            { time: "14:30", date: "18 MEI", team1: 3, team2: 4, status: "finished", round: "Round of 16" },
+            { time: "16:00", date: "18 MEI", team1: 5, team2: 6, status: "finished", round: "Round of 16" },
+            { time: "17:30", date: "18 MEI", team1: 7, team2: 8, status: "finished", round: "Round of 16" },
+            { time: "19:00", date: "18 MEI", team1: 9, team2: 10, status: "live", round: "Round of 16" },
+            { time: "20:30", date: "18 MEI", team1: 11, team2: 12, status: "upcoming", round: "Round of 16" },
+            { time: "22:00", date: "18 MEI", team1: 13, team2: 14, status: "upcoming", round: "Round of 16" },
+            { time: "23:30", date: "18 MEI", team1: 15, team2: 16, status: "upcoming", round: "Round of 16" },
+            { time: "13:00", date: "19 MEI", team1: null, team2: null, status: "upcoming", round: "Quarter Final" },
+            { time: "14:30", date: "19 MEI", team1: null, team2: null, status: "upcoming", round: "Quarter Final" },
+            { time: "16:00", date: "19 MEI", team1: null, team2: null, status: "upcoming", round: "Quarter Final" },
+            { time: "17:30", date: "19 MEI", team1: null, team2: null, status: "upcoming", round: "Quarter Final" }
+        ];
+
+        function getTeam(id) {
+            return teams.find(t => t.id === id) || { name: "TBD", short: "?", color: "#666", bg: "#333" };
+        }
+
+        function renderBracket() {
+            const bracketTree = document.getElementById('bracketTree');
+
+            // Round of 16
+            let ro16HTML = `
+                <div class="round">
+                    <div class="round-title">ROUND OF 16</div>
+                    <div class="round-date">18 MEI 2024</div>
+                    ${bracketData.roundOf16.map((match, idx) => {
+                        const t1 = getTeam(match.team1);
+                        const t2 = getTeam(match.team2);
+                        return `
+                        <div class="match" data-match="${match.id}" onclick="selectWinner(${match.id}, 'roundOf16')">
+                            <div class="match-number">${idx + 1}</div>
+                            <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
+                                <div class="team-logo" style="background: ${t1.bg}; color: white;">${t1.short}</div>
+                                <div class="team-name">${t1.name}</div>
+                                <div class="team-score">${match.score1 !== null ? match.score1 : '-'}</div>
+                            </div>
+                            <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
+                                <div class="team-logo" style="background: ${t2.bg}; color: white;">${t2.short}</div>
+                                <div class="team-name">${t2.name}</div>
+                                <div class="team-score">${match.score2 !== null ? match.score2 : '-'}</div>
+                            </div>
+                            <div class="match-time">${match.time}</div>
+                        </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            // Quarter Finals
+            let qfHTML = `
+                <div class="round">
+                    <div class="round-title">QUARTER FINAL</div>
+                    <div class="round-date">19 MEI 2024</div>
+                    ${bracketData.quarterFinals.map((match, idx) => {
+                        const t1 = match.team1 ? getTeam(match.team1) : { name: "TBD", short: "?", bg: "#333" };
+                        const t2 = match.team2 ? getTeam(match.team2) : { name: "TBD", short: "?", bg: "#333" };
+                        return `
+                        <div class="match" data-match="${match.id}" onclick="selectWinner('${match.id}', 'quarterFinals')">
+                            <div class="match-number">${match.id}</div>
+                            <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
+                                <div class="team-logo" style="background: ${t1.bg}; color: white;">${t1.short}</div>
+                                <div class="team-name">${t1.name}</div>
+                                <div class="team-score">${match.score1 !== null ? match.score1 : '-'}</div>
+                            </div>
+                            <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
+                                <div class="team-logo" style="background: ${t2.bg}; color: white;">${t2.short}</div>
+                                <div class="team-name">${t2.name}</div>
+                                <div class="team-score">${match.score2 !== null ? match.score2 : '-'}</div>
+                            </div>
+                            <div class="match-time">${match.time}</div>
+                        </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            // Semi Finals
+            let sfHTML = `
+                <div class="round">
+                    <div class="round-title">SEMI FINAL</div>
+                    <div class="round-date">22 MEI 2024</div>
+                    ${bracketData.semiFinals.map((match, idx) => {
+                        const t1 = match.team1 ? getTeam(match.team1) : { name: "TBD", short: "?", bg: "#333" };
+                        const t2 = match.team2 ? getTeam(match.team2) : { name: "TBD", short: "?", bg: "#333" };
+                        return `
+                        <div class="match" data-match="${match.id}" onclick="selectWinner('${match.id}', 'semiFinals')">
+                            <div class="match-number">${match.id}</div>
+                            <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
+                                <div class="team-logo" style="background: ${t1.bg}; color: white;">${t1.short}</div>
+                                <div class="team-name">${t1.name}</div>
+                                <div class="team-score">${match.score1 !== null ? match.score1 : '-'}</div>
+                            </div>
+                            <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
+                                <div class="team-logo" style="background: ${t2.bg}; color: white;">${t2.short}</div>
+                                <div class="team-name">${t2.name}</div>
+                                <div class="team-score">${match.score2 !== null ? match.score2 : '-'}</div>
+                            </div>
+                            <div class="match-time">${match.time}</div>
+                        </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            // Grand Final
+            let gfHTML = `
+                <div class="round">
+                    <div class="round-title">GRAND FINAL</div>
+                    <div class="round-date">25 MEI 2024</div>
+                    <div class="match" data-match="GF" onclick="selectWinner('GF', 'grandFinal')">
+                        <div class="match-number">FINAL</div>
+                        <div class="team ${bracketData.grandFinal[0].winner === bracketData.grandFinal[0].team1 ? 'winner' : ''}">
+                            <div class="team-logo" style="background: ${bracketData.grandFinal[0].team1 ? getTeam(bracketData.grandFinal[0].team1).bg : '#333'}; color: white;">
+                                ${bracketData.grandFinal[0].team1 ? getTeam(bracketData.grandFinal[0].team1).short : '?'}
+                            </div>
+                            <div class="team-name">${bracketData.grandFinal[0].team1 ? getTeam(bracketData.grandFinal[0].team1).name : 'TBD'}</div>
+                            <div class="team-score">${bracketData.grandFinal[0].score1 !== null ? bracketData.grandFinal[0].score1 : '-'}</div>
+                        </div>
+                        <div class="team ${bracketData.grandFinal[0].winner === bracketData.grandFinal[0].team2 ? 'winner' : ''}">
+                            <div class="team-logo" style="background: ${bracketData.grandFinal[0].team2 ? getTeam(bracketData.grandFinal[0].team2).bg : '#333'}; color: white;">
+                                ${bracketData.grandFinal[0].team2 ? getTeam(bracketData.grandFinal[0].team2).short : '?'}
+                            </div>
+                            <div class="team-name">${bracketData.grandFinal[0].team2 ? getTeam(bracketData.grandFinal[0].team2).name : 'TBD'}</div>
+                            <div class="team-score">${bracketData.grandFinal[0].score2 !== null ? bracketData.grandFinal[0].score2 : '-'}</div>
+                        </div>
+                        <div class="match-time">${bracketData.grandFinal[0].time}</div>
+                    </div>
+                </div>
+            `;
+
+            bracketTree.innerHTML = ro16HTML + qfHTML + sfHTML + gfHTML;
+        }
+
+        function selectWinner(matchId, round) {
+            const match = bracketData[round].find(m => m.id == matchId || m.id === matchId);
+            if (!match) return;
+
+            if (round === 'roundOf16') {
+                // Toggle winner between team1 and team2
+                if (match.winner === match.team1) {
+                    match.winner = match.team2;
+                    match.score1 = 1; match.score2 = 2;
+                } else if (match.winner === match.team2) {
+                    match.winner = null;
+                    match.score1 = null; match.score2 = null;
+                } else {
+                    match.winner = match.team1;
+                    match.score1 = 2; match.score2 = 1;
+                }
+
+                // Update quarter finals
+                const qfMap = { 1: 0, 2: 0, 3: 1, 4: 1, 5: 2, 6: 2, 7: 3, 8: 3 };
+                const qfIdx = qfMap[match.id];
+                if (qfIdx !== undefined) {
+                    const qf = bracketData.quarterFinals[qfIdx];
+                    if (match.id % 2 === 1) qf.team1 = match.winner;
+                    else qf.team2 = match.winner;
+                    // Reset QF winner if teams change
+                    qf.winner = null;
+                    qf.score1 = null; qf.score2 = null;
+                }
+            } else if (round === 'quarterFinals') {
+                const idx = bracketData.quarterFinals.findIndex(m => m.id === matchId);
+                if (match.winner === match.team1) {
+                    match.winner = match.team2;
+                    match.score1 = 1; match.score2 = 2;
+                } else if (match.winner === match.team2) {
+                    match.winner = null;
+                    match.score1 = null; match.score2 = null;
+                } else {
+                    match.winner = match.team1;
+                    match.score1 = 2; match.score2 = 1;
+                }
+
+                // Update semi finals
+                const sfMap = { "QF1": 0, "QF2": 0, "QF3": 1, "QF4": 1 };
+                const sfIdx = sfMap[match.id];
+                if (sfIdx !== undefined) {
+                    const sf = bracketData.semiFinals[sfIdx];
+                    if (idx % 2 === 0) sf.team1 = match.winner;
+                    else sf.team2 = match.winner;
+                    sf.winner = null;
+                    sf.score1 = null; sf.score2 = null;
+                }
+            } else if (round === 'semiFinals') {
+                const idx = bracketData.semiFinals.findIndex(m => m.id === matchId);
+                if (match.winner === match.team1) {
+                    match.winner = match.team2;
+                    match.score1 = 1; match.score2 = 2;
+                } else if (match.winner === match.team2) {
+                    match.winner = null;
+                    match.score1 = null; match.score2 = null;
+                } else {
+                    match.winner = match.team1;
+                    match.score1 = 2; match.score2 = 1;
+                }
+
+                const gf = bracketData.grandFinal[0];
+                if (idx === 0) gf.team1 = match.winner;
+                else gf.team2 = match.winner;
+                gf.winner = null;
+                gf.score1 = null; gf.score2 = null;
+            } else if (round === 'grandFinal') {
+                const gf = bracketData.grandFinal[0];
+                if (gf.winner === gf.team1) {
+                    gf.winner = gf.team2;
+                    gf.score1 = 1; gf.score2 = 2;
+                } else if (gf.winner === gf.team2) {
+                    gf.winner = null;
+                    gf.score1 = null; gf.score2 = null;
+                } else {
+                    gf.winner = gf.team1;
+                    gf.score1 = 2; gf.score2 = 1;
+                }
+
+                if (gf.winner) {
+                    showWinner(gf.winner);
+                }
+            }
+
+            renderBracket();
+        }
+
+        function showWinner(teamId) {
+            const team = getTeam(teamId);
+            document.getElementById('winnerTeamName').textContent = team.name.toUpperCase();
+            document.getElementById('winnerTeamName').style.background = team.bg;
+            document.getElementById('winnerTeamName').style.webkitBackgroundClip = 'text';
+            document.getElementById('winnerTeamName').style.webkitTextFillColor = 'transparent';
+            document.getElementById('winnerModal').classList.add('active');
+            createConfetti();
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winnerModal').classList.remove('active');
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = ['#8b5cf6', '#a78bfa', '#f59e0b', '#ef4444', '#22c55e'][Math.floor(Math.random() * 5)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        function renderTeams() {
+            const grid = document.getElementById('teamsGrid');
+            grid.innerHTML = teams.map(team => `
+                <div class="team-card" onclick="openRoster(${team.id})">
+                    <div class="team-card-header">
+                        <div class="team-card-logo" style="background: ${team.bg}; color: white;">${team.short}</div>
+                        <div class="team-card-info">
+                            <h3>${team.name}</h3>
+                            <span>5 Pemain</span>
+                        </div>
+                    </div>
+                    <div class="team-card-stats">
+                        <div class="stat">
+                            <div class="stat-value">${team.roster.length}</div>
+                            <div class="stat-label">Pemain</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${team.leader.name.split(' ')[0]}</div>
+                            <div class="stat-label">Leader</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Aktif</div>
+                            <div class="stat-label">Status</div>
+                        </div>
+                    </div>
+                    <button class="view-roster-btn" onclick="event.stopPropagation(); openRoster(${team.id})">
+                        <i class="fas fa-eye"></i> Lihat Roster
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openRoster(teamId) {
+            const team = teams.find(t => t.id === teamId);
+            if (!team) return;
+
+            document.getElementById('modalTeamLogo').textContent = team.short;
+            document.getElementById('modalTeamLogo').style.background = team.bg;
+            document.getElementById('modalTeamName').textContent = team.name;
+            document.getElementById('leaderAvatar').textContent = team.leader.name.charAt(0);
+            document.getElementById('leaderName').textContent = team.leader.name;
+            document.getElementById('leaderWA').href = `https://wa.me/62${team.leader.wa.substring(1)}`;
+
+            const tbody = document.getElementById('rosterTableBody');
+            tbody.innerHTML = team.roster.map((player, idx) => `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td><span class="role-badge role-${player.role.toLowerCase()}">${player.role}</span></td>
+                    <td class="player-name">${player.name}</td>
+                    <td>
+                        <a href="https://wa.me/62${player.wa.substring(1)}" class="wa-link" target="_blank">
+                            <i class="fab fa-whatsapp"></i> ${player.wa}
+                        </a>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.getElementById('rosterModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('rosterModal').classList.remove('active');
+        }
+
+        function renderSchedule() {
+            const grid = document.getElementById('scheduleGrid');
+            grid.innerHTML = scheduleData.map(match => {
+                const t1 = match.team1 ? getTeam(match.team1) : { name: "TBD", short: "?", bg: "#333" };
+                const t2 = match.team2 ? getTeam(match.team2) : { name: "TBD", short: "?", bg: "#333" };
+                const statusClass = match.status === 'live' ? 'status-live' : match.status === 'finished' ? 'status-finished' : 'status-upcoming';
+                const statusText = match.status === 'live' ? 'LIVE' : match.status === 'finished' ? 'Selesai' : 'Akan Datang';
+
+                return `
+                <div class="schedule-card">
+                    <div class="schedule-time">
+                        <div class="time">${match.time}</div>
+                        <div class="date">${match.date}</div>
+                    </div>
+                    <div class="schedule-vs">
+                        <div class="vs-team">
+                            <div class="team-logo" style="background: ${t1.bg}; color: white; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700;">${t1.short}</div>
+                            <span>${t1.name}</span>
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="vs-team">
+                            <span>${t2.name}</span>
+                            <div class="team-logo" style="background: ${t2.bg}; color: white; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700;">${t2.short}</div>
+                        </div>
+                    </div>
+                    <div class="schedule-status ${statusClass}">${statusText}</div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function showLiveStream() {
+            alert('Live Stream akan segera dimulai! Pastikan koneksi internet Anda stabil.');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('rosterModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('winnerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeWinnerModal();
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Initialize
+        renderBracket();
+        renderTeams();
+        renderSchedule();
+    </script>
+</body>
+</html>
