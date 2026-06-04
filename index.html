@@ -9,18 +9,15 @@
     <style>
         :root {
             --primary: #8b5cf6;
-            --primary-glow: rgba(139, 92, 246, 0.3);
             --accent: #a78bfa;
             --bg: #0a0a12;
             --bg-card: #11111a;
-            --bg-card-hover: #161620;
             --border: #1e1e2e;
             --border-hover: #2d2d44;
             --text: #e2e8f0;
             --text-muted: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
+            --line: #2d2d44;
+            --line-active: #8b5cf6;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -111,9 +108,7 @@
             position: relative;
         }
 
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--primary);
-        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
         .nav-links a.active::after {
             content: '';
@@ -222,7 +217,6 @@
             text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
         }
 
-        /* Section Title */
         .section-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
@@ -236,7 +230,7 @@
 
         .section-title i { color: var(--primary); }
 
-        /* ===== BRACKET WITH PERFECT CONNECTORS ===== */
+        /* ===== BRACKET ===== */
         .bracket-section {
             max-width: 1400px;
             margin: 3rem auto;
@@ -254,22 +248,19 @@
         .bracket-tree {
             display: flex;
             align-items: stretch;
-            gap: 0;
-            min-width: 1100px;
-            padding: 1rem 0;
+            min-width: 1000px;
         }
 
         .round-col {
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            position: relative;
         }
 
         .round-header {
             text-align: center;
-            margin-bottom: 1.5rem;
-            min-height: 50px;
+            margin-bottom: 1rem;
+            min-height: 45px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -277,13 +268,13 @@
 
         .round-header h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--primary);
             letter-spacing: 2px;
         }
 
         .round-header span {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
         }
 
@@ -291,11 +282,10 @@
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 12px;
-            width: 210px;
+            width: 190px;
             position: relative;
             transition: all 0.3s;
             cursor: pointer;
-            margin: 0 30px;
         }
 
         .match-card:hover {
@@ -329,11 +319,7 @@
         }
 
         .team-row:last-child { border-bottom: none; }
-
-        .team-row.winner {
-            background: rgba(139, 92, 246, 0.1);
-        }
-
+        .team-row.winner { background: rgba(139, 92, 246, 0.1); }
         .team-row.winner .team-n { color: var(--primary); font-weight: 700; }
 
         .team-logo-sm {
@@ -368,52 +354,47 @@
             border-radius: 0 0 12px 12px;
         }
 
-        /* Connector Lines - Perfect */
-        .connector-zone {
+        /* ===== SVG CONNECTORS ===== */
+        .connector-col {
+            width: 50px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
+            flex-direction: column;
+            justify-content: space-around;
             position: relative;
         }
 
-        .connector-lines {
-            position: relative;
+        .connector-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100%;
+            pointer-events: none;
         }
 
-        /* Horizontal line from match to connector */
-        .match-card::after {
-            content: '';
+        .connector-svg line {
+            stroke: var(--line);
+            stroke-width: 2;
+        }
+
+        .connector-svg line.active {
+            stroke: var(--line-active);
+            filter: drop-shadow(0 0 3px var(--line-active));
+        }
+
+        /* Horizontal line from match */
+        .match-card .h-connector {
             position: absolute;
             top: 50%;
-            right: -30px;
-            width: 30px;
+            right: -25px;
+            width: 25px;
             height: 2px;
-            background: var(--border-hover);
+            background: var(--line);
+            transform: translateY(-50%);
         }
 
-        .round-col:last-child .match-card::after,
-        .round-col.winner-col .match-card::after {
+        .round-col:last-child .match-card .h-connector,
+        .winner-col .match-card .h-connector {
             display: none;
-        }
-
-        /* Vertical lines in connector zone */
-        .connector-zone .v-line {
-            position: absolute;
-            width: 2px;
-            background: var(--border-hover);
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .connector-zone .h-line {
-            position: absolute;
-            height: 2px;
-            background: var(--border-hover);
-            right: 0;
-            width: 30px;
         }
 
         /* Winner card */
@@ -423,14 +404,13 @@
             border-radius: 16px;
             padding: 2rem;
             text-align: center;
-            min-width: 180px;
+            width: 170px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 1rem;
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-            margin: 0 20px;
         }
 
         .winner-crown {
@@ -458,469 +438,102 @@
             color: var(--text-muted);
         }
 
-        /* Teams Grid */
-        .teams-section {
-            max-width: 1400px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-        }
-
-        .teams-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.2rem;
-        }
-
-        .team-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.3rem;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .team-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
+        /* Teams, Schedule, Info, Modal, Footer - same as before */
+        .teams-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
+        .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+        .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+        .team-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transition: transform 0.3s; }
         .team-card:hover::before { transform: scaleX(1); }
-        .team-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-hover);
-            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.1);
-        }
-
-        .tc-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1rem;
-        }
-
-        .tc-logo {
-            width: 46px; height: 46px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
-        }
-
+        .team-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 8px 30px rgba(139, 92, 246, 0.1); }
+        .tc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+        .tc-logo { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: white; flex-shrink: 0; }
         .tc-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
         .tc-info span { font-size: 0.75rem; color: var(--text-muted); }
-
-        .tc-stats {
-            display: flex;
-            gap: 1rem;
-            margin-top: 0.8rem;
-            padding-top: 0.8rem;
-            border-top: 1px solid var(--border);
-        }
-
+        .tc-stats { display: flex; gap: 1rem; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--border); }
         .tc-stat { text-align: center; flex: 1; }
         .tc-stat .v { font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--primary); font-size: 1rem; }
         .tc-stat .l { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-
-        .tc-btn {
-            width: 100%;
-            margin-top: 1rem;
-            padding: 0.6rem;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid var(--border);
-            color: var(--primary);
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
+        .tc-btn { width: 100%; margin-top: 1rem; padding: 0.6rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--border); color: var(--primary); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .tc-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* Schedule */
-        .schedule-section {
-            max-width: 1400px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-        }
-
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1rem;
-        }
-
-        .sc-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.3s;
-        }
-
+        .schedule-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
+        .schedule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
+        .sc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
         .sc-card:hover { border-color: var(--border-hover); transform: translateX(4px); }
-
         .sc-time { text-align: center; min-width: 65px; }
         .sc-time .t { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1rem; color: var(--primary); }
         .sc-time .d { font-size: 0.7rem; color: var(--text-muted); }
-
-        .sc-vs {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        .sc-team {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
+        .sc-vs { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .sc-team { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; }
         .sc-divider { font-family: 'Orbitron'; font-weight: 900; color: var(--primary); font-size: 0.75rem; }
-
-        .sc-status {
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
+        .sc-status { padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .st-upcoming { background: rgba(139, 92, 246, 0.12); color: var(--primary); }
         .st-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); animation: blink 1.5s infinite; }
         .st-done { background: rgba(16, 185, 129, 0.12); color: var(--success); }
-
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* Info Section */
-        .info-section {
-            max-width: 1400px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .info-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.8rem;
-        }
-
-        .info-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.95rem;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .info-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem; }
+        .info-card h3 { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; }
         .info-card h3 i { color: var(--primary); }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.7rem 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-
+        .info-row { display: flex; justify-content: space-between; padding: 0.7rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .info-row:last-child { border-bottom: none; }
         .info-row .k { color: var(--text-muted); }
         .info-row .v { font-weight: 600; }
+        .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-top: 0.5rem; }
+        .partner-item { background: var(--bg); padding: 0.8rem; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); border: 1px solid var(--border); }
 
-        .partner-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.8rem;
-            margin-top: 0.5rem;
-        }
-
-        .partner-item {
-            background: var(--bg);
-            padding: 0.8rem;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem; }
         .modal-overlay.active { display: flex; }
-
-        .modal {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 550px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalIn 0.3s ease;
-        }
-
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .modal-header {
-            padding: 1.8rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .modal-team {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .modal-logo {
-            width: 55px; height: 55px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: white;
-        }
-
+        .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-header { padding: 1.8rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .modal-team { display: flex; align-items: center; gap: 14px; }
+        .modal-logo { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 700; color: white; }
         .modal-team h2 { font-size: 1.2rem; }
         .modal-team p { color: var(--text-muted); font-size: 0.85rem; }
-
-        .modal-close {
-            width: 38px; height: 38px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
+        .modal-close { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         .modal-close:hover { background: var(--danger); color: white; border-color: var(--danger); }
-
         .modal-body { padding: 1.8rem; }
-
-        .leader-box {
-            background: var(--bg);
-            border-radius: 12px;
-            padding: 1.3rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border);
-        }
-
-        .leader-box h4 {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
-        }
-
-        .leader-flex {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .leader-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .leader-ava {
-            width: 42px; height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: white;
-        }
-
+        .leader-box { background: var(--bg); border-radius: 12px; padding: 1.3rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .leader-box h4 { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
+        .leader-flex { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .leader-info { display: flex; align-items: center; gap: 12px; }
+        .leader-ava { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; }
         .leader-n { font-weight: 700; }
         .leader-r { font-size: 0.75rem; color: var(--text-muted); }
-
-        .wa-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #25d366, #128c7e);
-            color: white;
-            text-decoration: none;
-            padding: 0.7rem 1.3rem;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
-            border: none;
-            cursor: pointer;
-        }
-
+        .wa-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #25d366, #128c7e); color: white; text-decoration: none; padding: 0.7rem 1.3rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: all 0.3s; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25); border: none; cursor: pointer; }
         .wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4); }
-
-        .roster-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .roster-table th {
-            text-align: left;
-            padding: 0.9rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--border);
-            font-weight: 600;
-        }
-
-        .roster-table td {
-            padding: 0.9rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-
+        .roster-table { width: 100%; border-collapse: collapse; }
+        .roster-table th { text-align: left; padding: 0.9rem; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); font-weight: 600; }
+        .roster-table td { padding: 0.9rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .roster-table tr:last-child td { border-bottom: none; }
         .roster-table tr:hover td { background: rgba(139, 92, 246, 0.04); }
-
-        .role-tag {
-            display: inline-block;
-            padding: 0.25rem 0.7rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
+        .role-tag { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
         .role-exp { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
         .role-jungle { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
         .role-mid { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
         .role-gold { background: rgba(234, 179, 8, 0.12); color: #eab308; }
         .role-roam { background: rgba(139, 92, 246, 0.12); color: #8b5cf6; }
-
-        .wa-link {
-            color: #25d366;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
+        .wa-link { color: #25d366; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 500; transition: all 0.3s; }
         .wa-link:hover { color: #128c7e; text-decoration: underline; }
 
-        /* Footer */
-        .footer {
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            margin-top: 4rem;
-            padding: 2rem;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .footer-social {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .footer-social a {
-            width: 40px; height: 40px;
-            border-radius: 10px;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: all 0.3s;
-            border: 1px solid var(--border);
-        }
-
+        .footer { background: var(--bg-card); border-top: 1px solid var(--border); margin-top: 4rem; padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+        .footer-social { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
+        .footer-social a { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-decoration: none; transition: all 0.3s; border: 1px solid var(--border); }
         .footer-social a:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
 
-        /* Responsive */
         @media (max-width: 968px) {
             .hero { grid-template-columns: 1fr; text-align: center; }
             .hero-badges { justify-content: center; }
             .info-section { grid-template-columns: 1fr; }
             .nav-links { display: none; }
         }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.4rem;
-            cursor: pointer;
-        }
-
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
         @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
     </style>
 <base target="_blank">
@@ -967,7 +580,6 @@
         </div>
     </section>
 
-    <!-- Bracket -->
     <section class="bracket-section" id="turnamen">
         <div class="section-title"><i class="fas fa-sitemap"></i> BRACKET SINGLE ELIMINATION (8 TIM)</div>
         <div class="bracket-wrapper">
@@ -975,19 +587,16 @@
         </div>
     </section>
 
-    <!-- Teams -->
     <section class="teams-section" id="tim">
         <div class="section-title"><i class="fas fa-users"></i> DAFTAR TIM & ROSTER</div>
         <div class="teams-grid" id="teamsGrid"></div>
     </section>
 
-    <!-- Schedule -->
     <section class="schedule-section" id="jadwal">
         <div class="section-title"><i class="fas fa-clock"></i> JADWAL PERTANDINGAN</div>
         <div class="schedule-grid" id="scheduleGrid"></div>
     </section>
 
-    <!-- Info -->
     <section class="info-section" id="info">
         <div class="info-card">
             <h3><i class="fas fa-info-circle"></i> Informasi Turnamen</h3>
@@ -1021,7 +630,6 @@
         </div>
     </footer>
 
-    <!-- Modal -->
     <div class="modal-overlay" id="rosterModal">
         <div class="modal">
             <div class="modal-header">
@@ -1052,9 +660,7 @@
                 </div>
                 <h4 style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Roster Pemain</h4>
                 <table class="roster-table">
-                    <thead>
-                        <tr><th>No</th><th>Role</th><th>Nama</th><th>No. WhatsApp</th></tr>
-                    </thead>
+                    <thead><tr><th>No</th><th>Role</th><th>Nama</th><th>No. WhatsApp</th></tr></thead>
                     <tbody id="rosterBody"></tbody>
                 </table>
             </div>
@@ -1123,9 +729,7 @@
 
         function renderBracket() {
             const tree = document.getElementById('bracketTree');
-
-            // Calculate connector heights based on match spacing
-            const qfHeight = 120; // approximate height of one match card
+            const matchHeight = 130; // Height of each match card including gap
 
             // Quarter Finals (4 matches)
             const qfHTML = `
@@ -1135,6 +739,7 @@
                         const a = getTeam(m.t1), b = getTeam(m.t2);
                         return `
                         <div class="match-card" onclick="pickWinner('qf', ${i})">
+                            <div class="h-connector"></div>
                             <div class="match-tag">${m.id}</div>
                             <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
                                 <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
@@ -1152,36 +757,43 @@
                 </div>
             `;
 
-            // Connector QF -> SF (4 matches → 2 matches)
+            // Connector QF -> SF with SVG
+            const totalHeight = 4 * matchHeight;
             const conn1 = `
-                <div class="connector-zone" style="height: ${bracket.qf.length * 140}px;">
-                    <svg width="60" height="${bracket.qf.length * 140}" style="position: absolute;">
-                        <!-- Line from QF1 to SF1 top -->
-                        <line x1="0" y1="${70}" x2="30" y2="${70}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${70}" x2="30" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${140}" x2="60" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
-                        <!-- Line from QF2 to SF1 bottom -->
-                        <line x1="0" y1="${210}" x2="30" y2="${210}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${210}" x2="30" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
-                        <!-- Line from QF3 to SF2 top -->
-                        <line x1="0" y1="${350}" x2="30" y2="${350}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${350}" x2="30" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${420}" x2="60" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
-                        <!-- Line from QF4 to SF2 bottom -->
-                        <line x1="0" y1="${490}" x2="30" y2="${490}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${490}" x2="30" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
+                <div class="connector-col">
+                    <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
+                    <svg class="connector-svg" height="${totalHeight}" viewBox="0 0 50 ${totalHeight}">
+                        <!-- QF1 (top) to SF1 (top) -->
+                        <line x1="0" y1="${matchHeight * 0.5}" x2="25" y2="${matchHeight * 0.5}" class="${bracket.qf[0].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 0.5}" x2="25" y2="${matchHeight * 1}" class="${bracket.qf[0].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 1}" x2="50" y2="${matchHeight * 1}" class="${bracket.qf[0].w && bracket.qf[1].w ? 'active' : ''}"/>
+
+                        <!-- QF2 to SF1 (bottom) -->
+                        <line x1="0" y1="${matchHeight * 1.5}" x2="25" y2="${matchHeight * 1.5}" class="${bracket.qf[1].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 1.5}" x2="25" y2="${matchHeight * 1}" class="${bracket.qf[1].w ? 'active' : ''}"/>
+
+                        <!-- QF3 to SF2 (top) -->
+                        <line x1="0" y1="${matchHeight * 2.5}" x2="25" y2="${matchHeight * 2.5}" class="${bracket.qf[2].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 2.5}" x2="25" y2="${matchHeight * 3}" class="${bracket.qf[2].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 3}" x2="50" y2="${matchHeight * 3}" class="${bracket.qf[2].w && bracket.qf[3].w ? 'active' : ''}"/>
+
+                        <!-- QF4 (bottom) to SF2 (bottom) -->
+                        <line x1="0" y1="${matchHeight * 3.5}" x2="25" y2="${matchHeight * 3.5}" class="${bracket.qf[3].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 3.5}" x2="25" y2="${matchHeight * 3}" class="${bracket.qf[3].w ? 'active' : ''}"/>
                     </svg>
                 </div>
             `;
 
-            // Semi Finals (2 matches)
+            // Semi Finals (2 matches) - positioned to align with connector centers
             const sfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>SEMI FINAL</h3><span>19 MEI 2024</span></div>
                     ${bracket.sf.map((m, i) => {
                         const a = getTeam(m.t1), b = getTeam(m.t2);
+                        const topMargin = i === 0 ? matchHeight * 0.5 : matchHeight * 2.5;
                         return `
-                        <div class="match-card" style="margin-top: ${i === 0 ? '70px' : '210px'};" onclick="pickWinner('sf', ${i})">
+                        <div class="match-card" style="margin-top: ${topMargin - (i * matchHeight)}px;" onclick="pickWinner('sf', ${i})">
+                            <div class="h-connector"></div>
                             <div class="match-tag">${m.id}</div>
                             <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
                                 <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
@@ -1199,26 +811,29 @@
                 </div>
             `;
 
-            // Connector SF -> GF (2 matches → 1 match)
+            // Connector SF -> GF
             const conn2 = `
-                <div class="connector-zone" style="height: ${bracket.qf.length * 140}px;">
-                    <svg width="60" height="${bracket.qf.length * 140}" style="position: absolute;">
-                        <!-- Line from SF1 to GF top -->
-                        <line x1="0" y1="${140}" x2="30" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${140}" x2="30" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${280}" x2="60" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
-                        <!-- Line from SF2 to GF bottom -->
-                        <line x1="0" y1="${420}" x2="30" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
-                        <line x1="30" y1="${420}" x2="30" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
+                <div class="connector-col">
+                    <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
+                    <svg class="connector-svg" height="${totalHeight}" viewBox="0 0 50 ${totalHeight}">
+                        <!-- SF1 to GF -->
+                        <line x1="0" y1="${matchHeight * 1}" x2="25" y2="${matchHeight * 1}" class="${bracket.sf[0].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 1}" x2="25" y2="${matchHeight * 2}" class="${bracket.sf[0].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 2}" x2="50" y2="${matchHeight * 2}" class="${bracket.sf[0].w && bracket.sf[1].w ? 'active' : ''}"/>
+
+                        <!-- SF2 to GF -->
+                        <line x1="0" y1="${matchHeight * 3}" x2="25" y2="${matchHeight * 3}" class="${bracket.sf[1].w ? 'active' : ''}"/>
+                        <line x1="25" y1="${matchHeight * 3}" x2="25" y2="${matchHeight * 2}" class="${bracket.sf[1].w ? 'active' : ''}"/>
                     </svg>
                 </div>
             `;
 
-            // Grand Final (1 match)
+            // Grand Final (1 match) - centered
             const gfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>GRAND FINAL</h3><span>22 MEI 2024</span></div>
-                    <div class="match-card" style="margin-top: 210px;" onclick="pickWinner('gf', 0)">
+                    <div class="match-card" style="margin-top: ${matchHeight * 1.5}px;" onclick="pickWinner('gf', 0)">
+                        <div class="h-connector"></div>
                         <div class="match-tag">FINAL</div>
                         <div class="team-row ${bracket.gf.w === bracket.gf.t1 ? 'winner' : ''}">
                             <div class="team-logo-sm" style="background: ${getTeam(bracket.gf.t1).bg}">${getTeam(bracket.gf.t1).short}</div>
@@ -1237,9 +852,10 @@
 
             // Connector GF -> Winner
             const conn3 = `
-                <div class="connector-zone" style="height: ${bracket.qf.length * 140}px;">
-                    <svg width="60" height="${bracket.qf.length * 140}" style="position: absolute;">
-                        <line x1="0" y1="${280}" x2="60" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
+                <div class="connector-col">
+                    <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
+                    <svg class="connector-svg" height="${totalHeight}" viewBox="0 0 50 ${totalHeight}">
+                        <line x1="0" y1="${matchHeight * 2}" x2="50" y2="${matchHeight * 2}" class="${bracket.gf.w ? 'active' : ''}"/>
                     </svg>
                 </div>
             `;
@@ -1249,7 +865,7 @@
             const winnerHTML = `
                 <div class="round-col winner-col">
                     <div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div>
-                    <div class="winner-card" style="margin-top: 210px;">
+                    <div class="winner-card" style="margin-top: ${matchHeight * 1.5}px;">
                         <div class="winner-crown"><i class="fas fa-crown"></i></div>
                         <div class="winner-label">PHOENIX CUP S1</div>
                         <div class="winner-name">${winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD'}</div>
