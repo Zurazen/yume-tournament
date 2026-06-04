@@ -41,7 +41,6 @@
                 radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
         }
 
-        /* Header */
         .header {
             background: rgba(17, 17, 26, 0.95);
             backdrop-filter: blur(12px);
@@ -123,7 +122,6 @@
             box-shadow: 0 0 8px var(--primary);
         }
 
-        /* Hero */
         .hero {
             max-width: 1400px;
             margin: 2.5rem auto;
@@ -245,14 +243,14 @@
             border-radius: 20px;
             padding: 2rem;
             overflow-x: auto;
+            overflow-y: visible;
         }
 
         .bracket-tree {
             display: flex;
             align-items: stretch;
             min-width: 1100px;
-            height: 550px;
-            position: relative;
+            height: 600px;
         }
 
         .round-col {
@@ -261,14 +259,14 @@
             width: 190px;
             height: 100%;
             flex-shrink: 0;
-            position: relative;
         }
 
         .connector-col {
             width: 60px;
             height: 100%;
             flex-shrink: 0;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .winner-col {
@@ -296,11 +294,18 @@
             color: var(--text-muted);
         }
 
-        .match-area {
-            position: relative;
+        .matches-area {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
             overflow: visible;
         }
+
+        .qf-area { justify-content: space-around; }
+        .sf-area { justify-content: space-around; }
+        .gf-area { justify-content: center; }
+        .winner-area { justify-content: center; }
 
         .match-card {
             background: var(--bg);
@@ -308,13 +313,13 @@
             border-radius: 12px;
             width: 100%;
             height: 100px;
-            position: absolute;
-            left: 0;
+            position: relative;
             transition: all 0.3s;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .match-card:hover {
@@ -386,9 +391,6 @@
 
         /* ===== SVG CONNECTORS ===== */
         .connector-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             overflow: visible;
@@ -414,14 +416,13 @@
             text-align: center;
             width: 100%;
             height: 140px;
-            position: absolute;
-            left: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 0.5rem;
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+            flex-shrink: 0;
         }
 
         .winner-crown {
@@ -449,7 +450,7 @@
             color: var(--text-muted);
         }
 
-        /* Teams, Schedule, Info, Modal, Footer */
+        /* Rest of styles */
         .teams-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
         .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
         .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
@@ -744,41 +745,47 @@
         function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
 
         // ===== BRACKET LAYOUT MATH =====
-        const CONTAINER_H = 550;
+        // Using space-around flex distribution
+        // Container: 600px total, 55px header, 545px match area
+        // QF: 4 items (100px each) in 545px -> space around each = (545-400)/8 = 18.125px
+        // SF: 2 items (100px each) in 545px -> space around each = (545-200)/4 = 86.25px
+        // GF: 1 item (100px) in 545px -> centered at 272.5px
+        // Winner: 1 card (140px) in 545px -> centered at 272.5px
+
+        const CONTAINER_H = 600;
         const HEADER_H = 55;
         const MATCH_H = 100;
-        const MATCH_GAP = 30;
-        const AREA_H = CONTAINER_H - HEADER_H; // 495
+        const WINNER_H = 140;
+        const AREA_H = CONTAINER_H - HEADER_H; // 545
         const CONN_W = 60;
         const CARD_W = 190;
-        const WINNER_H = 140;
 
-        // Calculate QF centers (evenly distributed in match-area)
-        const totalQfContent = 4 * MATCH_H + 3 * MATCH_GAP; // 490 + 90 = 490? Wait: 4*100 + 3*30 = 400+90 = 490
-        const qfOffset = (AREA_H - totalQfContent) / 2; // (495-490)/2 = 2.5
-        const qfCenters = [
-            qfOffset + MATCH_H / 2,                           // 52.5
-            qfOffset + MATCH_H + MATCH_GAP + MATCH_H / 2,       // 182.5
-            qfOffset + 2 * (MATCH_H + MATCH_GAP) + MATCH_H / 2, // 312.5
-            qfOffset + 3 * (MATCH_H + MATCH_GAP) + MATCH_H / 2  // 442.5
-        ];
+        // Calculate centers using space-around formula
+        // n items, each height h, container height H
+        // space around each item = (H - n*h) / (2*n) = (H - n*h) / (2n)
+        // Actually for space-around: space = (H - n*h) / (2n)  ... no wait
+        // space-around: space before first = s, between = 2s, after last = s
+        // Total: n*h + 2n*s = H -> s = (H - n*h) / (2n)
+        // Center of item i: s + i*(h + 2s) + h/2 = s*(2i+1) + h*(i+0.5)
 
-        // SF centers = midpoint between pairs of QF centers
-        const sfCenters = [
-            (qfCenters[0] + qfCenters[1]) / 2, // 117.5
-            (qfCenters[2] + qfCenters[3]) / 2  // 377.5
-        ];
+        function calcCenters(n, h, H) {
+            const s = (H - n * h) / (2 * n);
+            const centers = [];
+            for (let i = 0; i < n; i++) {
+                centers.push(s * (2 * i + 1) + h * (i + 0.5));
+            }
+            return centers;
+        }
 
-        // GF center = midpoint between SF centers
-        const gfCenter = (sfCenters[0] + sfCenters[1]) / 2; // 247.5
+        const qfCenters = calcCenters(4, MATCH_H, AREA_H);
+        const sfCenters = calcCenters(2, MATCH_H, AREA_H);
+        const gfCenter = AREA_H / 2; // Single item centered
+        const winnerCenter = AREA_H / 2;
 
-        // Winner center = same as GF center
-        const winnerCenter = gfCenter; // 247.5
-
-        function renderMatchCard(m, top, onclick) {
+        function renderMatchCard(m, onclick) {
             const a = getTeam(m.t1), b = getTeam(m.t2);
             return `
-                <div class="match-card" style="top: ${top}px;" onclick="${onclick}">
+                <div class="match-card" onclick="${onclick}">
                     <div class="match-tag">${m.id}</div>
                     <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
                         <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
@@ -801,8 +808,8 @@
             const qfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>QUARTER FINAL</h3><span>18 MEI 2024</span></div>
-                    <div class="match-area">
-                        ${bracket.qf.map((m, i) => renderMatchCard(m, qfCenters[i] - MATCH_H / 2, `pickWinner('qf', ${i})`)).join('')}
+                    <div class="matches-area qf-area">
+                        ${bracket.qf.map((m, i) => renderMatchCard(m, `pickWinner('qf', ${i})`)).join('')}
                     </div>
                 </div>
             `;
@@ -811,7 +818,7 @@
             const conn1HTML = `
                 <div class="connector-col">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <div class="match-area">
+                    <div class="matches-area">
                         <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
                             <!-- QF1 -> SF1 -->
                             <line x1="0" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${qfCenters[0]}" class="${bracket.qf[0].w ? 'active' : ''}"/>
@@ -839,8 +846,8 @@
             const sfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>SEMI FINAL</h3><span>19 MEI 2024</span></div>
-                    <div class="match-area">
-                        ${bracket.sf.map((m, i) => renderMatchCard(m, sfCenters[i] - MATCH_H / 2, `pickWinner('sf', ${i})`)).join('')}
+                    <div class="matches-area sf-area">
+                        ${bracket.sf.map((m, i) => renderMatchCard(m, `pickWinner('sf', ${i})`)).join('')}
                     </div>
                 </div>
             `;
@@ -849,7 +856,7 @@
             const conn2HTML = `
                 <div class="connector-col">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <div class="match-area">
+                    <div class="matches-area">
                         <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
                             <!-- SF1 -> GF -->
                             <line x1="0" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.sf[0].w ? 'active' : ''}"/>
@@ -868,8 +875,8 @@
             const gfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>GRAND FINAL</h3><span>22 MEI 2024</span></div>
-                    <div class="match-area">
-                        ${renderMatchCard(bracket.gf, gfCenter - MATCH_H / 2, `pickWinner('gf', 0)`)}
+                    <div class="matches-area gf-area">
+                        ${renderMatchCard(bracket.gf, `pickWinner('gf', 0)`)}
                     </div>
                 </div>
             `;
@@ -878,7 +885,7 @@
             const conn3HTML = `
                 <div class="connector-col">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <div class="match-area">
+                    <div class="matches-area">
                         <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
                             <line x1="0" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.gf.w ? 'active' : ''}"/>
                         </svg>
@@ -891,8 +898,8 @@
             const winnerHTML = `
                 <div class="round-col winner-col">
                     <div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div>
-                    <div class="match-area">
-                        <div class="winner-card" style="top: ${winnerCenter - WINNER_H / 2}px;">
+                    <div class="matches-area winner-area">
+                        <div class="winner-card">
                             <div class="winner-crown"><i class="fas fa-crown"></i></div>
                             <div class="winner-label">PHOENIX CUP S1</div>
                             <div class="winner-name">${winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD'}</div>
