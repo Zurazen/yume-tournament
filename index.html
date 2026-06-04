@@ -18,6 +18,8 @@
             --text-muted: #64748b;
             --line: #2d2d44;
             --line-active: #8b5cf6;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -247,19 +249,23 @@
 
         .bracket-tree {
             display: flex;
-            align-items: stretch;
-            min-width: 1000px;
+            align-items: center;
+            min-width: 1100px;
+            /* Height must accommodate all QF matches with spacing */
+            min-height: 700px;
         }
 
         .round-col {
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 0;
+            height: 100%;
         }
 
         .round-header {
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             min-height: 45px;
             display: flex;
             flex-direction: column;
@@ -286,6 +292,11 @@
             position: relative;
             transition: all 0.3s;
             cursor: pointer;
+            flex-shrink: 0;
+            /* Fixed height for consistent alignment */
+            height: 110px;
+            display: flex;
+            flex-direction: column;
         }
 
         .match-card:hover {
@@ -312,10 +323,11 @@
         .team-row {
             display: flex;
             align-items: center;
-            padding: 0.7rem 1rem;
+            padding: 0.55rem 1rem;
             gap: 10px;
             border-bottom: 1px solid var(--border);
             transition: all 0.2s;
+            flex: 1;
         }
 
         .team-row:last-child { border-bottom: none; }
@@ -334,7 +346,7 @@
             flex-shrink: 0;
         }
 
-        .team-n { flex: 1; font-weight: 500; font-size: 0.85rem; }
+        .team-n { flex: 1; font-weight: 500; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .team-s {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
@@ -346,34 +358,35 @@
 
         .match-time {
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
-            padding: 0.4rem;
+            padding: 0.3rem;
             background: rgba(139, 92, 246, 0.05);
             border-top: 1px solid var(--border);
             border-radius: 0 0 12px 12px;
+            margin-top: auto;
         }
 
         /* ===== SVG CONNECTORS ===== */
         .connector-col {
-            width: 50px;
+            width: 60px;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: center;
             position: relative;
+            height: 100%;
         }
 
         .connector-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            pointer-events: none;
+            height: 100%;
+            overflow: visible;
         }
 
         .connector-svg line {
             stroke: var(--line);
             stroke-width: 2;
+            fill: none;
         }
 
         .connector-svg line.active {
@@ -381,19 +394,8 @@
             filter: drop-shadow(0 0 3px var(--line-active));
         }
 
-        /* Horizontal line from match */
+        /* Horizontal line from match - now using SVG in connector instead */
         .match-card .h-connector {
-            position: absolute;
-            top: 50%;
-            right: -25px;
-            width: 25px;
-            height: 2px;
-            background: var(--line);
-            transform: translateY(-50%);
-        }
-
-        .round-col:last-child .match-card .h-connector,
-        .winner-col .match-card .h-connector {
             display: none;
         }
 
@@ -411,6 +413,7 @@
             align-items: center;
             gap: 1rem;
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+            flex-shrink: 0;
         }
 
         .winner-crown {
@@ -438,7 +441,13 @@
             color: var(--text-muted);
         }
 
-        /* Teams, Schedule, Info, Modal, Footer - same as before */
+        /* Spacer for round alignment */
+        .round-spacer {
+            height: 45px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Teams, Schedule, Info, Modal, Footer */
         .teams-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
         .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
         .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
@@ -532,6 +541,11 @@
             .hero-badges { justify-content: center; }
             .info-section { grid-template-columns: 1fr; }
             .nav-links { display: none; }
+            .bracket-tree { min-width: 900px; min-height: 600px; }
+            .match-card { width: 160px; height: 100px; }
+            .match-card .team-row { padding: 0.45rem 0.8rem; }
+            .connector-col { width: 50px; }
+            .winner-card { width: 150px; padding: 1.5rem; }
         }
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
         @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
@@ -727,135 +741,163 @@
 
         function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
 
+        // Constants for bracket layout
+        const MATCH_HEIGHT = 110; // Must match CSS .match-card height
+        const MATCH_GAP = 40;     // Gap between match cards in QF
+        const ROUND_HEIGHT = 4 * MATCH_HEIGHT + 3 * MATCH_GAP; // Total height for QF round
+
         function renderBracket() {
             const tree = document.getElementById('bracketTree');
-            const matchHeight = 130; // Height of each match card including gap
 
-            // Quarter Finals (4 matches)
+            // Calculate positions for perfect alignment
+            // QF positions (4 matches evenly distributed)
+            const qfPositions = [];
+            for (let i = 0; i < 4; i++) {
+                qfPositions.push(i * (MATCH_HEIGHT + MATCH_GAP));
+            }
+
+            // SF positions (2 matches, each centered between 2 QF matches)
+            const sfPositions = [
+                (qfPositions[0] + qfPositions[1] + MATCH_HEIGHT) / 2 - MATCH_HEIGHT / 2 + MATCH_HEIGHT / 2,
+                (qfPositions[2] + qfPositions[3] + MATCH_HEIGHT) / 2 - MATCH_HEIGHT / 2 + MATCH_HEIGHT / 2
+            ];
+            // Simplified: center between QF pairs
+            const sfPos1 = (qfPositions[0] + MATCH_HEIGHT/2 + qfPositions[1] + MATCH_HEIGHT/2) / 2 - MATCH_HEIGHT/2;
+            const sfPos2 = (qfPositions[2] + MATCH_HEIGHT/2 + qfPositions[3] + MATCH_HEIGHT/2) / 2 - MATCH_HEIGHT/2;
+
+            // GF position (centered between 2 SF matches)
+            const gfPos = (sfPos1 + MATCH_HEIGHT/2 + sfPos2 + MATCH_HEIGHT/2) / 2 - MATCH_HEIGHT/2;
+
+            // Winner position (aligned with GF)
+            const winnerPos = gfPos;
+
+            // Quarter Finals
             const qfHTML = `
-                <div class="round-col">
+                <div class="round-col" style="height: ${ROUND_HEIGHT}px;">
                     <div class="round-header"><h3>QUARTER FINAL</h3><span>18 MEI 2024</span></div>
-                    ${bracket.qf.map((m, i) => {
-                        const a = getTeam(m.t1), b = getTeam(m.t2);
-                        return `
-                        <div class="match-card" onclick="pickWinner('qf', ${i})">
-                            <div class="h-connector"></div>
-                            <div class="match-tag">${m.id}</div>
-                            <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
-                                <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
-                                <div class="team-n">${a.name}</div>
-                                <div class="team-s">${m.s1 !== null ? m.s1 : '-'}</div>
-                            </div>
-                            <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
-                                <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
-                                <div class="team-n">${b.name}</div>
-                                <div class="team-s">${m.s2 !== null ? m.s2 : '-'}</div>
-                            </div>
-                            <div class="match-time">${m.time}</div>
-                        </div>`;
-                    }).join('')}
+                    <div style="display: flex; flex-direction: column; gap: ${MATCH_GAP}px; position: relative;">
+                        ${bracket.qf.map((m, i) => {
+                            const a = getTeam(m.t1), b = getTeam(m.t2);
+                            return `
+                            <div class="match-card" onclick="pickWinner('qf', ${i})">
+                                <div class="match-tag">${m.id}</div>
+                                <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
+                                    <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
+                                    <div class="team-n">${a.name}</div>
+                                    <div class="team-s">${m.s1 !== null ? m.s1 : '-'}</div>
+                                </div>
+                                <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
+                                    <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
+                                    <div class="team-n">${b.name}</div>
+                                    <div class="team-s">${m.s2 !== null ? m.s2 : '-'}</div>
+                                </div>
+                                <div class="match-time">${m.time}</div>
+                            </div>`;
+                        }).join('')}
+                    </div>
                 </div>
             `;
 
-            // Connector QF -> SF with SVG
-            const totalHeight = 4 * matchHeight;
-            const conn1 = `
-                <div class="connector-col">
+            // Connector QF -> SF
+            const conn1HTML = `
+                <div class="connector-col" style="height: ${ROUND_HEIGHT}px;">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <svg class="connector-svg" height="${totalHeight}" viewBox="0 0 50 ${totalHeight}">
-                        <!-- QF1 (top) to SF1 (top) -->
-                        <line x1="0" y1="${matchHeight * 0.5}" x2="25" y2="${matchHeight * 0.5}" class="${bracket.qf[0].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 0.5}" x2="25" y2="${matchHeight * 1}" class="${bracket.qf[0].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 1}" x2="50" y2="${matchHeight * 1}" class="${bracket.qf[0].w && bracket.qf[1].w ? 'active' : ''}"/>
+                    <svg class="connector-svg" viewBox="0 0 60 ${ROUND_HEIGHT}" preserveAspectRatio="none">
+                        <!-- QF1 to SF1 -->
+                        <line x1="0" y1="${qfPositions[0] + MATCH_HEIGHT/2}" x2="30" y2="${qfPositions[0] + MATCH_HEIGHT/2}" class="${bracket.qf[0].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${qfPositions[0] + MATCH_HEIGHT/2}" x2="30" y2="${sfPos1 + MATCH_HEIGHT/2}" class="${bracket.qf[0].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${sfPos1 + MATCH_HEIGHT/2}" x2="60" y2="${sfPos1 + MATCH_HEIGHT/2}" class="${bracket.qf[0].w && bracket.qf[1].w ? 'active' : ''}"/>
 
-                        <!-- QF2 to SF1 (bottom) -->
-                        <line x1="0" y1="${matchHeight * 1.5}" x2="25" y2="${matchHeight * 1.5}" class="${bracket.qf[1].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 1.5}" x2="25" y2="${matchHeight * 1}" class="${bracket.qf[1].w ? 'active' : ''}"/>
+                        <!-- QF2 to SF1 -->
+                        <line x1="0" y1="${qfPositions[1] + MATCH_HEIGHT/2}" x2="30" y2="${qfPositions[1] + MATCH_HEIGHT/2}" class="${bracket.qf[1].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${qfPositions[1] + MATCH_HEIGHT/2}" x2="30" y2="${sfPos1 + MATCH_HEIGHT/2}" class="${bracket.qf[1].w ? 'active' : ''}"/>
 
-                        <!-- QF3 to SF2 (top) -->
-                        <line x1="0" y1="${matchHeight * 2.5}" x2="25" y2="${matchHeight * 2.5}" class="${bracket.qf[2].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 2.5}" x2="25" y2="${matchHeight * 3}" class="${bracket.qf[2].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 3}" x2="50" y2="${matchHeight * 3}" class="${bracket.qf[2].w && bracket.qf[3].w ? 'active' : ''}"/>
+                        <!-- QF3 to SF2 -->
+                        <line x1="0" y1="${qfPositions[2] + MATCH_HEIGHT/2}" x2="30" y2="${qfPositions[2] + MATCH_HEIGHT/2}" class="${bracket.qf[2].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${qfPositions[2] + MATCH_HEIGHT/2}" x2="30" y2="${sfPos2 + MATCH_HEIGHT/2}" class="${bracket.qf[2].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${sfPos2 + MATCH_HEIGHT/2}" x2="60" y2="${sfPos2 + MATCH_HEIGHT/2}" class="${bracket.qf[2].w && bracket.qf[3].w ? 'active' : ''}"/>
 
-                        <!-- QF4 (bottom) to SF2 (bottom) -->
-                        <line x1="0" y1="${matchHeight * 3.5}" x2="25" y2="${matchHeight * 3.5}" class="${bracket.qf[3].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 3.5}" x2="25" y2="${matchHeight * 3}" class="${bracket.qf[3].w ? 'active' : ''}"/>
+                        <!-- QF4 to SF2 -->
+                        <line x1="0" y1="${qfPositions[3] + MATCH_HEIGHT/2}" x2="30" y2="${qfPositions[3] + MATCH_HEIGHT/2}" class="${bracket.qf[3].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${qfPositions[3] + MATCH_HEIGHT/2}" x2="30" y2="${sfPos2 + MATCH_HEIGHT/2}" class="${bracket.qf[3].w ? 'active' : ''}"/>
                     </svg>
                 </div>
             `;
 
-            // Semi Finals (2 matches) - positioned to align with connector centers
+            // Semi Finals
             const sfHTML = `
-                <div class="round-col">
+                <div class="round-col" style="height: ${ROUND_HEIGHT}px;">
                     <div class="round-header"><h3>SEMI FINAL</h3><span>19 MEI 2024</span></div>
-                    ${bracket.sf.map((m, i) => {
-                        const a = getTeam(m.t1), b = getTeam(m.t2);
-                        const topMargin = i === 0 ? matchHeight * 0.5 : matchHeight * 2.5;
-                        return `
-                        <div class="match-card" style="margin-top: ${topMargin - (i * matchHeight)}px;" onclick="pickWinner('sf', ${i})">
-                            <div class="h-connector"></div>
-                            <div class="match-tag">${m.id}</div>
-                            <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
-                                <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
-                                <div class="team-n">${a.name}</div>
-                                <div class="team-s">${m.s1 !== null ? m.s1 : '-'}</div>
-                            </div>
-                            <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
-                                <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
-                                <div class="team-n">${b.name}</div>
-                                <div class="team-s">${m.s2 !== null ? m.s2 : '-'}</div>
-                            </div>
-                            <div class="match-time">${m.time}</div>
-                        </div>`;
-                    }).join('')}
+                    <div style="display: flex; flex-direction: column; position: relative; height: 100%; justify-content: center;">
+                        ${bracket.sf.map((m, i) => {
+                            const a = getTeam(m.t1), b = getTeam(m.t2);
+                            const topPos = i === 0 ? sfPos1 : sfPos2;
+                            return `
+                            <div class="match-card" style="position: absolute; top: ${topPos}px;" onclick="pickWinner('sf', ${i})">
+                                <div class="match-tag">${m.id}</div>
+                                <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
+                                    <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
+                                    <div class="team-n">${a.name}</div>
+                                    <div class="team-s">${m.s1 !== null ? m.s1 : '-'}</div>
+                                </div>
+                                <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
+                                    <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
+                                    <div class="team-n">${b.name}</div>
+                                    <div class="team-s">${m.s2 !== null ? m.s2 : '-'}</div>
+                                </div>
+                                <div class="match-time">${m.time}</div>
+                            </div>`;
+                        }).join('')}
+                    </div>
                 </div>
             `;
 
             // Connector SF -> GF
-            const conn2 = `
-                <div class="connector-col">
+            const conn2HTML = `
+                <div class="connector-col" style="height: ${ROUND_HEIGHT}px;">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <svg class="connector-svg" height="${totalHeight}" viewBox="0 0 50 ${totalHeight}">
+                    <svg class="connector-svg" viewBox="0 0 60 ${ROUND_HEIGHT}" preserveAspectRatio="none">
                         <!-- SF1 to GF -->
-                        <line x1="0" y1="${matchHeight * 1}" x2="25" y2="${matchHeight * 1}" class="${bracket.sf[0].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 1}" x2="25" y2="${matchHeight * 2}" class="${bracket.sf[0].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 2}" x2="50" y2="${matchHeight * 2}" class="${bracket.sf[0].w && bracket.sf[1].w ? 'active' : ''}"/>
+                        <line x1="0" y1="${sfPos1 + MATCH_HEIGHT/2}" x2="30" y2="${sfPos1 + MATCH_HEIGHT/2}" class="${bracket.sf[0].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${sfPos1 + MATCH_HEIGHT/2}" x2="30" y2="${gfPos + MATCH_HEIGHT/2}" class="${bracket.sf[0].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${gfPos + MATCH_HEIGHT/2}" x2="60" y2="${gfPos + MATCH_HEIGHT/2}" class="${bracket.sf[0].w && bracket.sf[1].w ? 'active' : ''}"/>
 
                         <!-- SF2 to GF -->
-                        <line x1="0" y1="${matchHeight * 3}" x2="25" y2="${matchHeight * 3}" class="${bracket.sf[1].w ? 'active' : ''}"/>
-                        <line x1="25" y1="${matchHeight * 3}" x2="25" y2="${matchHeight * 2}" class="${bracket.sf[1].w ? 'active' : ''}"/>
+                        <line x1="0" y1="${sfPos2 + MATCH_HEIGHT/2}" x2="30" y2="${sfPos2 + MATCH_HEIGHT/2}" class="${bracket.sf[1].w ? 'active' : ''}"/>
+                        <line x1="30" y1="${sfPos2 + MATCH_HEIGHT/2}" x2="30" y2="${gfPos + MATCH_HEIGHT/2}" class="${bracket.sf[1].w ? 'active' : ''}"/>
                     </svg>
                 </div>
             `;
 
-            // Grand Final (1 match) - centered
+            // Grand Final
             const gfHTML = `
-                <div class="round-col">
+                <div class="round-col" style="height: ${ROUND_HEIGHT}px;">
                     <div class="round-header"><h3>GRAND FINAL</h3><span>22 MEI 2024</span></div>
-                    <div class="match-card" style="margin-top: ${matchHeight * 1.5}px;" onclick="pickWinner('gf', 0)">
-                        <div class="h-connector"></div>
-                        <div class="match-tag">FINAL</div>
-                        <div class="team-row ${bracket.gf.w === bracket.gf.t1 ? 'winner' : ''}">
-                            <div class="team-logo-sm" style="background: ${getTeam(bracket.gf.t1).bg}">${getTeam(bracket.gf.t1).short}</div>
-                            <div class="team-n">${getTeam(bracket.gf.t1).name}</div>
-                            <div class="team-s">${bracket.gf.s1 !== null ? bracket.gf.s1 : '-'}</div>
+                    <div style="position: relative; height: 100%; display: flex; align-items: center;">
+                        <div class="match-card" style="position: absolute; top: ${gfPos}px;" onclick="pickWinner('gf', 0)">
+                            <div class="match-tag">FINAL</div>
+                            <div class="team-row ${bracket.gf.w === bracket.gf.t1 ? 'winner' : ''}">
+                                <div class="team-logo-sm" style="background: ${getTeam(bracket.gf.t1).bg}">${getTeam(bracket.gf.t1).short}</div>
+                                <div class="team-n">${getTeam(bracket.gf.t1).name}</div>
+                                <div class="team-s">${bracket.gf.s1 !== null ? bracket.gf.s1 : '-'}</div>
+                            </div>
+                            <div class="team-row ${bracket.gf.w === bracket.gf.t2 ? 'winner' : ''}">
+                                <div class="team-logo-sm" style="background: ${getTeam(bracket.gf.t2).bg}">${getTeam(bracket.gf.t2).short}</div>
+                                <div class="team-n">${getTeam(bracket.gf.t2).name}</div>
+                                <div class="team-s">${bracket.gf.s2 !== null ? bracket.gf.s2 : '-'}</div>
+                            </div>
+                            <div class="match-time">${bracket.gf.time}</div>
                         </div>
-                        <div class="team-row ${bracket.gf.w === bracket.gf.t2 ? 'winner' : ''}">
-                            <div class="team-logo-sm" style="background: ${getTeam(bracket.gf.t2).bg}">${getTeam(bracket.gf.t2).short}</div>
-                            <div class="team-n">${getTeam(bracket.gf.t2).name}</div>
-                            <div class="team-s">${bracket.gf.s2 !== null ? bracket.gf.s2 : '-'}</div>
-                        </div>
-                        <div class="match-time">${bracket.gf.time}</div>
                     </div>
                 </div>
             `;
 
             // Connector GF -> Winner
-            const conn3 = `
-                <div class="connector-col">
+            const conn3HTML = `
+                <div class="connector-col" style="height: ${ROUND_HEIGHT}px;">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <svg class="connector-svg" height="${totalHeight}" viewBox="0 0 50 ${totalHeight}">
-                        <line x1="0" y1="${matchHeight * 2}" x2="50" y2="${matchHeight * 2}" class="${bracket.gf.w ? 'active' : ''}"/>
+                    <svg class="connector-svg" viewBox="0 0 60 ${ROUND_HEIGHT}" preserveAspectRatio="none">
+                        <line x1="0" y1="${gfPos + MATCH_HEIGHT/2}" x2="60" y2="${gfPos + MATCH_HEIGHT/2}" class="${bracket.gf.w ? 'active' : ''}"/>
                     </svg>
                 </div>
             `;
@@ -863,18 +905,20 @@
             // Winner
             const winner = getTeam(bracket.gf.w);
             const winnerHTML = `
-                <div class="round-col winner-col">
+                <div class="round-col winner-col" style="height: ${ROUND_HEIGHT}px;">
                     <div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div>
-                    <div class="winner-card" style="margin-top: ${matchHeight * 1.5}px;">
-                        <div class="winner-crown"><i class="fas fa-crown"></i></div>
-                        <div class="winner-label">PHOENIX CUP S1</div>
-                        <div class="winner-name">${winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD'}</div>
-                        <div class="winner-time">25 MEI 2024</div>
+                    <div style="position: relative; height: 100%; display: flex; align-items: center;">
+                        <div class="winner-card" style="position: absolute; top: ${winnerPos}px;">
+                            <div class="winner-crown"><i class="fas fa-crown"></i></div>
+                            <div class="winner-label">PHOENIX CUP S1</div>
+                            <div class="winner-name">${winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD'}</div>
+                            <div class="winner-time">25 MEI 2024</div>
+                        </div>
                     </div>
                 </div>
             `;
 
-            tree.innerHTML = qfHTML + conn1 + sfHTML + conn2 + gfHTML + conn3 + winnerHTML;
+            tree.innerHTML = qfHTML + conn1HTML + sfHTML + conn2HTML + gfHTML + conn3HTML + winnerHTML;
         }
 
         function pickWinner(round, idx) {
