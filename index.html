@@ -33,7 +33,6 @@
             overflow-x: hidden;
         }
 
-        /* Background */
         .bg-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -237,7 +236,7 @@
 
         .section-title i { color: var(--primary); }
 
-        /* Bracket */
+        /* ===== BRACKET WITH PERFECT CONNECTORS ===== */
         .bracket-section {
             max-width: 1400px;
             margin: 3rem auto;
@@ -254,8 +253,9 @@
 
         .bracket-tree {
             display: flex;
-            gap: 3rem;
-            min-width: 1200px;
+            align-items: stretch;
+            gap: 0;
+            min-width: 1100px;
             padding: 1rem 0;
         }
 
@@ -263,12 +263,16 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            gap: 1rem;
+            position: relative;
         }
 
         .round-header {
             text-align: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .round-header h3 {
@@ -287,10 +291,11 @@
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 12px;
-            width: 220px;
+            width: 210px;
             position: relative;
             transition: all 0.3s;
             cursor: pointer;
+            margin: 0 30px;
         }
 
         .match-card:hover {
@@ -363,64 +368,52 @@
             border-radius: 0 0 12px 12px;
         }
 
-        /* Connectors */
-        .round-col {
+        /* Connector Lines - Perfect */
+        .connector-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
             position: relative;
         }
 
-        .match-card {
+        .connector-lines {
             position: relative;
+            width: 100%;
+            height: 100%;
         }
 
+        /* Horizontal line from match to connector */
         .match-card::after {
             content: '';
             position: absolute;
-            right: -24px;
             top: 50%;
-            width: 24px;
+            right: -30px;
+            width: 30px;
             height: 2px;
             background: var(--border-hover);
         }
 
-        .match-card.connector-source::after {
-            background: var(--primary);
-            box-shadow: 0 0 6px var(--primary);
-        }
-
-        .round-col:not(:last-child) .match-card::after {
-            display: block;
-        }
-
-        .round-col:last-child .match-card::after {
+        .round-col:last-child .match-card::after,
+        .round-col.winner-col .match-card::after {
             display: none;
         }
 
-        /* Vertical connectors for next round */
-        .round-col .match-card:nth-child(odd)::before {
-            content: '';
+        /* Vertical lines in connector zone */
+        .connector-zone .v-line {
             position: absolute;
-            right: -24px;
-            top: 50%;
             width: 2px;
-            height: calc(100% + 1rem + 2px);
             background: var(--border-hover);
-            transform-origin: top;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .round-col .match-card:nth-child(even)::before {
-            content: '';
+        .connector-zone .h-line {
             position: absolute;
-            right: -24px;
-            bottom: 50%;
-            width: 2px;
-            height: calc(100% + 1rem + 2px);
+            height: 2px;
             background: var(--border-hover);
-            transform-origin: bottom;
-        }
-
-        .round-col:last-child .match-card::before,
-        .round-col:last-child .match-card::after {
-            display: none;
+            right: 0;
+            width: 30px;
         }
 
         /* Winner card */
@@ -437,6 +430,7 @@
             align-items: center;
             gap: 1rem;
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+            margin: 0 20px;
         }
 
         .winner-crown {
@@ -959,7 +953,7 @@
             <h2>PHOENIX CUP SEASON 1</h2>
             <div class="subtitle">SINGLE ELIMINATION</div>
             <div class="hero-badges">
-                <div class="badge"><i class="fas fa-users"></i> 16 TIM</div>
+                <div class="badge"><i class="fas fa-users"></i> 8 TIM</div>
                 <div class="badge"><i class="fas fa-sitemap"></i> SINGLE ELIMINATION</div>
                 <div class="badge"><i class="fas fa-calendar"></i> 18 - 25 MEI 2024</div>
                 <div class="badge"><i class="fas fa-wifi"></i> ONLINE</div>
@@ -975,11 +969,9 @@
 
     <!-- Bracket -->
     <section class="bracket-section" id="turnamen">
-        <div class="section-title"><i class="fas fa-sitemap"></i> BRACKET SINGLE ELIMINATION (16 TIM)</div>
+        <div class="section-title"><i class="fas fa-sitemap"></i> BRACKET SINGLE ELIMINATION (8 TIM)</div>
         <div class="bracket-wrapper">
-            <div class="bracket-tree" id="bracketTree">
-                <!-- JS generated -->
-            </div>
+            <div class="bracket-tree" id="bracketTree"></div>
         </div>
     </section>
 
@@ -1110,71 +1102,21 @@
                 { role: "EXP", name: "Herman J", wa: "081234567897" }, { role: "JUNGLE", name: "Bambang P", wa: "082834567898" },
                 { role: "MID", name: "Cici P", wa: "083834567899" }, { role: "GOLD", name: "Dodo S", wa: "084834567890" },
                 { role: "ROAM", name: "Euis N", wa: "085834567891" }
-            ]},
-            { id: 9, name: "Team Indigo", short: "TI", bg: "linear-gradient(135deg, #7c3aed, #5b21b6)", leader: { name: "Iwan Fals", wa: "081234567898" }, roster: [
-                { role: "EXP", name: "Iwan Fals", wa: "081234567898" }, { role: "JUNGLE", name: "Jajang N", wa: "082934567899" },
-                { role: "MID", name: "Kiki A", wa: "083934567890" }, { role: "GOLD", name: "Lala K", wa: "084934567891" },
-                { role: "ROAM", name: "Mimi P", wa: "085934567892" }
-            ]},
-            { id: 10, name: "Team Juliet", short: "TJ", bg: "linear-gradient(135deg, #f43f5e, #be123c)", leader: { name: "Joko W", wa: "081234567899" }, roster: [
-                { role: "EXP", name: "Joko W", wa: "081234567899" }, { role: "JUNGLE", name: "Nana M", wa: "082034567890" },
-                { role: "MID", name: "Oon S", wa: "083034567891" }, { role: "GOLD", name: "Pipin Q", wa: "084034567892" },
-                { role: "ROAM", name: "Qomar U", wa: "085034567893" }
-            ]},
-            { id: 11, name: "Team Kilo", short: "TK", bg: "linear-gradient(135deg, #84cc16, #4d7c0f)", leader: { name: "Kiki L", wa: "081234567880" }, roster: [
-                { role: "EXP", name: "Kiki L", wa: "081234567880" }, { role: "JUNGLE", name: "Rara R", wa: "082134567881" },
-                { role: "MID", name: "Sasa T", wa: "083134567882" }, { role: "GOLD", name: "Tata U", wa: "084134567883" },
-                { role: "ROAM", name: "Uus V", wa: "085134567884" }
-            ]},
-            { id: 12, name: "Team Lima", short: "TL", bg: "linear-gradient(135deg, #06b6d4, #0891b2)", leader: { name: "Lala M", wa: "081234567881" }, roster: [
-                { role: "EXP", name: "Lala M", wa: "081234567881" }, { role: "JUNGLE", name: "Vivi W", wa: "082234567882" },
-                { role: "MID", name: "Wawan X", wa: "083234567883" }, { role: "GOLD", name: "Xena Y", wa: "084234567884" },
-                { role: "ROAM", name: "Yaya Z", wa: "085234567885" }
-            ]},
-            { id: 13, name: "Team Mike", short: "TM", bg: "linear-gradient(135deg, #d946ef, #a21caf)", leader: { name: "Maman S", wa: "081234567882" }, roster: [
-                { role: "EXP", name: "Maman S", wa: "081234567882" }, { role: "JUNGLE", name: "Nunung A", wa: "082334567883" },
-                { role: "MID", name: "Oon B", wa: "083334567884" }, { role: "GOLD", name: "Pepeng C", wa: "084334567885" },
-                { role: "ROAM", name: "Qonita D", wa: "085334567886" }
-            ]},
-            { id: 14, name: "Team November", short: "TN", bg: "linear-gradient(135deg, #f97316, #c2410c)", leader: { name: "Nana K", wa: "081234567883" }, roster: [
-                { role: "EXP", name: "Nana K", wa: "081234567883" }, { role: "JUNGLE", name: "Oom E", wa: "082434567884" },
-                { role: "MID", name: "Pepeng F", wa: "083434567885" }, { role: "GOLD", name: "Qiqi G", wa: "084434567886" },
-                { role: "ROAM", name: "Rere H", wa: "085434567887" }
-            ]},
-            { id: 15, name: "Team Oscar", short: "TO", bg: "linear-gradient(135deg, #64748b, #475569)", leader: { name: "Oscar P", wa: "081234567884" }, roster: [
-                { role: "EXP", name: "Oscar P", wa: "081234567884" }, { role: "JUNGLE", name: "Paijo I", wa: "082534567885" },
-                { role: "MID", name: "Qomar J", wa: "083534567886" }, { role: "GOLD", name: "Rojali K", wa: "084534567887" },
-                { role: "ROAM", name: "Sukirman L", wa: "085534567888" }
-            ]},
-            { id: 16, name: "Team Papa", short: "TP", bg: "linear-gradient(135deg, #0ea5e9, #0369a1)", leader: { name: "Papa Z", wa: "081234567885" }, roster: [
-                { role: "EXP", name: "Papa Z", wa: "081234567885" }, { role: "JUNGLE", name: "Qori M", wa: "082634567886" },
-                { role: "MID", name: "Rini N", wa: "083634567887" }, { role: "GOLD", name: "Santi O", wa: "084634567888" },
-                { role: "ROAM", name: "Tati P", wa: "085634567889" }
             ]}
         ];
 
         let bracket = {
-            r16: [
-                { id: 1, t1: 1, t2: 2, time: "18 MEI - 13:00 WIB", s1: 2, s2: 1, w: 1 },
-                { id: 2, t1: 3, t2: 4, time: "18 MEI - 14:30 WIB", s1: 2, s2: 0, w: 3 },
-                { id: 3, t1: 5, t2: 6, time: "18 MEI - 16:00 WIB", s1: 1, s2: 2, w: 6 },
-                { id: 4, t1: 7, t2: 8, time: "18 MEI - 17:30 WIB", s1: 2, s2: 1, w: 7 },
-                { id: 5, t1: 9, t2: 10, time: "18 MEI - 19:00 WIB", s1: null, s2: null, w: null },
-                { id: 6, t1: 11, t2: 12, time: "18 MEI - 20:30 WIB", s1: null, s2: null, w: null },
-                { id: 7, t1: 13, t2: 14, time: "18 MEI - 22:00 WIB", s1: null, s2: null, w: null },
-                { id: 8, t1: 15, t2: 16, time: "18 MEI - 23:30 WIB", s1: null, s2: null, w: null }
-            ],
             qf: [
-                { id: "QF1", t1: 1, t2: 3, time: "19 MEI - 13:00 WIB", s1: null, s2: null, w: null },
-                { id: "QF2", t1: 6, t2: 7, time: "19 MEI - 14:30 WIB", s1: null, s2: null, w: null },
-                { id: "QF3", t1: null, t2: null, time: "19 MEI - 16:00 WIB", s1: null, s2: null, w: null },
-                { id: "QF4", t1: null, t2: null, time: "19 MEI - 17:30 WIB", s1: null, s2: null, w: null }
+                { id: "QF1", t1: 1, t2: 2, time: "18 MEI - 13:00 WIB", s1: 2, s2: 1, w: 1 },
+                { id: "QF2", t1: 3, t2: 4, time: "18 MEI - 14:30 WIB", s1: 2, s2: 0, w: 3 },
+                { id: "QF3", t1: 5, t2: 6, time: "18 MEI - 16:00 WIB", s1: 1, s2: 2, w: 6 },
+                { id: "QF4", t1: 7, t2: 8, time: "18 MEI - 17:30 WIB", s1: 2, s2: 1, w: 7 }
             ],
             sf: [
-                { id: "SF1", t1: null, t2: null, time: "22 MEI - 19:00 WIB", s1: null, s2: null, w: null },
-                { id: "SF2", t1: null, t2: null, time: "22 MEI - 20:30 WIB", s1: null, s2: null, w: null }
+                { id: "SF1", t1: 1, t2: 3, time: "19 MEI - 13:00 WIB", s1: null, s2: null, w: null },
+                { id: "SF2", t1: 6, t2: 7, time: "19 MEI - 14:30 WIB", s1: null, s2: null, w: null }
             ],
-            gf: { id: "GF", t1: null, t2: null, time: "25 MEI - 20:00 WIB", s1: null, s2: null, w: null }
+            gf: { id: "GF", t1: null, t2: null, time: "22 MEI - 20:00 WIB", s1: null, s2: null, w: null }
         };
 
         function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
@@ -1182,39 +1124,17 @@
         function renderBracket() {
             const tree = document.getElementById('bracketTree');
 
-            // Round of 16
-            const ro16 = `
-                <div class="round-col">
-                    <div class="round-header"><h3>ROUND OF 16</h3><span>18 MEI 2024</span></div>
-                    ${bracket.r16.map((m, i) => {
-                        const a = getTeam(m.t1), b = getTeam(m.t2);
-                        return `
-                        <div class="match-card ${m.w ? 'connector-source' : ''}" onclick="pickWinner('r16', ${i})">
-                            <div class="match-tag">${i + 1}</div>
-                            <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
-                                <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
-                                <div class="team-n">${a.name}</div>
-                                <div class="team-s">${m.s1 !== null ? m.s1 : '-'}</div>
-                            </div>
-                            <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
-                                <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
-                                <div class="team-n">${b.name}</div>
-                                <div class="team-s">${m.s2 !== null ? m.s2 : '-'}</div>
-                            </div>
-                            <div class="match-time">${m.time}</div>
-                        </div>`;
-                    }).join('')}
-                </div>
-            `;
+            // Calculate connector heights based on match spacing
+            const qfHeight = 120; // approximate height of one match card
 
-            // Quarter Finals
-            const qf = `
+            // Quarter Finals (4 matches)
+            const qfHTML = `
                 <div class="round-col">
-                    <div class="round-header"><h3>QUARTER FINAL</h3><span>19 MEI 2024</span></div>
+                    <div class="round-header"><h3>QUARTER FINAL</h3><span>18 MEI 2024</span></div>
                     ${bracket.qf.map((m, i) => {
                         const a = getTeam(m.t1), b = getTeam(m.t2);
                         return `
-                        <div class="match-card ${m.w ? 'connector-source' : ''}" onclick="pickWinner('qf', ${i})">
+                        <div class="match-card" onclick="pickWinner('qf', ${i})">
                             <div class="match-tag">${m.id}</div>
                             <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
                                 <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
@@ -1232,14 +1152,36 @@
                 </div>
             `;
 
-            // Semi Finals
-            const sf = `
+            // Connector QF -> SF (4 matches → 2 matches)
+            const conn1 = `
+                <div class="connector-zone" style="height: ${bracket.qf.length * 140}px;">
+                    <svg width="60" height="${bracket.qf.length * 140}" style="position: absolute;">
+                        <!-- Line from QF1 to SF1 top -->
+                        <line x1="0" y1="${70}" x2="30" y2="${70}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${70}" x2="30" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${140}" x2="60" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
+                        <!-- Line from QF2 to SF1 bottom -->
+                        <line x1="0" y1="${210}" x2="30" y2="${210}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${210}" x2="30" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
+                        <!-- Line from QF3 to SF2 top -->
+                        <line x1="0" y1="${350}" x2="30" y2="${350}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${350}" x2="30" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${420}" x2="60" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
+                        <!-- Line from QF4 to SF2 bottom -->
+                        <line x1="0" y1="${490}" x2="30" y2="${490}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${490}" x2="30" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
+                    </svg>
+                </div>
+            `;
+
+            // Semi Finals (2 matches)
+            const sfHTML = `
                 <div class="round-col">
-                    <div class="round-header"><h3>SEMI FINAL</h3><span>22 MEI 2024</span></div>
+                    <div class="round-header"><h3>SEMI FINAL</h3><span>19 MEI 2024</span></div>
                     ${bracket.sf.map((m, i) => {
                         const a = getTeam(m.t1), b = getTeam(m.t2);
                         return `
-                        <div class="match-card ${m.w ? 'connector-source' : ''}" onclick="pickWinner('sf', ${i})">
+                        <div class="match-card" style="margin-top: ${i === 0 ? '70px' : '210px'};" onclick="pickWinner('sf', ${i})">
                             <div class="match-tag">${m.id}</div>
                             <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
                                 <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
@@ -1257,11 +1199,26 @@
                 </div>
             `;
 
-            // Grand Final
-            const gf = `
+            // Connector SF -> GF (2 matches → 1 match)
+            const conn2 = `
+                <div class="connector-zone" style="height: ${bracket.qf.length * 140}px;">
+                    <svg width="60" height="${bracket.qf.length * 140}" style="position: absolute;">
+                        <!-- Line from SF1 to GF top -->
+                        <line x1="0" y1="${140}" x2="30" y2="${140}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${140}" x2="30" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${280}" x2="60" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
+                        <!-- Line from SF2 to GF bottom -->
+                        <line x1="0" y1="${420}" x2="30" y2="${420}" stroke="#2d2d44" stroke-width="2"/>
+                        <line x1="30" y1="${420}" x2="30" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
+                    </svg>
+                </div>
+            `;
+
+            // Grand Final (1 match)
+            const gfHTML = `
                 <div class="round-col">
-                    <div class="round-header"><h3>GRAND FINAL</h3><span>25 MEI 2024</span></div>
-                    <div class="match-card ${bracket.gf.w ? 'connector-source' : ''}" onclick="pickWinner('gf', 0)">
+                    <div class="round-header"><h3>GRAND FINAL</h3><span>22 MEI 2024</span></div>
+                    <div class="match-card" style="margin-top: 210px;" onclick="pickWinner('gf', 0)">
                         <div class="match-tag">FINAL</div>
                         <div class="team-row ${bracket.gf.w === bracket.gf.t1 ? 'winner' : ''}">
                             <div class="team-logo-sm" style="background: ${getTeam(bracket.gf.t1).bg}">${getTeam(bracket.gf.t1).short}</div>
@@ -1278,12 +1235,21 @@
                 </div>
             `;
 
+            // Connector GF -> Winner
+            const conn3 = `
+                <div class="connector-zone" style="height: ${bracket.qf.length * 140}px;">
+                    <svg width="60" height="${bracket.qf.length * 140}" style="position: absolute;">
+                        <line x1="0" y1="${280}" x2="60" y2="${280}" stroke="#2d2d44" stroke-width="2"/>
+                    </svg>
+                </div>
+            `;
+
             // Winner
             const winner = getTeam(bracket.gf.w);
             const winnerHTML = `
-                <div class="round-col">
+                <div class="round-col winner-col">
                     <div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div>
-                    <div class="winner-card">
+                    <div class="winner-card" style="margin-top: 210px;">
                         <div class="winner-crown"><i class="fas fa-crown"></i></div>
                         <div class="winner-label">PHOENIX CUP S1</div>
                         <div class="winner-name">${winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD'}</div>
@@ -1292,38 +1258,27 @@
                 </div>
             `;
 
-            tree.innerHTML = ro16 + qf + sf + gf + winnerHTML;
+            tree.innerHTML = qfHTML + conn1 + sfHTML + conn2 + gfHTML + conn3 + winnerHTML;
         }
 
         function pickWinner(round, idx) {
             let match;
-            if (round === 'r16') match = bracket.r16[idx];
-            else if (round === 'qf') match = bracket.qf[idx];
+            if (round === 'qf') match = bracket.qf[idx];
             else if (round === 'sf') match = bracket.sf[idx];
             else match = bracket.gf;
 
             if (!match.t1 || !match.t2) return;
 
-            // Cycle winner
             if (match.w === match.t1) { match.w = match.t2; match.s1 = 1; match.s2 = 2; }
             else if (match.w === match.t2) { match.w = null; match.s1 = null; match.s2 = null; }
             else { match.w = match.t1; match.s1 = 2; match.s2 = 1; }
 
-            // Propagate
-            if (round === 'r16') {
-                const qfIdx = Math.floor(idx / 2);
-                const slot = idx % 2 === 0 ? 't1' : 't2';
-                bracket.qf[qfIdx][slot] = match.w;
-                bracket.qf[qfIdx].w = null;
-                bracket.qf[qfIdx].s1 = null; bracket.qf[qfIdx].s2 = null;
-                // Reset downstream
-                bracket.sf.forEach(s => { s.t1 = null; s.t2 = null; s.w = null; s.s1 = null; s.s2 = null; });
-                bracket.gf.t1 = null; bracket.gf.t2 = null; bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
-            } else if (round === 'qf') {
+            if (round === 'qf') {
                 const sfIdx = Math.floor(idx / 2);
                 const slot = idx % 2 === 0 ? 't1' : 't2';
                 bracket.sf[sfIdx][slot] = match.w;
-                bracket.sf[sfIdx].w = null; bracket.sf[sfIdx].s1 = null; bracket.sf[sfIdx].s2 = null;
+                bracket.sf[sfIdx].w = null;
+                bracket.sf[sfIdx].s1 = null; bracket.sf[sfIdx].s2 = null;
                 bracket.gf.t1 = null; bracket.gf.t2 = null; bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
             } else if (round === 'sf') {
                 const slot = idx === 0 ? 't1' : 't2';
@@ -1363,14 +1318,9 @@
                 { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
                 { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
                 { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
-                { time: "19:00", date: "18 MEI", t1: 9, t2: 10, status: "live" },
-                { time: "20:30", date: "18 MEI", t1: 11, t2: 12, status: "upcoming" },
-                { time: "22:00", date: "18 MEI", t1: 13, t2: 14, status: "upcoming" },
-                { time: "23:30", date: "18 MEI", t1: 15, t2: 16, status: "upcoming" },
-                { time: "13:00", date: "19 MEI", t1: null, t2: null, status: "upcoming" },
-                { time: "14:30", date: "19 MEI", t1: null, t2: null, status: "upcoming" },
-                { time: "16:00", date: "19 MEI", t1: null, t2: null, status: "upcoming" },
-                { time: "17:30", date: "19 MEI", t1: null, t2: null, status: "upcoming" }
+                { time: "13:00", date: "19 MEI", t1: 1, t2: 3, status: "upcoming" },
+                { time: "14:30", date: "19 MEI", t1: 6, t2: 7, status: "upcoming" },
+                { time: "20:00", date: "22 MEI", t1: null, t2: null, status: "upcoming" }
             ];
 
             const grid = document.getElementById('scheduleGrid');
