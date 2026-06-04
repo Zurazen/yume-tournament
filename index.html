@@ -249,7 +249,7 @@
             display: flex;
             align-items: stretch;
             min-width: 1100px;
-            height: 600px;
+            height: 520px; /* Reduced from 600 */
         }
 
         .round-col {
@@ -274,7 +274,7 @@
 
         .round-header {
             text-align: center;
-            height: 55px;
+            height: 50px; /* Reduced from 55 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -304,7 +304,7 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             width: 100%;
-            height: 100px;
+            height: 90px; /* Reduced from 100 */
             position: absolute;
             left: 0;
             transition: all 0.3s;
@@ -338,7 +338,7 @@
         .team-row {
             display: flex;
             align-items: center;
-            padding: 0.5rem 1rem;
+            padding: 0.45rem 1rem;
             gap: 10px;
             border-bottom: 1px solid var(--border);
             transition: all 0.2s;
@@ -375,7 +375,7 @@
             text-align: center;
             font-size: 0.6rem;
             color: var(--text-muted);
-            padding: 0.25rem;
+            padding: 0.2rem;
             background: rgba(139, 92, 246, 0.05);
             border-top: 1px solid var(--border);
             flex-shrink: 0;
@@ -407,42 +407,42 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(167, 139, 250, 0.1));
             border: 2px solid var(--primary);
             border-radius: 16px;
-            padding: 1.5rem;
+            padding: 1.2rem;
             text-align: center;
             width: 100%;
-            height: 140px;
+            height: 120px; /* Reduced from 140 */
             position: absolute;
             left: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.3rem;
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
         }
 
         .winner-crown {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #fbbf24;
             filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
         }
 
         .winner-label {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--primary);
             letter-spacing: 3px;
         }
 
         .winner-name {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 900;
             color: white;
         }
 
         .winner-time {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
         }
 
@@ -540,11 +540,11 @@
             .hero-badges { justify-content: center; }
             .info-section { grid-template-columns: 1fr; }
             .nav-links { display: none; }
-            .bracket-tree { min-width: 900px; height: 500px; }
-            .match-card { height: 90px; }
-            .team-row { padding: 0.4rem 0.8rem; }
+            .bracket-tree { min-width: 900px; height: 440px; }
+            .match-card { height: 80px; }
+            .team-row { padding: 0.35rem 0.8rem; }
             .connector-col { width: 50px; }
-            .winner-card { height: 120px; padding: 1rem; }
+            .winner-card { height: 100px; padding: 1rem; }
         }
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
         @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
@@ -741,46 +741,44 @@
         function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
 
         // ===== BRACKET LAYOUT MATH =====
-        // Container: 600px total, 55px header, 545px match area
-        // We use exact pixel calculations for absolute positioning
-        // QF: 4 items, each 100px, evenly spaced in 545px area
-        // SF: 2 items, each 100px, centered between QF pairs
-        // GF: 1 item, 100px, centered between SF
-        // Winner: 1 card, 140px, same center as GF
+        // Container: 520px total, 50px header, 470px match area
+        // QF: 4 items, each 90px, gap = (470 - 360) / 5 = 22
+        // SF: 2 items, each 90px, centered between QF pairs
+        // GF: 1 item, 90px, centered between SF
+        // Winner: 1 card, 120px, same center as GF
 
-        const CONTAINER_H = 600;
-        const HEADER_H = 55;
-        const MATCH_H = 100;
-        const WINNER_H = 140;
-        const AREA_H = CONTAINER_H - HEADER_H; // 545
+        const CONTAINER_H = 520;
+        const HEADER_H = 50;
+        const MATCH_H = 90;
+        const WINNER_H = 120;
+        const AREA_H = CONTAINER_H - HEADER_H; // 470
         const CONN_W = 60;
 
         // QF positions: evenly distributed in AREA_H
-        // gap = (AREA_H - 4*MATCH_H) / 5 = (545 - 400) / 5 = 29
-        const qfGap = (AREA_H - 4 * MATCH_H) / 5; // 29
+        // gap = (AREA_H - 4*MATCH_H) / 5
+        const qfGap = (AREA_H - 4 * MATCH_H) / 5; // (470-360)/5 = 22
         const qfTops = [
-            qfGap,                                    // 29
-            qfGap + MATCH_H + qfGap,                  // 29 + 100 + 29 = 158
-            qfGap + 2*(MATCH_H + qfGap),              // 29 + 258 = 287
-            qfGap + 3*(MATCH_H + qfGap)               // 29 + 387 = 416
+            qfGap,                                    // 22
+            qfGap + MATCH_H + qfGap,                  // 22 + 90 + 22 = 134
+            qfGap + 2*(MATCH_H + qfGap),              // 22 + 224 = 246
+            qfGap + 3*(MATCH_H + qfGap)               // 22 + 336 = 358
         ];
-        const qfCenters = qfTops.map(t => t + MATCH_H/2); // [79, 208, 337, 466]
+        const qfCenters = qfTops.map(t => t + MATCH_H/2); // [67, 179, 291, 403]
 
         // SF positions: centered between QF pairs
-        // SF1 center = midpoint of QF1 center and QF2 center
         const sfCenters = [
-            (qfCenters[0] + qfCenters[1]) / 2, // (79+208)/2 = 143.5
-            (qfCenters[2] + qfCenters[3]) / 2  // (337+466)/2 = 401.5
+            (qfCenters[0] + qfCenters[1]) / 2, // (67+179)/2 = 123
+            (qfCenters[2] + qfCenters[3]) / 2  // (291+403)/2 = 347
         ];
-        const sfTops = sfCenters.map(c => c - MATCH_H/2); // [93.5, 351.5]
+        const sfTops = sfCenters.map(c => c - MATCH_H/2); // [78, 302]
 
         // GF center = midpoint of SF centers
-        const gfCenter = (sfCenters[0] + sfCenters[1]) / 2; // (143.5+401.5)/2 = 272.5
-        const gfTop = gfCenter - MATCH_H/2; // 222.5
+        const gfCenter = (sfCenters[0] + sfCenters[1]) / 2; // (123+347)/2 = 235
+        const gfTop = gfCenter - MATCH_H/2; // 190
 
         // Winner center = same as GF center
-        const winnerCenter = gfCenter; // 272.5
-        const winnerTop = winnerCenter - WINNER_H/2; // 202.5
+        const winnerCenter = gfCenter; // 235
+        const winnerTop = winnerCenter - WINNER_H/2; // 175
 
         function renderMatchCard(m, top, onclick) {
             const a = getTeam(m.t1), b = getTeam(m.t2);
