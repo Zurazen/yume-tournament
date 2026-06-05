@@ -914,6 +914,86 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        let isAdmin = false;
+        const ADMIN_PASSWORD = 'yume30';
+
+        function adminLogin() {
+            const passInput = document.getElementById('loginPass');
+            const errorDiv = document.getElementById('loginError');
+            const modal = document.getElementById('loginModal');
+            if (!passInput || !modal) return;
+
+            const pass = passInput.value.trim();
+
+            if (pass === ADMIN_PASSWORD) {
+                isAdmin = true;
+                modal.style.display = 'none';
+                const adminBar = document.getElementById('adminBar');
+                if (adminBar) adminBar.classList.add('active');
+                document.body.style.paddingTop = '40px';
+                errorDiv.classList.remove('active');
+                renderBracket();
+                renderTeams();
+                renderSchedule();
+            } else {
+                errorDiv.classList.add('active');
+                passInput.value = '';
+                passInput.focus();
+            }
+        }
+
+        function guestLogin() {
+            isAdmin = false;
+            const modal = document.getElementById('loginModal');
+            const errorDiv = document.getElementById('loginError');
+            if (modal) modal.style.display = 'none';
+            if (errorDiv) errorDiv.classList.remove('active');
+            renderBracket();
+            renderTeams();
+            renderSchedule();
+        }
+
+        function adminLogout() {
+            isAdmin = false;
+            const adminBar = document.getElementById('adminBar');
+            if (adminBar) adminBar.classList.remove('active');
+            document.body.style.paddingTop = '0';
+            renderBracket();
+            renderTeams();
+            renderSchedule();
+        }
+
+        function handleModalClick(e) {
+            if (e.target.id === 'loginModal') {
+                guestLogin();
+            }
+        }
+
+        function setupEventListeners() {
+            const loginBtn = document.querySelector('.login-btn');
+            const guestBtn = document.querySelector('.guest-btn');
+            const logoutBtn = document.querySelector('#adminBar button');
+            const modal = document.getElementById('loginModal');
+            const passInput = document.getElementById('loginPass');
+
+            if (loginBtn) loginBtn.addEventListener('click', adminLogin);
+            if (guestBtn) guestBtn.addEventListener('click', guestLogin);
+            if (logoutBtn) logoutBtn.addEventListener('click', adminLogout);
+            if (modal) modal.addEventListener('click', handleModalClick);
+            if (passInput) {
+                passInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') adminLogin();
+                });
+            }
+        }
+
+        // Run setup when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupEventListeners);
+        } else {
+            setupEventListeners();
+        }
+
         const bracketRef = db.ref('bracket');
 
         let isAdmin = false;
