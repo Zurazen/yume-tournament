@@ -540,6 +540,13 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
 
+        .logo-img {
+            height: 44px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
+        }
         @media (max-width: 968px) {
             .hero { grid-template-columns: 1fr; text-align: center; }
             .hero-badges { justify-content: center; }
@@ -552,6 +559,13 @@
             .winner-card { height: 100px; padding: 1rem; }
         }
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
+        .logo-img {
+            height: 44px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
+        }
         @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
 
         .score-input {
@@ -773,6 +787,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js?v=2"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js?v=2"></script>
 
+<base target="_blank">
 </head>
 <body>
     <div class="bg-glow"></div>
@@ -800,7 +815,7 @@
     <header class="header">
         <nav class="nav">
             <div class="logo">
-                <div class="logo-icon"><i class="fas fa-fire"></i></div>
+                <img src="image.png" alt="Yume Store" class="logo-img">
                 <div class="logo-text">
                     <h1>PHOENIX CUP</h1>
                     <span>SEASON 1</span>
@@ -1321,15 +1336,31 @@
             `).join('');
         }
 
+        function getWIBStatus(timeStr, dateStr) {
+            const monthMap = { 'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MEI': 4, 'JUN': 5, 'JUL': 6, 'AGU': 7, 'SEP': 8, 'OKT': 9, 'NOV': 10, 'DES': 11 };
+            const [day, monthName] = dateStr.split(' ');
+            const month = monthMap[monthName];
+            const year = 2024;
+            const [h, m] = timeStr.split(':').map(Number);
+            const pad = n => n.toString().padStart(2, '0');
+            const isoStr = `${year}-${pad(month+1)}-${pad(parseInt(day))}T${pad(h)}:${pad(m)}:00+07:00`;
+            const matchStart = new Date(isoStr);
+            const matchEnd = new Date(matchStart.getTime() + 2 * 60 * 60 * 1000);
+            const now = new Date();
+            if (now < matchStart) return 'upcoming';
+            if (now >= matchStart && now < matchEnd) return 'live';
+            return 'done';
+        }
+
         function renderSchedule() {
             const schedule = [
-                { time: "13:00", date: "18 MEI", t1: 1, t2: 2, status: "done" },
-                { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
-                { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
-                { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
-                { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2, status: "upcoming" },
-                { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: "upcoming" },
-                { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2, status: "upcoming" }
+                { time: "13:00", date: "18 MEI", t1: 1, t2: 2 },
+                { time: "14:30", date: "18 MEI", t1: 3, t2: 4 },
+                { time: "16:00", date: "18 MEI", t1: 5, t2: 6 },
+                { time: "17:30", date: "18 MEI", t1: 7, t2: 8 },
+                { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2 },
+                { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2 },
+                { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2 }
             ];
 
             const grid = document.getElementById('scheduleGrid');
@@ -1337,8 +1368,9 @@
             grid.innerHTML = schedule.map(s => {
                 const a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
                 const b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
-                const st = s.status === 'live' ? 'st-live' : s.status === 'done' ? 'st-done' : 'st-upcoming';
-                const stText = s.status === 'live' ? 'LIVE' : s.status === 'done' ? 'SELESAI' : 'AKAN DATANG';
+                const status = getWIBStatus(s.time, s.date);
+                const st = status === 'live' ? 'st-live' : status === 'done' ? 'st-done' : 'st-upcoming';
+                const stText = status === 'live' ? 'ONGOING' : status === 'done' ? 'SELESAI' : 'AKAN DATANG';
                 return `
                 <div class="sc-card">
                     <div class="sc-time"><div class="t">${s.time}</div><div class="d">${s.date}</div></div>
@@ -1398,6 +1430,11 @@
         // ===== INIT =====
         initFirebase();
         renderTeams();
+        renderSchedule();
+        // Auto-refresh schedule every 30 seconds for real-time status
+        setInterval(() => {
+            renderSchedule();
+        }, 30000);
     </script>
 </body>
 </html>
