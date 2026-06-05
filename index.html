@@ -743,7 +743,24 @@
             color: var(--primary);
             background: rgba(139,92,246,0.05);
         }
-</style>
+.live-clock {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.9rem;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        @media (max-width: 968px) {
+            .live-clock { display: none; }
+        }
+    </style>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js?v=2"></script>
@@ -789,6 +806,11 @@
                 <li><a href="#jadwal">Jadwal</a></li>
                 <li><a href="#info">Info</a></li>
             </ul>
+            <div class="live-clock" id="liveClock" title="Waktu Real-time (WIB)">
+                <i class="fas fa-clock" style="color: var(--primary);"></i>
+                <span id="clockTime">--:--:--</span>
+                <span id="clockDate" style="font-size: 0.65rem; color: var(--text-muted); margin-left: 4px;">--</span>
+            </div>
             <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
         </nav>
     </header>
@@ -800,7 +822,7 @@
             <div class="hero-badges">
                 <div class="badge"><i class="fas fa-users"></i> 8 TIM</div>
                 <div class="badge"><i class="fas fa-sitemap"></i> SINGLE ELIMINATION</div>
-                <div class="badge"><i class="fas fa-calendar"></i> 18 - 25 MEI 2024</div>
+                <div class="badge"><i class="fas fa-calendar"></i> 18 - 10 JUNI 2026</div>
                 <div class="badge"><i class="fas fa-wifi"></i> ONLINE</div>
             </div>
             <p>Turnamen Mobile Legends: Bang Bang untuk komunitas esports menjadi yang terbaik dan raih kejayaan!</p>
@@ -1058,16 +1080,16 @@
                     // Initialize default bracket if none exists
                     bracket = {
                         qf: [
-                            { id: "QF1", t1: 1, t2: 2, time: "18 MEI - 13:00 WIB", s1: null, s2: null, w: null },
-                            { id: "QF2", t1: 3, t2: 4, time: "18 MEI - 14:30 WIB", s1: null, s2: null, w: null },
-                            { id: "QF3", t1: 5, t2: 6, time: "18 MEI - 16:00 WIB", s1: null, s2: null, w: null },
-                            { id: "QF4", t1: 7, t2: 8, time: "18 MEI - 17:30 WIB", s1: null, s2: null, w: null }
+                            { id: "QF1", t1: 1, t2: 2, time: "5 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
+                            { id: "QF2", t1: 3, t2: 4, time: "5 JUNI - 14:30 WIB", s1: null, s2: null, w: null },
+                            { id: "QF3", t1: 5, t2: 6, time: "5 JUNI - 16:00 WIB", s1: null, s2: null, w: null },
+                            { id: "QF4", t1: 7, t2: 8, time: "5 JUNI - 17:30 WIB", s1: null, s2: null, w: null }
                         ],
                         sf: [
-                            { id: "SF1", t1: null, t2: null, time: "19 MEI - 13:00 WIB", s1: null, s2: null, w: null },
-                            { id: "SF2", t1: null, t2: null, time: "19 MEI - 14:30 WIB", s1: null, s2: null, w: null }
+                            { id: "SF1", t1: null, t2: null, time: "6 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
+                            { id: "SF2", t1: null, t2: null, time: "6 JUNI - 14:30 WIB", s1: null, s2: null, w: null }
                         ],
-                        gf: { id: "GF", t1: null, t2: null, time: "22 MEI - 20:00 WIB", s1: null, s2: null, w: null }
+                        gf: { id: "GF", t1: null, t2: null, time: "8 JUNI - 20:00 WIB", s1: null, s2: null, w: null }
                     };
                     bracketRef.set(bracket);
                 }
@@ -1144,7 +1166,7 @@
             // QF Round
             const qfHTML = `
                 <div class="round-col">
-                    <div class="round-header"><h3>QUARTER FINAL</h3><span>18 MEI 2024</span></div>
+                    <div class="round-header"><h3>QUARTER FINAL</h3><span>5 JUNI 2026</span></div>
                     <div class="match-area">
                         ${bracket.qf.map((m, i) => renderMatchCard(m, qfTops[i], `pickWinner('qf', ${i})`, 'qf', i)).join('')}
                     </div>
@@ -1182,7 +1204,7 @@
             // SF Round
             const sfHTML = `
                 <div class="round-col">
-                    <div class="round-header"><h3>SEMI FINAL</h3><span>19 MEI 2024</span></div>
+                    <div class="round-header"><h3>SEMI FINAL</h3><span>6 JUNI 2026</span></div>
                     <div class="match-area">
                         ${bracket.sf.map((m, i) => renderMatchCard(m, sfTops[i], `pickWinner('sf', ${i})`, 'sf', i)).join('')}
                     </div>
@@ -1211,7 +1233,7 @@
             // GF Round
             const gfHTML = `
                 <div class="round-col">
-                    <div class="round-header"><h3>GRAND FINAL</h3><span>22 MEI 2024</span></div>
+                    <div class="round-header"><h3>GRAND FINAL</h3><span>8 JUNI 2026</span></div>
                     <div class="match-area">
                         ${renderMatchCard(bracket.gf, gfTop, `pickWinner('gf', 0)`, 'gf', 0)}
                     </div>
@@ -1240,7 +1262,7 @@
                             <div class="winner-crown"><i class="fas fa-crown"></i></div>
                             <div class="winner-label">PHOENIX CUP S1</div>
                             <div class="winner-name">${winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD'}</div>
-                            <div class="winner-time">25 MEI 2024</div>
+                            <div class="winner-time">10 JUNI 2026</div>
                         </div>
                     </div>
                 </div>
@@ -1304,21 +1326,22 @@
 
         function renderSchedule() {
             const schedule = [
-                { time: "13:00", date: "18 MEI", t1: 1, t2: 2, status: "done" },
-                { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
-                { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
-                { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
-                { time: "13:00", date: "19 MEI", t1: 1, t2: 3, status: "upcoming" },
-                { time: "14:30", date: "19 MEI", t1: 6, t2: 7, status: "upcoming" },
-                { time: "20:00", date: "22 MEI", t1: null, t2: null, status: "upcoming" }
+                { time: "13:00", date: "5 JUNI", t1: 1, t2: 2, status: "done" },
+                { time: "14:30", date: "5 JUNI", t1: 3, t2: 4, status: "done" },
+                { time: "16:00", date: "5 JUNI", t1: 5, t2: 6, status: "done" },
+                { time: "17:30", date: "5 JUNI", t1: 7, t2: 8, status: "done" },
+                { time: "13:00", date: "6 JUNI", t1: 1, t2: 3, status: "upcoming" },
+                { time: "14:30", date: "6 JUNI", t1: 6, t2: 7, status: "upcoming" },
+                { time: "20:00", date: "8 JUNI", t1: null, t2: null, status: "upcoming" }
             ];
 
             const grid = document.getElementById('scheduleGrid');
             grid.innerHTML = schedule.map(s => {
                 const a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
                 const b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
-                const st = s.status === 'live' ? 'st-live' : s.status === 'done' ? 'st-done' : 'st-upcoming';
-                const stText = s.status === 'live' ? 'LIVE' : s.status === 'done' ? 'SELESAI' : 'AKAN DATANG';
+                const rtStatus = getMatchStatusRealTime(s.date, s.time);
+                const st = rtStatus === 'live' ? 'st-live' : rtStatus === 'done' ? 'st-done' : 'st-upcoming';
+                const stText = rtStatus === 'live' ? 'LIVE' : rtStatus === 'done' ? 'SELESAI' : 'AKAN DATANG';
                 return `
                 <div class="sc-card">
                     <div class="sc-time"><div class="t">${s.time}</div><div class="d">${s.date}</div></div>
