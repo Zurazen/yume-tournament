@@ -547,6 +547,74 @@
             object-fit: contain;
             filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
         }
+        .sc-status-edit {
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px dashed var(--primary);
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .sc-status-edit:hover {
+            background: var(--primary);
+            color: white;
+            border-style: solid;
+        }
+        .sc-status-edit.st-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); border-color: var(--danger); }
+        .sc-status-edit.st-live:hover { background: var(--danger); color: white; }
+        .sc-status-edit.st-done { background: rgba(16, 185, 129, 0.12); color: var(--success); border-color: var(--success); }
+        .sc-status-edit.st-done:hover { background: var(--success); color: white; }
+
+        
+        .sc-status-select {
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--primary);
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 26px;
+        }
+        .sc-status-select:hover {
+            background: var(--primary);
+            color: white;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+        .sc-status-select:focus {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        .sc-status-select option {
+            background: var(--bg-card);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .sc-status-select option[value="live"] {
+            color: var(--danger);
+        }
+        .sc-status-select option[value="done"] {
+            color: var(--success);
+        }
+
         @media (max-width: 968px) {
             .hero { grid-template-columns: 1fr; text-align: center; }
             .hero-badges { justify-content: center; }
@@ -566,6 +634,74 @@
             object-fit: contain;
             filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
         }
+        .sc-status-edit {
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px dashed var(--primary);
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .sc-status-edit:hover {
+            background: var(--primary);
+            color: white;
+            border-style: solid;
+        }
+        .sc-status-edit.st-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); border-color: var(--danger); }
+        .sc-status-edit.st-live:hover { background: var(--danger); color: white; }
+        .sc-status-edit.st-done { background: rgba(16, 185, 129, 0.12); color: var(--success); border-color: var(--success); }
+        .sc-status-edit.st-done:hover { background: var(--success); color: white; }
+
+        
+        .sc-status-select {
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--primary);
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 26px;
+        }
+        .sc-status-select:hover {
+            background: var(--primary);
+            color: white;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+        .sc-status-select:focus {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        .sc-status-select option {
+            background: var(--bg-card);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .sc-status-select option[value="live"] {
+            color: var(--danger);
+        }
+        .sc-status-select option[value="done"] {
+            color: var(--success);
+        }
+
         @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
 
         .score-input {
@@ -803,7 +939,7 @@
             <h2>Admin Login</h2>
             <p>Masukkan password untuk mengubah score pertandingan</p>
             <input type="password" class="login-input" id="loginPass" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()">
-            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;"></span></div>
+            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
             <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
                 <button class="login-btn" onclick="adminLogin()" type="button" style="flex: 1;">Masuk</button>
                 <button class="guest-btn" onclick="guestLogin()" type="button">Lihat sebagai Guest</button>
@@ -1004,6 +1140,7 @@
         let db = null;
         let bracketRef = null;
         let firebaseOnline = false;
+        let scheduleData = null;
 
         // ===== FIREBASE INIT (with fallback) =====
         function initFirebase() {
@@ -1336,41 +1473,44 @@
             `).join('');
         }
 
-        function getWIBStatus(timeStr, dateStr) {
-            const monthMap = { 'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MEI': 4, 'JUN': 5, 'JUL': 6, 'AGU': 7, 'SEP': 8, 'OKT': 9, 'NOV': 10, 'DES': 11 };
-            const [day, monthName] = dateStr.split(' ');
-            const month = monthMap[monthName];
-            const year = 2024;
-            const [h, m] = timeStr.split(':').map(Number);
-            const pad = n => n.toString().padStart(2, '0');
-            const isoStr = `${year}-${pad(month+1)}-${pad(parseInt(day))}T${pad(h)}:${pad(m)}:00+07:00`;
-            const matchStart = new Date(isoStr);
-            const matchEnd = new Date(matchStart.getTime() + 2 * 60 * 60 * 1000);
-            const now = new Date();
-            if (now < matchStart) return 'upcoming';
-            if (now >= matchStart && now < matchEnd) return 'live';
-            return 'done';
-        }
-
         function renderSchedule() {
-            const schedule = [
-                { time: "13:00", date: "18 MEI", t1: 1, t2: 2 },
-                { time: "14:30", date: "18 MEI", t1: 3, t2: 4 },
-                { time: "16:00", date: "18 MEI", t1: 5, t2: 6 },
-                { time: "17:30", date: "18 MEI", t1: 7, t2: 8 },
-                { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2 },
-                { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2 },
-                { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2 }
-            ];
+            if (!scheduleData) {
+                scheduleData = [
+                    { time: "13:00", date: "18 MEI", t1: 1, t2: 2, status: "done" },
+                    { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
+                    { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
+                    { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
+                    { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2, status: "upcoming" },
+                    { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: "upcoming" },
+                    { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2, status: "upcoming" }
+                ];
+            }
+            // Update dynamic team references
+            scheduleData[4].t1 = bracket.sf[0].t1; scheduleData[4].t2 = bracket.sf[0].t2;
+            scheduleData[5].t1 = bracket.sf[1].t1; scheduleData[5].t2 = bracket.sf[1].t2;
+            scheduleData[6].t1 = bracket.gf.t1; scheduleData[6].t2 = bracket.gf.t2;
+            const schedule = scheduleData;
 
             const grid = document.getElementById('scheduleGrid');
             if (!grid) return;
-            grid.innerHTML = schedule.map(s => {
+            grid.innerHTML = schedule.map((s, idx) => {
                 const a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
                 const b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
-                const status = getWIBStatus(s.time, s.date);
-                const st = status === 'live' ? 'st-live' : status === 'done' ? 'st-done' : 'st-upcoming';
-                const stText = status === 'live' ? 'ONGOING' : status === 'done' ? 'SELESAI' : 'AKAN DATANG';
+                const st = s.status === 'live' ? 'st-live' : s.status === 'done' ? 'st-done' : 'st-upcoming';
+                const stText = s.status === 'live' ? 'ONGOING' : s.status === 'done' ? 'SELESAI' : 'AKAN DATANG';
+
+                // Admin gets a dropdown select, guest gets static badge
+                let statusEl;
+                if (isAdmin) {
+                    statusEl = `<select class="sc-status-select" onchange="setScheduleStatus(${idx}, this.value, event)" title="Pilih status pertandingan">
+                        <option value="upcoming" ${s.status === 'upcoming' ? 'selected' : ''}>AKAN DATANG</option>
+                        <option value="live" ${s.status === 'live' ? 'selected' : ''}>ONGOING</option>
+                        <option value="done" ${s.status === 'done' ? 'selected' : ''}>SELESAI</option>
+                    </select>`;
+                } else {
+                    statusEl = `<div class="sc-status ${st}">${stText}</div>`;
+                }
+
                 return `
                 <div class="sc-card">
                     <div class="sc-time"><div class="t">${s.time}</div><div class="d">${s.date}</div></div>
@@ -1385,9 +1525,16 @@
                             <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
                         </div>
                     </div>
-                    <div class="sc-status ${st}">${stText}</div>
+                    ${statusEl}
                 </div>`;
             }).join('');
+        }
+
+        function setScheduleStatus(idx, status, e) {
+            if (e) e.stopPropagation();
+            if (!isAdmin) return;
+            scheduleData[idx].status = status;
+            renderSchedule();
         }
 
         function openModal(id) {
@@ -1431,10 +1578,6 @@
         initFirebase();
         renderTeams();
         renderSchedule();
-        // Auto-refresh schedule every 30 seconds for real-time status
-        setInterval(() => {
-            renderSchedule();
-        }, 30000);
     </script>
 </body>
 </html>
