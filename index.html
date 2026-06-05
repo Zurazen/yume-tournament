@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Phoenix Cup Season 1 - Tournament</title>
+    <title>Yume Store - Phoenix Cup Season 1</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -314,7 +314,7 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            overflow: visible;
+            overflow: visible; /* CHANGED: allow match-tag to overflow */
         }
 
         .match-card:hover {
@@ -334,7 +334,7 @@
             font-weight: 700;
             padding: 2px 10px;
             border-radius: 10px;
-            z-index: 10;
+            z-index: 10; /* INCREASED z-index */
             letter-spacing: 1px;
             white-space: nowrap;
         }
@@ -553,6 +553,8 @@
         }
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
         @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
+    
+
 
         .score-input {
             background: transparent;
@@ -654,7 +656,6 @@
             justify-content: center;
             padding: 1rem;
         }
-        .login-modal.hidden { display: none !important; }
         .login-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -664,7 +665,6 @@
             max-width: 400px;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            position: relative;
         }
         .login-box h2 {
             font-family: 'Orbitron', sans-serif;
@@ -743,64 +743,40 @@
             color: var(--primary);
             background: rgba(139,92,246,0.05);
         }
-        .login-close-x {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        .login-close-x:hover { background: var(--danger); color: white; border-color: var(--danger); }
-        .firebase-status {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.8rem;
-        }
-        .firebase-status.offline { color: #ef4444; }
-        .firebase-status.online { color: #10b981; }
-    </style>
+</style>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js?v=2"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js?v=2"></script>
 
+<base target="_blank">
 </head>
 <body>
-    <div class="bg-glow"></div>
-    <div class="admin-bar" id="adminBar">
+    <div class="bg-glow"></div>    <div class="admin-bar" id="adminBar">
         <span><i class="fas fa-shield-alt"></i> ADMIN MODE - Score Input Aktif</span>
-        <button onclick="adminLogout()" type="button"><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
+        <button ><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
     </div>
 
-    <div class="login-modal" id="loginModal" onclick="if(event.target === this) guestLogin();">
+    <div class="login-modal" id="loginModal" >
         <div class="login-box" onclick="event.stopPropagation()">
-            <button class="login-close-x" onclick="guestLogin()" title="Tutup & Lihat sebagai Guest"><i class="fas fa-times"></i></button>
-            <div class="logo-icon"><i class="fas fa-fire"></i></div>
+            <img src="yume_logo.png" alt="Yume Store" style="width: 44px; height: 44px; border-radius: 12px; object-fit: cover; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);">
             <h2>Admin Login</h2>
             <p>Masukkan password untuk mengubah score pertandingan</p>
-            <input type="password" class="login-input" id="loginPass" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()">
+            <input type="password" class="login-input" id="loginPass" placeholder="Password..." >
             <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
             <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
-                <button class="login-btn" onclick="adminLogin()" type="button" style="flex: 1;">Masuk</button>
-                <button class="guest-btn" onclick="guestLogin()" type="button">Lihat sebagai Guest</button>
+                <button class="login-btn"  type="button" style="flex: 1;">Masuk</button>
+                <button class="guest-btn"  type="button">Lihat sebagai Guest</button>
             </div>
-            <div class="firebase-status" id="firebaseStatus">Menghubungkan ke Firebase...</div>
         </div>
     </div>
+
+
 
     <header class="header">
         <nav class="nav">
             <div class="logo">
-                <div class="logo-icon"><i class="fas fa-fire"></i></div>
+                <img src="yume_logo.png" alt="Yume Store" style="width: 60px; height: 60px; border-radius: 14px; object-fit: cover; margin: 0 auto 1.5rem; display: block; box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);">
                 <div class="logo-text">
                     <h1>PHOENIX CUP</h1>
                     <span>SEASON 1</span>
@@ -924,7 +900,111 @@
     </div>
 
     <script>
-        // ===== DATA =====
+        // Firebase Configuration - REAL CONFIG FROM FIREBASE CONSOLE
+        const firebaseConfig = {
+            apiKey: "AIzaSyClv4xQB48RwQc5UQazz6wP8ttu1M4SmKg",
+            authDomain: "phoenix-cup-s1.firebaseapp.com",
+            databaseURL: "https://phoenix-cup-s1-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "phoenix-cup-s1",
+            storageBucket: "phoenix-cup-s1.firebasestorage.app",
+            messagingSenderId: "1098346610922",
+            appId: "1:1098346610922:web:0f2000413780fe47afd793"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        let isAdmin = false;
+        const ADMIN_PASSWORD = 'yume30';
+
+        function adminLogin() {
+            const passInput = document.getElementById('loginPass');
+            const errorDiv = document.getElementById('loginError');
+            const modal = document.getElementById('loginModal');
+            if (!passInput || !modal) return;
+
+            const pass = passInput.value.trim();
+
+            if (pass === ADMIN_PASSWORD) {
+                isAdmin = true;
+                modal.style.display = 'none';
+                const adminBar = document.getElementById('adminBar');
+                if (adminBar) adminBar.classList.add('active');
+                document.body.style.paddingTop = '40px';
+                errorDiv.classList.remove('active');
+                renderBracket();
+                renderTeams();
+                renderSchedule();
+            } else {
+                errorDiv.classList.add('active');
+                passInput.value = '';
+                passInput.focus();
+            }
+        }
+
+        function guestLogin() {
+            isAdmin = false;
+            const modal = document.getElementById('loginModal');
+            const errorDiv = document.getElementById('loginError');
+            if (modal) modal.style.display = 'none';
+            if (errorDiv) errorDiv.classList.remove('active');
+            renderBracket();
+            renderTeams();
+            renderSchedule();
+        }
+
+        function adminLogout() {
+            isAdmin = false;
+            const adminBar = document.getElementById('adminBar');
+            if (adminBar) adminBar.classList.remove('active');
+            document.body.style.paddingTop = '0';
+            renderBracket();
+            renderTeams();
+            renderSchedule();
+        }
+
+        function handleModalClick(e) {
+            if (e.target.id === 'loginModal') {
+                guestLogin();
+            }
+        }
+
+        function handleModalClick(e) {
+            if (e.target.id === 'loginModal') {
+                guestLogin();
+            }
+        }
+
+        function setupEventListeners() {
+            const loginBtn = document.querySelector('.login-btn');
+            const guestBtn = document.querySelector('.guest-btn');
+            const logoutBtn = document.querySelector('#adminBar button');
+            const modal = document.getElementById('loginModal');
+            const passInput = document.getElementById('loginPass');
+
+            if (loginBtn) loginBtn.addEventListener('click', adminLogin);
+            if (guestBtn) guestBtn.addEventListener('click', guestLogin);
+            if (logoutBtn) logoutBtn.addEventListener('click', adminLogout);
+            if (modal) modal.addEventListener('click', handleModalClick);
+            if (passInput) {
+                passInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') adminLogin();
+                });
+            }
+        }
+
+        // Run setup when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupEventListeners);
+        } else {
+            setupEventListeners();
+        }
+
+        const bracketRef = db.ref('bracket');
+
+        const ADMIN_HASH = 'e3ca144d6c3fc440';
+        let bracket = null; // Will be loaded from Firebase
+
         const teams = [
             { id: 1, name: "Team Alpha", short: "TA", bg: "linear-gradient(135deg, #8b5cf6, #6d28d9)", leader: { name: "Rizky Pratama", wa: "081234567890" }, roster: [
                 { role: "EXP", name: "Rizky Pratama", wa: "081234567890" }, { role: "JUNGLE", name: "Dimas Maulana", wa: "082134567891" },
@@ -968,74 +1048,27 @@
             ]}
         ];
 
-        const defaultBracket = {
-            qf: [
-                { id: "QF1", t1: 1, t2: 2, time: "18 MEI - 13:00 WIB", s1: null, s2: null, w: null },
-                { id: "QF2", t1: 3, t2: 4, time: "18 MEI - 14:30 WIB", s1: null, s2: null, w: null },
-                { id: "QF3", t1: 5, t2: 6, time: "18 MEI - 16:00 WIB", s1: null, s2: null, w: null },
-                { id: "QF4", t1: 7, t2: 8, time: "18 MEI - 17:30 WIB", s1: null, s2: null, w: null }
-            ],
-            sf: [
-                { id: "SF1", t1: null, t2: null, time: "19 MEI - 13:00 WIB", s1: null, s2: null, w: null },
-                { id: "SF2", t1: null, t2: null, time: "19 MEI - 14:30 WIB", s1: null, s2: null, w: null }
-            ],
-            gf: { id: "GF", t1: null, t2: null, time: "22 MEI - 20:00 WIB", s1: null, s2: null, w: null }
-        };
-
-        // ===== STATE =====
-        let isAdmin = false;
-        const ADMIN_PASSWORD = 'yume30';
-        let bracket = JSON.parse(JSON.stringify(defaultBracket));
-        let db = null;
-        let bracketRef = null;
-        let firebaseOnline = false;
-
-        // ===== FIREBASE INIT (with fallback) =====
-        function initFirebase() {
-            const statusEl = document.getElementById('firebaseStatus');
-            try {
-                if (typeof firebase === 'undefined') {
-                    throw new Error('Firebase SDK tidak ter-load. Cek koneksi internet atau ad-blocker.');
-                }
-                const firebaseConfig = {
-                    apiKey: "AIzaSyClv4xQB48RwQc5UQazz6wP8ttu1M4SmKg",
-                    authDomain: "phoenix-cup-s1.firebaseapp.com",
-                    databaseURL: "https://phoenix-cup-s1-default-rtdb.asia-southeast1.firebasedatabase.app",
-                    projectId: "phoenix-cup-s1",
-                    storageBucket: "phoenix-cup-s1.firebasestorage.app",
-                    messagingSenderId: "1098346610922",
-                    appId: "1:1098346610922:web:0f2000413780fe47afd793"
-                };
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-                bracketRef = db.ref('bracket');
-                firebaseOnline = true;
-                if (statusEl) {
-                    statusEl.textContent = 'Terhubung ke Firebase (Online)';
-                    statusEl.className = 'firebase-status online';
-                }
-                loadBracketFromFirebase();
-            } catch (err) {
-                console.warn('Firebase gagal:', err.message);
-                firebaseOnline = false;
-                if (statusEl) {
-                    statusEl.textContent = 'Mode Offline - Data lokal aktif';
-                    statusEl.className = 'firebase-status offline';
-                }
-                // Tetap render pakai data default
-                renderBracket();
-                renderTeams();
-                renderSchedule();
-            }
-        }
-
+        // Load bracket from Firebase (real-time)
         function loadBracketFromFirebase() {
-            if (!bracketRef) return;
             bracketRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
                     bracket = data;
                 } else {
+                    // Initialize default bracket if none exists
+                    bracket = {
+                        qf: [
+                            { id: "QF1", t1: 1, t2: 2, time: "18 MEI - 13:00 WIB", s1: null, s2: null, w: null },
+                            { id: "QF2", t1: 3, t2: 4, time: "18 MEI - 14:30 WIB", s1: null, s2: null, w: null },
+                            { id: "QF3", t1: 5, t2: 6, time: "18 MEI - 16:00 WIB", s1: null, s2: null, w: null },
+                            { id: "QF4", t1: 7, t2: 8, time: "18 MEI - 17:30 WIB", s1: null, s2: null, w: null }
+                        ],
+                        sf: [
+                            { id: "SF1", t1: null, t2: null, time: "19 MEI - 13:00 WIB", s1: null, s2: null, w: null },
+                            { id: "SF2", t1: null, t2: null, time: "19 MEI - 14:30 WIB", s1: null, s2: null, w: null }
+                        ],
+                        gf: { id: "GF", t1: null, t2: null, time: "22 MEI - 20:00 WIB", s1: null, s2: null, w: null }
+                    };
                     bracketRef.set(bracket);
                 }
                 renderBracket();
@@ -1043,89 +1076,40 @@
             });
         }
 
-        function saveBracket() {
-            if (firebaseOnline && bracketRef) {
-                bracketRef.set(bracket);
-            }
-        }
-
-        // ===== ADMIN FUNCTIONS =====
-        function adminLogin() {
-            const passInput = document.getElementById('loginPass');
-            const errorDiv = document.getElementById('loginError');
-            const modal = document.getElementById('loginModal');
-            if (!passInput || !modal) return;
-
-            const pass = passInput.value.trim();
-            if (pass === ADMIN_PASSWORD) {
-                isAdmin = true;
-                modal.classList.add('hidden');
-                const adminBar = document.getElementById('adminBar');
-                if (adminBar) adminBar.classList.add('active');
-                document.body.style.paddingTop = '40px';
-                errorDiv.classList.remove('active');
-                renderBracket();
-                renderTeams();
-                renderSchedule();
-            } else {
-                errorDiv.classList.add('active');
-                passInput.value = '';
-                passInput.focus();
-            }
-        }
-
-        function guestLogin() {
-            isAdmin = false;
-            const modal = document.getElementById('loginModal');
-            const errorDiv = document.getElementById('loginError');
-            if (modal) modal.classList.add('hidden');
-            if (errorDiv) errorDiv.classList.remove('active');
-            document.body.style.paddingTop = '0';
-            renderBracket();
-            renderTeams();
-            renderSchedule();
-        }
-
-        function adminLogout() {
-            isAdmin = false;
-            const adminBar = document.getElementById('adminBar');
-            if (adminBar) adminBar.classList.remove('active');
-            document.body.style.paddingTop = '0';
-            renderBracket();
-            renderTeams();
-            renderSchedule();
-        }
+        function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
 
         // ===== BRACKET LAYOUT MATH =====
         const CONTAINER_H = 520;
         const HEADER_H = 50;
         const MATCH_H = 90;
         const WINNER_H = 120;
-        const AREA_H = CONTAINER_H - HEADER_H;
+        const AREA_H = CONTAINER_H - HEADER_H; // 470
         const CONN_W = 60;
 
-        const qfGap = (AREA_H - 4 * MATCH_H) / 5;
+        // QF positions: evenly distributed in AREA_H
+        const qfGap = (AREA_H - 4 * MATCH_H) / 5; // (470-360)/5 = 22
         const qfTops = [
-            qfGap,
-            qfGap + MATCH_H + qfGap,
-            qfGap + 2*(MATCH_H + qfGap),
-            qfGap + 3*(MATCH_H + qfGap)
+            qfGap,                                    // 22
+            qfGap + MATCH_H + qfGap,                  // 134
+            qfGap + 2*(MATCH_H + qfGap),              // 246
+            qfGap + 3*(MATCH_H + qfGap)               // 358
         ];
-        const qfCenters = qfTops.map(t => t + MATCH_H/2);
+        const qfCenters = qfTops.map(t => t + MATCH_H/2); // [67, 179, 291, 403]
 
+        // SF positions: centered between QF pairs
         const sfCenters = [
-            (qfCenters[0] + qfCenters[1]) / 2,
-            (qfCenters[2] + qfCenters[3]) / 2
+            (qfCenters[0] + qfCenters[1]) / 2, // 123
+            (qfCenters[2] + qfCenters[3]) / 2  // 347
         ];
-        const sfTops = sfCenters.map(c => c - MATCH_H/2);
+        const sfTops = sfCenters.map(c => c - MATCH_H/2); // [78, 302]
 
-        const gfCenter = (sfCenters[0] + sfCenters[1]) / 2;
-        const gfTop = gfCenter - MATCH_H/2;
+        // GF center = midpoint of SF centers
+        const gfCenter = (sfCenters[0] + sfCenters[1]) / 2; // 235
+        const gfTop = gfCenter - MATCH_H/2; // 190
 
-        const winnerCenter = gfCenter;
-        const winnerTop = winnerCenter - WINNER_H/2;
-
-        function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
+        // Winner center = same as GF center
+        const winnerCenter = gfCenter; // 235
+        const winnerTop = winnerCenter - WINNER_H/2; // 175
 
         function renderMatchCard(m, top, onclick, round, idx) {
             const a = getTeam(m.t1), b = getTeam(m.t2);
@@ -1156,8 +1140,8 @@
 
         function renderBracket() {
             const tree = document.getElementById('bracketTree');
-            if (!tree) return;
 
+            // QF Round
             const qfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>QUARTER FINAL</h3><span>18 MEI 2024</span></div>
@@ -1167,22 +1151,27 @@
                 </div>
             `;
 
+            // Connector QF -> SF
             const conn1HTML = `
                 <div class="connector-col">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
                     <div class="match-area">
                         <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
+                            <!-- QF1 -> SF1 -->
                             <line x1="0" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${qfCenters[0]}" class="${bracket.qf[0].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[0].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W}" y2="${sfCenters[0]}" class="${bracket.qf[0].w && bracket.qf[1].w ? 'active' : ''}"/>
 
+                            <!-- QF2 -> SF1 -->
                             <line x1="0" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${qfCenters[1]}" class="${bracket.qf[1].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[1].w ? 'active' : ''}"/>
 
+                            <!-- QF3 -> SF2 -->
                             <line x1="0" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${qfCenters[2]}" class="${bracket.qf[2].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[2].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W}" y2="${sfCenters[1]}" class="${bracket.qf[2].w && bracket.qf[3].w ? 'active' : ''}"/>
 
+                            <!-- QF4 -> SF2 -->
                             <line x1="0" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${qfCenters[3]}" class="${bracket.qf[3].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[3].w ? 'active' : ''}"/>
                         </svg>
@@ -1190,6 +1179,7 @@
                 </div>
             `;
 
+            // SF Round
             const sfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>SEMI FINAL</h3><span>19 MEI 2024</span></div>
@@ -1199,15 +1189,18 @@
                 </div>
             `;
 
+            // Connector SF -> GF
             const conn2HTML = `
                 <div class="connector-col">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
                     <div class="match-area">
                         <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
+                            <!-- SF1 -> GF -->
                             <line x1="0" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.sf[0].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[0].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.sf[0].w && bracket.sf[1].w ? 'active' : ''}"/>
 
+                            <!-- SF2 -> GF -->
                             <line x1="0" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.sf[1].w ? 'active' : ''}"/>
                             <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[1].w ? 'active' : ''}"/>
                         </svg>
@@ -1215,6 +1208,7 @@
                 </div>
             `;
 
+            // GF Round
             const gfHTML = `
                 <div class="round-col">
                     <div class="round-header"><h3>GRAND FINAL</h3><span>22 MEI 2024</span></div>
@@ -1224,6 +1218,7 @@
                 </div>
             `;
 
+            // Connector GF -> Winner
             const conn3HTML = `
                 <div class="connector-col">
                     <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
@@ -1235,6 +1230,7 @@
                 </div>
             `;
 
+            // Winner
             const winner = getTeam(bracket.gf.w);
             const winnerHTML = `
                 <div class="round-col winner-col">
@@ -1279,27 +1275,12 @@
                 bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
             }
 
-            saveBracket();
-            renderBracket();
-        }
-
-        function updateScore(round, idx, team, value) {
-            if (!isAdmin) return;
-            const val = value === '' ? null : parseInt(value);
-            let match;
-            if (round === 'qf') match = bracket.qf[idx];
-            else if (round === 'sf') match = bracket.sf[idx];
-            else match = bracket.gf;
-
-            if (team === 1) match.s1 = val;
-            else match.s2 = val;
-
-            saveBracket();
+            // Save to Firebase
+            bracketRef.set(bracket);
         }
 
         function renderTeams() {
             const grid = document.getElementById('teamsGrid');
-            if (!grid) return;
             grid.innerHTML = teams.map(t => `
                 <div class="team-card" onclick="openModal(${t.id})">
                     <div class="tc-header">
@@ -1327,13 +1308,12 @@
                 { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
                 { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
                 { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
-                { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2, status: "upcoming" },
-                { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: "upcoming" },
-                { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2, status: "upcoming" }
+                { time: "13:00", date: "19 MEI", t1: 1, t2: 3, status: "upcoming" },
+                { time: "14:30", date: "19 MEI", t1: 6, t2: 7, status: "upcoming" },
+                { time: "20:00", date: "22 MEI", t1: null, t2: null, status: "upcoming" }
             ];
 
             const grid = document.getElementById('scheduleGrid');
-            if (!grid) return;
             grid.innerHTML = schedule.map(s => {
                 const a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
                 const b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
@@ -1395,8 +1375,7 @@
             });
         });
 
-        // ===== INIT =====
-        initFirebase();
+        loadBracketFromFirebase();
         renderTeams();
     </script>
 </body>
