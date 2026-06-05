@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>Yume Store - Phoenix Cup Season 1</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -24,9 +21,7 @@
             --danger: #ef4444;
             --success: #10b981;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Poppins', sans-serif;
             background: var(--bg);
@@ -34,424 +29,131 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: 
-                radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
         }
-
         .header {
-            background: rgba(17, 17, 26, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(17, 17, 26, 0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
         }
-
         .nav {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 1400px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .logo { display: flex; align-items: center; gap: 12px; }
         .logo-icon {
-            width: 44px; height: 44px;
-            background: linear-gradient(135deg, var(--primary), #6d28d9);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: white;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            width: 44px; height: 44px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; font-size: 1.4rem; color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); overflow: hidden;
         }
-
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
         .logo-text h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            color: white;
+            font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900;
+            letter-spacing: 1px; color: white;
         }
-
         .logo-text span {
-            font-size: 0.7rem;
-            color: var(--primary);
-            font-weight: 700;
-            letter-spacing: 3px;
+            font-size: 0.7rem; color: var(--primary); font-weight: 700; letter-spacing: 3px;
         }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
         .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s;
-            position: relative;
+            color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s; position: relative;
         }
-
         .nav-links a:hover, .nav-links a.active { color: var(--primary); }
-
         .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary);
-            box-shadow: 0 0 8px var(--primary);
+            content: ''; position: absolute; bottom: -8px; left: 0; width: 100%; height: 2px;
+            background: var(--primary); box-shadow: 0 0 8px var(--primary);
         }
-
+        .live-clock {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 0.4rem 0.9rem; border-radius: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700;
+            color: var(--primary); letter-spacing: 1px;
+        }
+        .live-clock i { color: var(--primary); }
         .hero {
-            max-width: 1400px;
-            margin: 2.5rem auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 3rem;
-            align-items: center;
+            max-width: 1400px; margin: 2.5rem auto; padding: 0 2rem;
+            display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center;
         }
-
         .hero h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.4rem;
-            font-weight: 900;
-            color: white;
-            margin-bottom: 0.3rem;
+            font-family: 'Orbitron', sans-serif; font-size: 2.4rem; font-weight: 900; color: white; margin-bottom: 0.3rem;
         }
-
         .hero .subtitle {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 4px;
-            margin-bottom: 1.5rem;
+            color: var(--primary); font-weight: 700; font-size: 1rem; letter-spacing: 4px; margin-bottom: 1.5rem;
         }
-
-        .hero-badges {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
+        .hero-badges { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--bg-card);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-size: 0.85rem;
-            font-weight: 500;
+            display: flex; align-items: center; gap: 8px; background: var(--bg-card);
+            padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border); font-size: 0.85rem; font-weight: 500;
         }
-
         .badge i { color: var(--primary); font-size: 0.9rem; }
-
-        .hero p {
-            color: var(--text-muted);
-            line-height: 1.7;
-            max-width: 550px;
-            font-size: 0.95rem;
-        }
-
+        .hero p { color: var(--text-muted); line-height: 1.7; max-width: 550px; font-size: 0.95rem; }
         .prize-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2.5rem 3rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 2.5rem 3rem; text-align: center; position: relative; overflow: hidden;
         }
-
         .prize-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, transparent, var(--primary), transparent);
         }
-
-        .prize-icon {
-            font-size: 3.5rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.4));
-        }
-
-        .prize-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 0.5rem;
-        }
-
-        .prize-amount {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-        }
-
+        .prize-icon { font-size: 3.5rem; color: var(--accent); margin-bottom: 1rem; filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.4)); }
+        .prize-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 0.5rem; }
+        .prize-amount { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: var(--primary); text-shadow: 0 0 20px rgba(139, 92, 246, 0.5); }
         .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
+            font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700;
+            margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; color: white;
         }
-
         .section-title i { color: var(--primary); }
-
-        /* ===== BRACKET ===== */
-        .bracket-section {
-            max-width: 1400px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-        }
-
+        .bracket-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
         .bracket-wrapper {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            overflow-x: auto;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; overflow-x: auto;
         }
-
-        .bracket-tree {
-            display: flex;
-            align-items: stretch;
-            min-width: 1100px;
-            height: 520px;
-        }
-
-        .round-col {
-            display: flex;
-            flex-direction: column;
-            width: 190px;
-            height: 100%;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .connector-col {
-            width: 60px;
-            height: 100%;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .winner-col {
-            width: 170px;
-        }
-
-        .round-header {
-            text-align: center;
-            height: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .round-header h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            color: var(--primary);
-            letter-spacing: 2px;
-        }
-
-        .round-header span {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-        }
-
-        .match-area {
-            flex: 1;
-            position: relative;
-            overflow: visible;
-        }
-
+        .bracket-tree { display: flex; align-items: stretch; min-width: 1100px; height: 520px; }
+        .round-col { display: flex; flex-direction: column; width: 190px; height: 100%; flex-shrink: 0; position: relative; }
+        .connector-col { width: 60px; height: 100%; flex-shrink: 0; position: relative; }
+        .winner-col { width: 170px; }
+        .round-header { text-align: center; height: 50px; display: flex; flex-direction: column; justify-content: center; flex-shrink: 0; }
+        .round-header h3 { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--primary); letter-spacing: 2px; }
+        .round-header span { font-size: 0.65rem; color: var(--text-muted); }
+        .match-area { flex: 1; position: relative; overflow: visible; }
         .match-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            width: 100%;
-            height: 90px;
-            position: absolute;
-            left: 0;
-            transition: all 0.3s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            overflow: visible; /* CHANGED: allow match-tag to overflow */
+            background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 100%; height: 90px;
+            position: absolute; left: 0; transition: all 0.3s; cursor: pointer; display: flex; flex-direction: column; overflow: visible;
         }
-
-        .match-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.1);
-        }
-
+        .match-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(139, 92, 246, 0.1); }
         .match-tag {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 10px;
-            z-index: 10; /* INCREASED z-index */
-            letter-spacing: 1px;
-            white-space: nowrap;
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white;
+            font-size: 0.65rem; font-weight: 700; padding: 2px 10px; border-radius: 10px; z-index: 10; letter-spacing: 1px; white-space: nowrap;
         }
-
-        .team-row {
-            display: flex;
-            align-items: center;
-            padding: 0.45rem 1rem;
-            gap: 10px;
-            border-bottom: 1px solid var(--border);
-            transition: all 0.2s;
-            flex: 1;
-        }
-
+        .team-row { display: flex; align-items: center; padding: 0.45rem 1rem; gap: 10px; border-bottom: 1px solid var(--border); transition: all 0.2s; flex: 1; }
         .team-row:last-child { border-bottom: none; }
         .team-row.winner { background: rgba(139, 92, 246, 0.1); }
         .team-row.winner .team-n { color: var(--primary); font-weight: 700; }
-
         .team-logo-sm {
-            width: 28px; height: 28px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
+            width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; color: white; flex-shrink: 0;
         }
-
         .team-n { flex: 1; font-weight: 500; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .team-s {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            min-width: 20px;
-            text-align: center;
+            font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--text-muted); font-size: 0.85rem; min-width: 20px; text-align: center;
         }
-
-        .match-time {
-            text-align: center;
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            padding: 0.2rem;
-            background: rgba(139, 92, 246, 0.05);
-            border-top: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-
-        /* ===== SVG CONNECTORS ===== */
-        .connector-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            z-index: 1;
-        }
-
-        .connector-svg line {
-            stroke: var(--line);
-            stroke-width: 2;
-            fill: none;
-        }
-
-        .connector-svg line.active {
-            stroke: var(--line-active);
-            filter: drop-shadow(0 0 3px var(--line-active));
-        }
-
-        /* Winner card */
+        .match-time { text-align: center; font-size: 0.6rem; color: var(--text-muted); padding: 0.2rem; background: rgba(139, 92, 246, 0.05); border-top: 1px solid var(--border); flex-shrink: 0; }
+        .connector-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; z-index: 1; }
+        .connector-svg line { stroke: var(--line); stroke-width: 2; fill: none; }
+        .connector-svg line.active { stroke: var(--line-active); filter: drop-shadow(0 0 3px var(--line-active)); }
         .winner-card {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(167, 139, 250, 0.1));
-            border: 2px solid var(--primary);
-            border-radius: 16px;
-            padding: 1.2rem;
-            text-align: center;
-            width: 100%;
-            height: 120px;
-            position: absolute;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 0.3rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(167, 139, 250, 0.1)); border: 2px solid var(--primary);
+            border-radius: 16px; padding: 1.2rem; text-align: center; width: 100%; height: 120px; position: absolute; left: 0;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.3rem;
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
         }
-
-        .winner-crown {
-            font-size: 2rem;
-            color: #fbbf24;
-            filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
-        }
-
-        .winner-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
-            color: var(--primary);
-            letter-spacing: 3px;
-        }
-
-        .winner-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 900;
-            color: white;
-        }
-
-        .winner-time {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-        }
-
-        /* Rest of styles */
+        .winner-crown { font-size: 2rem; color: #fbbf24; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5)); }
+        .winner-label { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; color: var(--primary); letter-spacing: 3px; }
+        .winner-name { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 900; color: white; }
+        .winner-time { font-size: 0.65rem; color: var(--text-muted); }
         .teams-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
         .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
         .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
@@ -468,7 +170,6 @@
         .tc-stat .l { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
         .tc-btn { width: 100%; margin-top: 1rem; padding: 0.6rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--border); color: var(--primary); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .tc-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-
         .schedule-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
         .schedule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
         .sc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
@@ -484,7 +185,6 @@
         .st-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); animation: blink 1.5s infinite; }
         .st-done { background: rgba(16, 185, 129, 0.12); color: var(--success); }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
         .info-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem; }
         .info-card h3 { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; }
@@ -495,7 +195,6 @@
         .info-row .v { font-weight: 600; }
         .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-top: 0.5rem; }
         .partner-item { background: var(--bg); padding: 0.8rem; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); border: 1px solid var(--border); }
-
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem; }
         .modal-overlay.active { display: flex; }
         .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease; }
@@ -528,23 +227,18 @@
         .role-mid { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
         .role-gold { background: rgba(234, 179, 8, 0.12); color: #eab308; }
         .role-roam { background: rgba(139, 92, 246, 0.12); color: #8b5cf6; }
-        .wa-link { color: #25d366; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 500; transition: all 0.3s; }
-        .wa-link:hover { color: #128c7e; text-decoration: underline; }
-
         .footer { background: var(--bg-card); border-top: 1px solid var(--border); margin-top: 4rem; padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
         .footer-social { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
         .footer-social a { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-decoration: none; transition: all 0.3s; border: 1px solid var(--border); }
         .footer-social a:hover { background: var(--primary); color: white; border-color: var(--primary); }
-
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
-
         @media (max-width: 968px) {
             .hero { grid-template-columns: 1fr; text-align: center; }
             .hero-badges { justify-content: center; }
             .info-section { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
+            .nav-links, .live-clock { display: none; }
             .bracket-tree { min-width: 900px; height: 440px; }
             .match-card { height: 80px; }
             .team-row { padding: 0.35rem 0.8rem; }
@@ -553,247 +247,78 @@
         }
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
         @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
-    
-
-
-        .score-input {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.85rem;
-            width: 30px;
-            text-align: center;
-            cursor: default;
-            outline: none;
-            padding: 0;
-        }
-        .score-input.admin-mode {
-            background: rgba(139,92,246,0.15);
-            border: 1px solid var(--primary);
-            border-radius: 6px;
-            color: var(--primary);
-            cursor: text;
-            padding: 0.15rem 0.3rem;
-        }
-        .score-input.admin-mode:focus {
-            box-shadow: 0 0 0 3px rgba(139,92,246,0.2);
-        }
-        .score-input::-webkit-inner-spin-button,
-        .score-input::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .score-input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        .match-card.admin-mode {
-            border-color: var(--border-hover);
-        }
-        .match-card.admin-mode:hover {
-            border-color: var(--primary);
-            box-shadow: 0 5px 20px rgba(139,92,246,0.15);
-        }
-        .match-card .edit-hint {
-            display: none;
-            position: absolute;
-            bottom: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.6rem;
-            color: var(--primary);
-            white-space: nowrap;
-            background: var(--bg-card);
-            padding: 2px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-        .match-card.admin-mode .edit-hint {
-            display: block;
-        }
-
+        .score-input { background: transparent; border: none; color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85rem; width: 30px; text-align: center; cursor: default; outline: none; padding: 0; }
+        .score-input.admin-mode { background: rgba(139,92,246,0.15); border: 1px solid var(--primary); border-radius: 6px; color: var(--primary); cursor: text; padding: 0.15rem 0.3rem; }
+        .score-input.admin-mode:focus { box-shadow: 0 0 0 3px rgba(139,92,246,0.2); }
+        .score-input::-webkit-inner-spin-button, .score-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .score-input[type=number] { -moz-appearance: textfield; }
+        .match-card.admin-mode { border-color: var(--border-hover); }
+        .match-card.admin-mode:hover { border-color: var(--primary); box-shadow: 0 5px 20px rgba(139,92,246,0.15); }
+        .match-card .edit-hint { display: none; position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: var(--primary); white-space: nowrap; background: var(--bg-card); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); }
+        .match-card.admin-mode .edit-hint { display: block; }
         .admin-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, var(--primary), #6d28d9);
-            color: white;
-            padding: 0.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 9999;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transform: translateY(-100%);
-            transition: transform 0.3s;
+            position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, var(--primary), #6d28d9); color: white;
+            padding: 0.5rem 2rem; display: flex; justify-content: space-between; align-items: center; z-index: 9999;
+            font-size: 0.85rem; font-weight: 600; transform: translateY(-100%); transition: transform 0.3s;
         }
         .admin-bar.active { transform: translateY(0); }
-        .admin-bar button {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: all 0.3s;
-        }
+        .admin-bar button { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
         .admin-bar button:hover { background: rgba(255,255,255,0.3); }
-
-        .login-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(12px);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
+        .login-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(12px); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .login-modal.hidden { display: none !important; }
         .login-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2.5rem;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem;
+            width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative;
         }
-        .login-box h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-        .login-box p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-        }
-        .login-box .logo-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 1.5rem;
-            font-size: 1.8rem;
-        }
-        .login-input {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            font-size: 1rem;
-            font-family: 'Poppins', sans-serif;
-            margin-bottom: 1rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-        .login-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
-        }
-        .login-btn {
-            width: 100%;
-            padding: 0.9rem;
-            background: linear-gradient(135deg, var(--primary), #6d28d9);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-        }
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(139,92,246,0.4);
-        }
-        .login-error {
-            color: var(--danger);
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
+        .login-box h2 { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: white; }
+        .login-box p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .login-box .logo-icon { width: 60px; height: 60px; margin: 0 auto 1.5rem; font-size: 1.8rem; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(139, 92, 246, 0.4); }
+        .login-box .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .login-input { width: 100%; padding: 0.9rem 1.2rem; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1rem; font-family: 'Poppins', sans-serif; margin-bottom: 1rem; outline: none; transition: all 0.3s; }
+        .login-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,92,246,0.1); }
+        .login-btn { width: 100%; padding: 0.9rem; background: linear-gradient(135deg, var(--primary), #6d28d9); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; font-family: 'Poppins', sans-serif; }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(139,92,246,0.4); }
+        .login-error { color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; display: none; }
         .login-error.active { display: block; }
-
-        .guest-btn {
-            padding: 0.9rem 1.2rem;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            white-space: nowrap;
-        }
-        .guest-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: rgba(139,92,246,0.05);
-        }
-.live-clock {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 0.4rem 0.9rem;
-            border-radius: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: 1px;
-        }
-        @media (max-width: 968px) {
-            .live-clock { display: none; }
-        }
+        .guest-btn { padding: 0.9rem 1.2rem; background: transparent; border: 1px solid var(--border); border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; font-family: 'Poppins', sans-serif; white-space: nowrap; }
+        .guest-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(139,92,246,0.05); }
+        .login-close-x { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .login-close-x:hover { background: var(--danger); color: white; border-color: var(--danger); }
+        .firebase-status { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.8rem; }
+        .firebase-status.offline { color: #ef4444; }
+        .firebase-status.online { color: #10b981; }
     </style>
-
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js?v=2"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js?v=2"></script>
-
 <base target="_blank">
 </head>
 <body>
-    <div class="bg-glow"></div>    <div class="admin-bar" id="adminBar">
+    <div class="bg-glow"></div>
+    <div class="admin-bar" id="adminBar">
         <span><i class="fas fa-shield-alt"></i> ADMIN MODE - Score Input Aktif</span>
-        <button ><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
+        <button onclick="adminLogout()" type="button"><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
     </div>
 
-    <div class="login-modal" id="loginModal" >
+    <div class="login-modal" id="loginModal" onclick="if(event.target===this)guestLogin();">
         <div class="login-box" onclick="event.stopPropagation()">
-            <img src="yume_logo.png" alt="Yume Store" style="width: 44px; height: 44px; border-radius: 12px; object-fit: cover; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);">
+            <button class="login-close-x" onclick="guestLogin()" title="Tutup & Lihat sebagai Guest"><i class="fas fa-times"></i></button>
+            <div class="logo-icon"><img src="yume_logo.png" alt="Yume Store"></div>
             <h2>Admin Login</h2>
             <p>Masukkan password untuk mengubah score pertandingan</p>
-            <input type="password" class="login-input" id="loginPass" placeholder="Password..." >
+            <input type="password" class="login-input" id="loginPass" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()">
             <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
             <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
-                <button class="login-btn"  type="button" style="flex: 1;">Masuk</button>
-                <button class="guest-btn"  type="button">Lihat sebagai Guest</button>
+                <button class="login-btn" onclick="adminLogin()" type="button" style="flex: 1;">Masuk</button>
+                <button class="guest-btn" onclick="guestLogin()" type="button">Lihat sebagai Guest</button>
             </div>
+            <div class="firebase-status" id="firebaseStatus">Menghubungkan ke Firebase...</div>
         </div>
     </div>
-
-
 
     <header class="header">
         <nav class="nav">
             <div class="logo">
-                <img src="yume_logo.png" alt="Yume Store" style="width: 60px; height: 60px; border-radius: 14px; object-fit: cover; margin: 0 auto 1.5rem; display: block; box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);">
+                <div class="logo-icon"><img src="yume_logo.png" alt="Yume Store"></div>
                 <div class="logo-text">
                     <h1>PHOENIX CUP</h1>
                     <span>SEASON 1</span>
@@ -806,9 +331,9 @@
                 <li><a href="#jadwal">Jadwal</a></li>
                 <li><a href="#info">Info</a></li>
             </ul>
-            <div class="live-clock" id="liveClock" title="Waktu Real-time (WIB)">
-                <i class="fas fa-clock" style="color: var(--primary);"></i>
-                <span id="clockTime">--:--:--</span>
+            <div class="live-clock" id="liveClock">
+                <i class="fas fa-clock"></i>
+                <span id="clockTime">--:--:-- WIB</span>
                 <span id="clockDate" style="font-size: 0.65rem; color: var(--text-muted); margin-left: 4px;">--</span>
             </div>
             <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
@@ -822,7 +347,7 @@
             <div class="hero-badges">
                 <div class="badge"><i class="fas fa-users"></i> 8 TIM</div>
                 <div class="badge"><i class="fas fa-sitemap"></i> SINGLE ELIMINATION</div>
-                <div class="badge"><i class="fas fa-calendar"></i> 18 - 10 JUNI 2026</div>
+                <div class="badge"><i class="fas fa-calendar"></i> 5 - 10 JUNI 2026</div>
                 <div class="badge"><i class="fas fa-wifi"></i> ONLINE</div>
             </div>
             <p>Turnamen Mobile Legends: Bang Bang untuk komunitas esports menjadi yang terbaik dan raih kejayaan!</p>
@@ -876,7 +401,7 @@
     </section>
 
     <footer class="footer">
-        <p> 2024 Phoenix Cup. All Rights Reserved.</p>
+        <p> 2026 Phoenix Cup. All Rights Reserved.</p>
         <div class="footer-social">
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-youtube"></i></a>
@@ -884,7 +409,7 @@
         </div>
     </footer>
 
-    <div class="modal-overlay" id="rosterModal">
+    <div class="modal-overlay" id="rosterModal" onclick="if(event.target===this)closeModal();">
         <div class="modal">
             <div class="modal-header">
                 <div class="modal-team">
@@ -922,386 +447,371 @@
     </div>
 
     <script>
-        // ===== DATA =====
-        const teams = [
-            { id: 1, name: "Team Alpha", short: "TA", bg: "linear-gradient(135deg, #8b5cf6, #6d28d9)", leader: { name: "Rizky Pratama", wa: "081234567890" }, roster: [
-                { role: "EXP", name: "Rizky Pratama", wa: "081234567890" }, { role: "JUNGLE", name: "Dimas Maulana", wa: "082134567891" },
-                { role: "MID", name: "Fajar Ramadhan", wa: "083134567892" }, { role: "GOLD", name: "Andi Setiawan", wa: "084134567893" },
-                { role: "ROAM", name: "Wahyu Aji", wa: "085134567894" }
-            ]},
-            { id: 2, name: "Team Bravo", short: "TB", bg: "linear-gradient(135deg, #ef4444, #b91c1c)", leader: { name: "Budi Santoso", wa: "081234567891" }, roster: [
-                { role: "EXP", name: "Budi Santoso", wa: "081234567891" }, { role: "JUNGLE", name: "Agus Wijaya", wa: "082234567892" },
-                { role: "MID", name: "Citra Lestari", wa: "083234567893" }, { role: "GOLD", name: "Dedi Kurniawan", wa: "084234567894" },
-                { role: "ROAM", name: "Eka Putri", wa: "085234567895" }
-            ]},
-            { id: 3, name: "Team Charlie", short: "TC", bg: "linear-gradient(135deg, #f59e0b, #b45309)", leader: { name: "Candra Wibowo", wa: "081234567892" }, roster: [
-                { role: "EXP", name: "Candra Wibowo", wa: "081234567892" }, { role: "JUNGLE", name: "Hendra Gunawan", wa: "082334567893" },
-                { role: "MID", name: "Indah Permata", wa: "083334567894" }, { role: "GOLD", name: "Joko Susilo", wa: "084334567895" },
-                { role: "ROAM", name: "Kartika Sari", wa: "085334567896" }
-            ]},
-            { id: 4, name: "Team Delta", short: "TD", bg: "linear-gradient(135deg, #3b82f6, #1d4ed8)", leader: { name: "Dani Firmansyah", wa: "081234567893" }, roster: [
-                { role: "EXP", name: "Dani Firmansyah", wa: "081234567893" }, { role: "JUNGLE", name: "Lina Marlina", wa: "082434567894" },
-                { role: "MID", name: "Maman Abdurahman", wa: "083434567895" }, { role: "GOLD", name: "Nina Agustina", wa: "084434567896" },
-                { role: "ROAM", name: "Oki Setiana", wa: "085434567897" }
-            ]},
-            { id: 5, name: "Team Echo", short: "TE", bg: "linear-gradient(135deg, #10b981, #047857)", leader: { name: "Eko Prasetyo", wa: "081234567894" }, roster: [
-                { role: "EXP", name: "Eko Prasetyo", wa: "081234567894" }, { role: "JUNGLE", name: "Panca Dewa", wa: "082534567895" },
-                { role: "MID", name: "Qori Andini", wa: "083534567896" }, { role: "GOLD", name: "Rudi Hartono", wa: "084534567897" },
-                { role: "ROAM", name: "Sari Melati", wa: "085534567898" }
-            ]},
-            { id: 6, name: "Team Foxtrot", short: "TF", bg: "linear-gradient(135deg, #ec4899, #be185d)", leader: { name: "Fajar Nugroho", wa: "081234567895" }, roster: [
-                { role: "EXP", name: "Fajar Nugroho", wa: "081234567895" }, { role: "JUNGLE", name: "Tina Toon", wa: "082634567896" },
-                { role: "MID", name: "Udin Sedunia", wa: "083634567897" }, { role: "GOLD", name: "Vina Panduwinata", wa: "084634567898" },
-                { role: "ROAM", name: "Wawan S", wa: "085634567899" }
-            ]},
-            { id: 7, name: "Team Gamma", short: "TG", bg: "linear-gradient(135deg, #6366f1, #4338ca)", leader: { name: "Gatot Kaca", wa: "081234567896" }, roster: [
-                { role: "EXP", name: "Gatot Kaca", wa: "081234567896" }, { role: "JUNGLE", name: "Xena Warrior", wa: "082734567897" },
-                { role: "MID", name: "Yanto K", wa: "083734567898" }, { role: "GOLD", name: "Zara Larsson", wa: "084734567899" },
-                { role: "ROAM", name: "Asep S", wa: "085734567890" }
-            ]},
-            { id: 8, name: "Team Hotel", short: "TH", bg: "linear-gradient(135deg, #14b8a6, #0f766e)", leader: { name: "Herman J", wa: "081234567897" }, roster: [
-                { role: "EXP", name: "Herman J", wa: "081234567897" }, { role: "JUNGLE", name: "Bambang P", wa: "082834567898" },
-                { role: "MID", name: "Cici P", wa: "083834567899" }, { role: "GOLD", name: "Dodo S", wa: "084834567890" },
-                { role: "ROAM", name: "Euis N", wa: "085834567891" }
-            ]}
-        ];
+    // ===== DATA =====
+    const teams = [
+        { id: 1, name: "Team Alpha", short: "TA", bg: "linear-gradient(135deg, #8b5cf6, #6d28d9)", leader: { name: "Rizky Pratama", wa: "081234567890" }, roster: [
+            { role: "EXP", name: "Rizky Pratama", wa: "081234567890" }, { role: "JUNGLE", name: "Dimas Maulana", wa: "082134567891" },
+            { role: "MID", name: "Fajar Ramadhan", wa: "083134567892" }, { role: "GOLD", name: "Andi Setiawan", wa: "084134567893" },
+            { role: "ROAM", name: "Wahyu Aji", wa: "085134567894" }
+        ]},
+        { id: 2, name: "Team Bravo", short: "TB", bg: "linear-gradient(135deg, #ef4444, #b91c1c)", leader: { name: "Budi Santoso", wa: "081234567891" }, roster: [
+            { role: "EXP", name: "Budi Santoso", wa: "081234567891" }, { role: "JUNGLE", name: "Agus Wijaya", wa: "082234567892" },
+            { role: "MID", name: "Citra Lestari", wa: "083234567893" }, { role: "GOLD", name: "Dedi Kurniawan", wa: "084234567894" },
+            { role: "ROAM", name: "Eka Putri", wa: "085234567895" }
+        ]},
+        { id: 3, name: "Team Charlie", short: "TC", bg: "linear-gradient(135deg, #f59e0b, #b45309)", leader: { name: "Candra Wibowo", wa: "081234567892" }, roster: [
+            { role: "EXP", name: "Candra Wibowo", wa: "081234567892" }, { role: "JUNGLE", name: "Hendra Gunawan", wa: "082334567893" },
+            { role: "MID", name: "Indah Permata", wa: "083334567894" }, { role: "GOLD", name: "Joko Susilo", wa: "084334567895" },
+            { role: "ROAM", name: "Kartika Sari", wa: "085334567896" }
+        ]},
+        { id: 4, name: "Team Delta", short: "TD", bg: "linear-gradient(135deg, #3b82f6, #1d4ed8)", leader: { name: "Dani Firmansyah", wa: "081234567893" }, roster: [
+            { role: "EXP", name: "Dani Firmansyah", wa: "081234567893" }, { role: "JUNGLE", name: "Lina Marlina", wa: "082434567894" },
+            { role: "MID", name: "Maman Abdurahman", wa: "083434567895" }, { role: "GOLD", name: "Nina Agustina", wa: "084434567896" },
+            { role: "ROAM", name: "Oki Setiana", wa: "085434567897" }
+        ]},
+        { id: 5, name: "Team Echo", short: "TE", bg: "linear-gradient(135deg, #10b981, #047857)", leader: { name: "Eko Prasetyo", wa: "081234567894" }, roster: [
+            { role: "EXP", name: "Eko Prasetyo", wa: "081234567894" }, { role: "JUNGLE", name: "Panca Dewa", wa: "082534567895" },
+            { role: "MID", name: "Qori Andini", wa: "083534567896" }, { role: "GOLD", name: "Rudi Hartono", wa: "084534567897" },
+            { role: "ROAM", name: "Sari Melati", wa: "085534567898" }
+        ]},
+        { id: 6, name: "Team Foxtrot", short: "TF", bg: "linear-gradient(135deg, #ec4899, #be185d)", leader: { name: "Fajar Nugroho", wa: "081234567895" }, roster: [
+            { role: "EXP", name: "Fajar Nugroho", wa: "081234567895" }, { role: "JUNGLE", name: "Tina Toon", wa: "082634567896" },
+            { role: "MID", name: "Udin Sedunia", wa: "083634567897" }, { role: "GOLD", name: "Vina Panduwinata", wa: "084634567898" },
+            { role: "ROAM", name: "Wawan S", wa: "085634567899" }
+        ]},
+        { id: 7, name: "Team Gamma", short: "TG", bg: "linear-gradient(135deg, #6366f1, #4338ca)", leader: { name: "Gatot Kaca", wa: "081234567896" }, roster: [
+            { role: "EXP", name: "Gatot Kaca", wa: "081234567896" }, { role: "JUNGLE", name: "Xena Warrior", wa: "082734567897" },
+            { role: "MID", name: "Yanto K", wa: "083734567898" }, { role: "GOLD", name: "Zara Larsson", wa: "084734567899" },
+            { role: "ROAM", name: "Asep S", wa: "085734567890" }
+        ]},
+        { id: 8, name: "Team Hotel", short: "TH", bg: "linear-gradient(135deg, #14b8a6, #0f766e)", leader: { name: "Herman J", wa: "081234567897" }, roster: [
+            { role: "EXP", name: "Herman J", wa: "081234567897" }, { role: "JUNGLE", name: "Bambang P", wa: "082834567898" },
+            { role: "MID", name: "Cici P", wa: "083834567899" }, { role: "GOLD", name: "Dodo S", wa: "084834567890" },
+            { role: "ROAM", name: "Euis N", wa: "085834567891" }
+        ]}
+    ];
 
-        const defaultBracket = {
-            qf: [
-                { id: "QF1", t1: 1, t2: 2, time: "5 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
-                { id: "QF2", t1: 3, t2: 4, time: "5 JUNI - 14:30 WIB", s1: null, s2: null, w: null },
-                { id: "QF3", t1: 5, t2: 6, time: "5 JUNI - 16:00 WIB", s1: null, s2: null, w: null },
-                { id: "QF4", t1: 7, t2: 8, time: "5 JUNI - 17:30 WIB", s1: null, s2: null, w: null }
-            ],
-            sf: [
-                { id: "SF1", t1: null, t2: null, time: "6 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
-                { id: "SF2", t1: null, t2: null, time: "6 JUNI - 14:30 WIB", s1: null, s2: null, w: null }
-            ],
-            gf: { id: "GF", t1: null, t2: null, time: "8 JUNI - 20:00 WIB", s1: null, s2: null, w: null }
-        };
+    const defaultBracket = {
+        qf: [
+            { id: "QF1", t1: 1, t2: 2, time: "5 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
+            { id: "QF2", t1: 3, t2: 4, time: "5 JUNI - 14:30 WIB", s1: null, s2: null, w: null },
+            { id: "QF3", t1: 5, t2: 6, time: "5 JUNI - 16:00 WIB", s1: null, s2: null, w: null },
+            { id: "QF4", t1: 7, t2: 8, time: "5 JUNI - 17:30 WIB", s1: null, s2: null, w: null }
+        ],
+        sf: [
+            { id: "SF1", t1: null, t2: null, time: "6 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
+            { id: "SF2", t1: null, t2: null, time: "6 JUNI - 14:30 WIB", s1: null, s2: null, w: null }
+        ],
+        gf: { id: "GF", t1: null, t2: null, time: "8 JUNI - 20:00 WIB", s1: null, s2: null, w: null }
+    };
 
-        // ===== STATE =====
-        let isAdmin = false;
-        const ADMIN_PASSWORD = 'yume30';
-        let bracket = JSON.parse(JSON.stringify(defaultBracket));
-        let db = null;
-        let bracketRef = null;
-        let firebaseOnline = false;
+    let isAdmin = false;
+    const ADMIN_PASSWORD = 'yume30';
+    let bracket = JSON.parse(JSON.stringify(defaultBracket));
+    let db = null, bracketRef = null, firebaseOnline = false;
 
-        // ===== REAL-TIME HELPERS =====
-        function getWIBDate() {
-            return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-        }
+    function getWIBDate() {
+        return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+    }
 
-        function parseMatchDateTime(dateStr, timeStr) {
-            const monthMap = { 'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MEI': 4, 'JUN': 5, 'JUL': 6, 'AGU': 7, 'SEP': 8, 'OKT': 9, 'NOV': 10, 'DES': 11 };
-            const dp = dateStr.trim().split(/\s+/);
-            const day = parseInt(dp[0]);
-            const month = monthMap[(dp[1] || 'JUN').toUpperCase()] ?? 5;
-            const year = dp[2] ? parseInt(dp[2]) : new Date().getFullYear();
-            const tp = timeStr.trim().split(':');
-            const hour = parseInt(tp[0]);
-            const minute = parseInt(tp[1]);
-            return new Date(year, month, day, hour, minute, 0);
-        }
+    function parseMatchDateTime(dateStr, timeStr) {
+        const monthMap = { 'JAN':0,'FEB':1,'MAR':2,'APR':3,'MEI':4,'JUN':5,'JUL':6,'AGU':7,'SEP':8,'OKT':9,'NOV':10,'DES':11 };
+        var dp = dateStr.trim().split(/\s+/);
+        var day = parseInt(dp[0]);
+        var month = monthMap[(dp[1]||'JUN').toUpperCase()] || 5;
+        var year = dp[2] ? parseInt(dp[2]) : new Date().getFullYear();
+        var tp = timeStr.trim().split(':');
+        var hour = parseInt(tp[0]);
+        var minute = parseInt(tp[1]);
+        return new Date(year, month, day, hour, minute, 0);
+    }
 
-        function getMatchStatusRealTime(dateStr, timeStr) {
-            const now = getWIBDate();
-            const matchTime = parseMatchDateTime(dateStr, timeStr);
-            const diffMs = now.getTime() - matchTime.getTime();
-            const diffHours = diffMs / (1000 * 60 * 60);
-            if (diffHours < -1) return 'upcoming';
-            if (diffHours >= -1 && diffHours <= 2) return 'live';
-            return 'done';
-        }
+    function getMatchStatusRealTime(dateStr, timeStr) {
+        var now = getWIBDate();
+        var matchTime = parseMatchDateTime(dateStr, timeStr);
+        var diffMs = now.getTime() - matchTime.getTime();
+        var diffHours = diffMs / (1000 * 60 * 60);
+        if (diffHours < -1) return 'upcoming';
+        if (diffHours >= -1 && diffHours <= 2) return 'live';
+        return 'done';
+    }
 
-        // ===== LIVE CLOCK =====
-        function updateLiveClock() {
-            const now = getWIBDate();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-            const d = String(now.getDate()).padStart(2, '0');
-            const mo = ['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV','DES'][now.getMonth()];
-            const y = now.getFullYear();
-            const clockTime = document.getElementById('clockTime');
-            const clockDate = document.getElementById('clockDate');
-            if (clockTime) clockTime.textContent = h + ':' + m + ':' + s + ' WIB';
-            if (clockDate) clockDate.textContent = d + ' ' + mo + ' ' + y;
-        }
+    function updateLiveClock() {
+        try {
+            var now = getWIBDate();
+            var h = String(now.getHours()).padStart(2,'0');
+            var m = String(now.getMinutes()).padStart(2,'0');
+            var s = String(now.getSeconds()).padStart(2,'0');
+            var d = String(now.getDate()).padStart(2,'0');
+            var mo = ['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV','DES'][now.getMonth()];
+            var y = now.getFullYear();
+            var ct = document.getElementById('clockTime');
+            var cd = document.getElementById('clockDate');
+            if (ct) ct.textContent = h + ':' + m + ':' + s + ' WIB';
+            if (cd) cd.textContent = d + ' ' + mo + ' ' + y;
+        } catch(e) {}
+    }
 
-        // ===== FIREBASE =====
-        function initFirebase() {
-            const statusEl = document.getElementById('firebaseStatus');
-            try {
-                if (typeof firebase === 'undefined') throw new Error('Firebase SDK tidak ter-load');
-                const firebaseConfig = {
-                    apiKey: "AIzaSyClv4xQB48RwQc5UQazz6wP8ttu1M4SmKg",
-                    authDomain: "phoenix-cup-s1.firebaseapp.com",
-                    databaseURL: "https://phoenix-cup-s1-default-rtdb.asia-southeast1.firebasedatabase.app",
-                    projectId: "phoenix-cup-s1",
-                    storageBucket: "phoenix-cup-s1.firebasestorage.app",
-                    messagingSenderId: "1098346610922",
-                    appId: "1:1098346610922:web:0f2000413780fe47afd793"
-                };
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-                bracketRef = db.ref('bracket');
-                firebaseOnline = true;
-                if (statusEl) { statusEl.textContent = 'Terhubung ke Firebase (Online)'; statusEl.className = 'firebase-status online'; }
-                loadBracketFromFirebase();
-            } catch (err) {
-                console.warn('Firebase gagal:', err.message);
-                firebaseOnline = false;
-                if (statusEl) { statusEl.textContent = 'Mode Offline - Data lokal aktif'; statusEl.className = 'firebase-status offline'; }
-                renderAll();
-            }
-        }
-
-        function loadBracketFromFirebase() {
-            if (!bracketRef) return;
-            bracketRef.on('value', (snapshot) => {
-                const data = snapshot.val();
+    function initFirebase() {
+        var statusEl = document.getElementById('firebaseStatus');
+        try {
+            if (typeof firebase === 'undefined') throw new Error('No Firebase');
+            var firebaseConfig = {
+                apiKey: "AIzaSyClv4xQB48RwQc5UQazz6wP8ttu1M4SmKg",
+                authDomain: "phoenix-cup-s1.firebaseapp.com",
+                databaseURL: "https://phoenix-cup-s1-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "phoenix-cup-s1",
+                storageBucket: "phoenix-cup-s1.firebasestorage.app",
+                messagingSenderId: "1098346610922",
+                appId: "1:1098346610922:web:0f2000413780fe47afd793"
+            };
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            bracketRef = db.ref('bracket');
+            firebaseOnline = true;
+            if (statusEl) { statusEl.textContent = 'Terhubung ke Firebase (Online)'; statusEl.className = 'firebase-status online'; }
+            bracketRef.on('value', function(snapshot) {
+                var data = snapshot.val();
                 if (data) bracket = data;
                 else bracketRef.set(bracket);
                 renderAll();
             });
+        } catch(err) {
+            console.warn('Firebase gagal:', err.message);
+            firebaseOnline = false;
+            if (statusEl) { statusEl.textContent = 'Mode Offline - Data lokal aktif'; statusEl.className = 'firebase-status offline'; }
+            renderAll();
         }
+    }
 
-        function saveBracket() {
-            if (firebaseOnline && bracketRef) bracketRef.set(bracket);
-        }
+    function saveBracket() {
+        if (firebaseOnline && bracketRef) bracketRef.set(bracket);
+    }
 
-        function renderAll() {
-            renderBracket();
-            renderTeams();
-            renderSchedule();
-        }
+    function renderAll() {
+        try { renderBracket(); } catch(e) { console.error('bracket error', e); }
+        try { renderTeams(); } catch(e) { console.error('teams error', e); }
+        try { renderSchedule(); } catch(e) { console.error('schedule error', e); }
+    }
 
-        // ===== ADMIN =====
-        function adminLogin() {
-            const passInput = document.getElementById('loginPass');
-            const errorDiv = document.getElementById('loginError');
-            const modal = document.getElementById('loginModal');
-            if (!passInput || !modal) return;
-            if (passInput.value.trim() === ADMIN_PASSWORD) {
-                isAdmin = true;
-                modal.classList.add('hidden');
-                const adminBar = document.getElementById('adminBar');
-                if (adminBar) adminBar.classList.add('active');
-                document.body.style.paddingTop = '40px';
-                errorDiv.classList.remove('active');
-                renderAll();
-            } else {
-                errorDiv.classList.add('active');
-                passInput.value = '';
-                passInput.focus();
-            }
-        }
-
-        function guestLogin() {
-            isAdmin = false;
-            const modal = document.getElementById('loginModal');
-            const errorDiv = document.getElementById('loginError');
-            if (modal) modal.classList.add('hidden');
+    function adminLogin() {
+        var passInput = document.getElementById('loginPass');
+        var errorDiv = document.getElementById('loginError');
+        var modal = document.getElementById('loginModal');
+        if (!passInput || !modal) return;
+        if (passInput.value.trim() === ADMIN_PASSWORD) {
+            isAdmin = true;
+            modal.classList.add('hidden');
+            var adminBar = document.getElementById('adminBar');
+            if (adminBar) adminBar.classList.add('active');
+            document.body.style.paddingTop = '40px';
             if (errorDiv) errorDiv.classList.remove('active');
-            document.body.style.paddingTop = '0';
             renderAll();
+        } else {
+            if (errorDiv) errorDiv.classList.add('active');
+            passInput.value = '';
+            passInput.focus();
         }
+    }
 
-        function adminLogout() {
-            isAdmin = false;
-            const adminBar = document.getElementById('adminBar');
-            if (adminBar) adminBar.classList.remove('active');
-            document.body.style.paddingTop = '0';
-            renderAll();
+    function guestLogin() {
+        isAdmin = false;
+        var modal = document.getElementById('loginModal');
+        var errorDiv = document.getElementById('loginError');
+        if (modal) modal.classList.add('hidden');
+        if (errorDiv) errorDiv.classList.remove('active');
+        document.body.style.paddingTop = '0';
+        renderAll();
+    }
+
+    function adminLogout() {
+        isAdmin = false;
+        var adminBar = document.getElementById('adminBar');
+        if (adminBar) adminBar.classList.remove('active');
+        document.body.style.paddingTop = '0';
+        renderAll();
+    }
+
+    var CONTAINER_H = 520, HEADER_H = 50, MATCH_H = 90, WINNER_H = 120;
+    var AREA_H = CONTAINER_H - HEADER_H;
+    var CONN_W = 60;
+    var qfGap = (AREA_H - 4 * MATCH_H) / 5;
+    var qfTops = [qfGap, qfGap + MATCH_H + qfGap, qfGap + 2*(MATCH_H + qfGap), qfGap + 3*(MATCH_H + qfGap)];
+    var qfCenters = qfTops.map(function(t){ return t + MATCH_H/2; });
+    var sfCenters = [(qfCenters[0] + qfCenters[1])/2, (qfCenters[2] + qfCenters[3])/2];
+    var sfTops = sfCenters.map(function(c){ return c - MATCH_H/2; });
+    var gfCenter = (sfCenters[0] + sfCenters[1])/2;
+    var gfTop = gfCenter - MATCH_H/2;
+    var winnerTop = gfCenter - WINNER_H/2;
+
+    function getTeam(id) { return teams.find(function(t){ return t.id === id; }) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
+
+    function renderMatchCard(m, top, onclick, round, idx) {
+        var a = getTeam(m.t1), b = getTeam(m.t2);
+        var s1Val = m.s1 !== null ? m.s1 : '';
+        var s2Val = m.s2 !== null ? m.s2 : '';
+        var s1Display = isAdmin ? '<input type="number" class="score-input admin-mode" value="' + s1Val + '" min="0" oninput="updateScore('' + round + '', ' + idx + ', 1, this.value)" onclick="event.stopPropagation()">' : '<span class="score-input">' + (m.s1 !== null ? m.s1 : '-') + '</span>';
+        var s2Display = isAdmin ? '<input type="number" class="score-input admin-mode" value="' + s2Val + '" min="0" oninput="updateScore('' + round + '', ' + idx + ', 2, this.value)" onclick="event.stopPropagation()">' : '<span class="score-input">' + (m.s2 !== null ? m.s2 : '-') + '</span>';
+        var adminClass = isAdmin ? 'admin-mode' : '';
+        var editHint = isAdmin ? '<div class="edit-hint">Klik score untuk edit</div>' : '';
+        return '<div class="match-card ' + adminClass + '" style="top: ' + top + 'px;" onclick="' + onclick + '">' +
+            '<div class="match-tag">' + m.id + '</div>' +
+            '<div class="team-row ' + (m.w === m.t1 ? 'winner' : '') + '">' +
+                '<div class="team-logo-sm" style="background: ' + a.bg + '">' + a.short + '</div>' +
+                '<div class="team-n">' + a.name + '</div>' +
+                '<div class="team-s">' + s1Display + '</div>' +
+            '</div>' +
+            '<div class="team-row ' + (m.w === m.t2 ? 'winner' : '') + '">' +
+                '<div class="team-logo-sm" style="background: ' + b.bg + '">' + b.short + '</div>' +
+                '<div class="team-n">' + b.name + '</div>' +
+                '<div class="team-s">' + s2Display + '</div>' +
+            '</div>' +
+            '<div class="match-time">' + m.time + '</div>' + editHint +
+        '</div>';
+    }
+
+    function renderBracket() {
+        var tree = document.getElementById('bracketTree');
+        if (!tree) return;
+        var qfHTML = '<div class="round-col"><div class="round-header"><h3>QUARTER FINAL</h3><span>5 JUNI 2026</span></div><div class="match-area">' + bracket.qf.map(function(m,i){ return renderMatchCard(m, qfTops[i], "pickWinner('qf'," + i + ")", 'qf', i); }).join('') + '</div></div>';
+        var conn1HTML = '<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ' + CONN_W + ' ' + AREA_H + '" preserveAspectRatio="none">' +
+            '<line x1="0" y1="' + qfCenters[0] + '" x2="' + (CONN_W/2) + '" y2="' + qfCenters[0] + '" class="' + (bracket.qf[0].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + qfCenters[0] + '" x2="' + (CONN_W/2) + '" y2="' + sfCenters[0] + '" class="' + (bracket.qf[0].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + sfCenters[0] + '" x2="' + CONN_W + '" y2="' + sfCenters[0] + '" class="' + (bracket.qf[0].w && bracket.qf[1].w ? 'active' : '') + '"/>' +
+            '<line x1="0" y1="' + qfCenters[1] + '" x2="' + (CONN_W/2) + '" y2="' + qfCenters[1] + '" class="' + (bracket.qf[1].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + qfCenters[1] + '" x2="' + (CONN_W/2) + '" y2="' + sfCenters[0] + '" class="' + (bracket.qf[1].w ? 'active' : '') + '"/>' +
+            '<line x1="0" y1="' + qfCenters[2] + '" x2="' + (CONN_W/2) + '" y2="' + qfCenters[2] + '" class="' + (bracket.qf[2].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + qfCenters[2] + '" x2="' + (CONN_W/2) + '" y2="' + sfCenters[1] + '" class="' + (bracket.qf[2].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + sfCenters[1] + '" x2="' + CONN_W + '" y2="' + sfCenters[1] + '" class="' + (bracket.qf[2].w && bracket.qf[3].w ? 'active' : '') + '"/>' +
+            '<line x1="0" y1="' + qfCenters[3] + '" x2="' + (CONN_W/2) + '" y2="' + qfCenters[3] + '" class="' + (bracket.qf[3].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + qfCenters[3] + '" x2="' + (CONN_W/2) + '" y2="' + sfCenters[1] + '" class="' + (bracket.qf[3].w ? 'active' : '') + '"/>' +
+        '</svg></div></div>';
+        var sfHTML = '<div class="round-col"><div class="round-header"><h3>SEMI FINAL</h3><span>6 JUNI 2026</span></div><div class="match-area">' + bracket.sf.map(function(m,i){ return renderMatchCard(m, sfTops[i], "pickWinner('sf'," + i + ")", 'sf', i); }).join('') + '</div></div>';
+        var conn2HTML = '<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ' + CONN_W + ' ' + AREA_H + '" preserveAspectRatio="none">' +
+            '<line x1="0" y1="' + sfCenters[0] + '" x2="' + (CONN_W/2) + '" y2="' + sfCenters[0] + '" class="' + (bracket.sf[0].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + sfCenters[0] + '" x2="' + (CONN_W/2) + '" y2="' + gfCenter + '" class="' + (bracket.sf[0].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + gfCenter + '" x2="' + CONN_W + '" y2="' + gfCenter + '" class="' + (bracket.sf[0].w && bracket.sf[1].w ? 'active' : '') + '"/>' +
+            '<line x1="0" y1="' + sfCenters[1] + '" x2="' + (CONN_W/2) + '" y2="' + sfCenters[1] + '" class="' + (bracket.sf[1].w ? 'active' : '') + '"/>' +
+            '<line x1="' + (CONN_W/2) + '" y1="' + sfCenters[1] + '" x2="' + (CONN_W/2) + '" y2="' + gfCenter + '" class="' + (bracket.sf[1].w ? 'active' : '') + '"/>' +
+        '</svg></div></div>';
+        var gfHTML = '<div class="round-col"><div class="round-header"><h3>GRAND FINAL</h3><span>8 JUNI 2026</span></div><div class="match-area">' + renderMatchCard(bracket.gf, gfTop, "pickWinner('gf',0)", 'gf', 0) + '</div></div>';
+        var conn3HTML = '<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ' + CONN_W + ' ' + AREA_H + '" preserveAspectRatio="none"><line x1="0" y1="' + gfCenter + '" x2="' + CONN_W + '" y2="' + gfCenter + '" class="' + (bracket.gf.w ? 'active' : '') + '"/></svg></div></div>';
+        var winner = getTeam(bracket.gf.w);
+        var winnerHTML = '<div class="round-col winner-col"><div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div><div class="match-area"><div class="winner-card" style="top: ' + winnerTop + 'px;"><div class="winner-crown"><i class="fas fa-crown"></i></div><div class="winner-label">PHOENIX CUP S1</div><div class="winner-name">' + (winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD') + '</div><div class="winner-time">10 JUNI 2026</div></div></div></div>';
+        tree.innerHTML = qfHTML + conn1HTML + sfHTML + conn2HTML + gfHTML + conn3HTML + winnerHTML;
+    }
+
+    function pickWinner(round, idx) {
+        if (!isAdmin) return;
+        var match = round === 'qf' ? bracket.qf[idx] : round === 'sf' ? bracket.sf[idx] : bracket.gf;
+        if (!match.t1 || !match.t2) return;
+        if (match.w === match.t1) { match.w = match.t2; match.s1 = 1; match.s2 = 2; }
+        else if (match.w === match.t2) { match.w = null; match.s1 = null; match.s2 = null; }
+        else { match.w = match.t1; match.s1 = 2; match.s2 = 1; }
+        if (round === 'qf') {
+            var sfIdx = Math.floor(idx / 2);
+            var slot = idx % 2 === 0 ? 't1' : 't2';
+            bracket.sf[sfIdx][slot] = match.w;
+            bracket.sf[sfIdx].w = null;
+            bracket.sf[sfIdx].s1 = null;
+            bracket.sf[sfIdx].s2 = null;
+            bracket.gf.t1 = null; bracket.gf.t2 = null; bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
+        } else if (round === 'sf') {
+            var slot2 = idx === 0 ? 't1' : 't2';
+            bracket.gf[slot2] = match.w;
+            bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
         }
+        saveBracket(); renderAll();
+    }
 
-        // ===== BRACKET MATH =====
-        const CONTAINER_H = 520, HEADER_H = 50, MATCH_H = 90, WINNER_H = 120;
-        const AREA_H = CONTAINER_H - HEADER_H;
-        const CONN_W = 60;
-        const qfGap = (AREA_H - 4 * MATCH_H) / 5;
-        const qfTops = [qfGap, qfGap + MATCH_H + qfGap, qfGap + 2*(MATCH_H + qfGap), qfGap + 3*(MATCH_H + qfGap)];
-        const qfCenters = qfTops.map(t => t + MATCH_H/2);
-        const sfCenters = [(qfCenters[0] + qfCenters[1])/2, (qfCenters[2] + qfCenters[3])/2];
-        const sfTops = sfCenters.map(c => c - MATCH_H/2);
-        const gfCenter = (sfCenters[0] + sfCenters[1])/2;
-        const gfTop = gfCenter - MATCH_H/2;
-        const winnerTop = gfCenter - WINNER_H/2;
+    function updateScore(round, idx, team, value) {
+        if (!isAdmin) return;
+        var val = value === '' ? null : parseInt(value);
+        var match = round === 'qf' ? bracket.qf[idx] : round === 'sf' ? bracket.sf[idx] : bracket.gf;
+        if (team === 1) match.s1 = val; else match.s2 = val;
+        saveBracket();
+    }
 
-        function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
+    function renderTeams() {
+        var grid = document.getElementById('teamsGrid');
+        if (!grid) return;
+        grid.innerHTML = teams.map(function(t) {
+            return '<div class="team-card" onclick="openModal(' + t.id + ')">' +
+                '<div class="tc-header"><div class="tc-logo" style="background: ' + t.bg + '">' + t.short + '</div><div class="tc-info"><h4>' + t.name + '</h4><span>5 Pemain</span></div></div>' +
+                '<div class="tc-stats">' +
+                    '<div class="tc-stat"><div class="v">' + t.roster.length + '</div><div class="l">Pemain</div></div>' +
+                    '<div class="tc-stat"><div class="v">' + t.leader.name.split(' ')[0] + '</div><div class="l">Leader</div></div>' +
+                    '<div class="tc-stat"><div class="v">Aktif</div><div class="l">Status</div></div>' +
+                '</div>' +
+                '<button class="tc-btn" onclick="event.stopPropagation(); openModal(' + t.id + ')"><i class="fas fa-eye"></i> Lihat Roster</button>' +
+            '</div>';
+        }).join('');
+    }
 
-        function renderMatchCard(m, top, onclick, round, idx) {
-            const a = getTeam(m.t1), b = getTeam(m.t2);
-            const s1Val = m.s1 !== null ? m.s1 : '';
-            const s2Val = m.s2 !== null ? m.s2 : '';
-            const s1Display = isAdmin ? `<input type="number" class="score-input admin-mode" value="${s1Val}" min="0" oninput="updateScore('${round}', ${idx}, 1, this.value)" onclick="event.stopPropagation()">` : `<span class="score-input">${m.s1 !== null ? m.s1 : '-'}</span>`;
-            const s2Display = isAdmin ? `<input type="number" class="score-input admin-mode" value="${s2Val}" min="0" oninput="updateScore('${round}', ${idx}, 2, this.value)" onclick="event.stopPropagation()">` : `<span class="score-input">${m.s2 !== null ? m.s2 : '-'}</span>`;
-            const adminClass = isAdmin ? 'admin-mode' : '';
-            const editHint = isAdmin ? '<div class="edit-hint">Klik score untuk edit</div>' : '';
-            return `<div class="match-card ${adminClass}" style="top: ${top}px;" onclick="${onclick}">
-                <div class="match-tag">${m.id}</div>
-                <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
-                    <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
-                    <div class="team-n">${a.name}</div>
-                    <div class="team-s">${s1Display}</div>
-                </div>
-                <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
-                    <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
-                    <div class="team-n">${b.name}</div>
-                    <div class="team-s">${s2Display}</div>
-                </div>
-                <div class="match-time">${m.time}</div>
-                ${editHint}
-            </div>`;
-        }
+    function renderSchedule() {
+        var schedule = [
+            { time: "13:00", date: "5 JUNI", t1: 1, t2: 2 },
+            { time: "14:30", date: "5 JUNI", t1: 3, t2: 4 },
+            { time: "16:00", date: "5 JUNI", t1: 5, t2: 6 },
+            { time: "17:30", date: "5 JUNI", t1: 7, t2: 8 },
+            { time: "13:00", date: "6 JUNI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2 },
+            { time: "14:30", date: "6 JUNI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2 },
+            { time: "20:00", date: "8 JUNI", t1: bracket.gf.t1, t2: bracket.gf.t2 }
+        ];
+        var grid = document.getElementById('scheduleGrid');
+        if (!grid) return;
+        grid.innerHTML = schedule.map(function(s) {
+            var a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
+            var b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
+            var rtStatus = getMatchStatusRealTime(s.date, s.time);
+            var st = rtStatus === 'live' ? 'st-live' : rtStatus === 'done' ? 'st-done' : 'st-upcoming';
+            var stText = rtStatus === 'live' ? 'LIVE' : rtStatus === 'done' ? 'SELESAI' : 'AKAN DATANG';
+            return '<div class="sc-card">' +
+                '<div class="sc-time"><div class="t">' + s.time + '</div><div class="d">' + s.date + '</div></div>' +
+                '<div class="sc-vs">' +
+                    '<div class="sc-team"><div class="team-logo-sm" style="background: ' + a.bg + '">' + a.short + '</div><span>' + a.name + '</span></div>' +
+                    '<div class="sc-divider">VS</div>' +
+                    '<div class="sc-team"><span>' + b.name + '</span><div class="team-logo-sm" style="background: ' + b.bg + '">' + b.short + '</div></div>' +
+                '</div>' +
+                '<div class="sc-status ' + st + '">' + stText + '</div>' +
+            '</div>';
+        }).join('');
+    }
 
-        function renderBracket() {
-            const tree = document.getElementById('bracketTree');
-            if (!tree) return;
-            const qfHTML = `<div class="round-col"><div class="round-header"><h3>QUARTER FINAL</h3><span>5 JUNI 2026</span></div><div class="match-area">${bracket.qf.map((m,i)=>renderMatchCard(m,qfTops[i],`pickWinner('qf',${i})`,'qf',i)).join('')}</div></div>`;
-            const conn1HTML = `<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
-                <line x1="0" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${qfCenters[0]}" class="${bracket.qf[0].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[0].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W}" y2="${sfCenters[0]}" class="${bracket.qf[0].w&&bracket.qf[1].w?'active':''}"/>
-                <line x1="0" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${qfCenters[1]}" class="${bracket.qf[1].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[1].w?'active':''}"/>
-                <line x1="0" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${qfCenters[2]}" class="${bracket.qf[2].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[2].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W}" y2="${sfCenters[1]}" class="${bracket.qf[2].w&&bracket.qf[3].w?'active':''}"/>
-                <line x1="0" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${qfCenters[3]}" class="${bracket.qf[3].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[3].w?'active':''}"/>
-            </svg></div></div>`;
-            const sfHTML = `<div class="round-col"><div class="round-header"><h3>SEMI FINAL</h3><span>6 JUNI 2026</span></div><div class="match-area">${bracket.sf.map((m,i)=>renderMatchCard(m,sfTops[i],`pickWinner('sf',${i})`,'sf',i)).join('')}</div></div>`;
-            const conn2HTML = `<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
-                <line x1="0" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.sf[0].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[0].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.sf[0].w&&bracket.sf[1].w?'active':''}"/>
-                <line x1="0" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.sf[1].w?'active':''}"/>
-                <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[1].w?'active':''}"/>
-            </svg></div></div>`;
-            const gfHTML = `<div class="round-col"><div class="round-header"><h3>GRAND FINAL</h3><span>8 JUNI 2026</span></div><div class="match-area">${renderMatchCard(bracket.gf,gfTop,`pickWinner('gf',0)`,'gf',0)}</div></div>`;
-            const conn3HTML = `<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none"><line x1="0" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.gf.w?'active':''}"/></svg></div></div>`;
-            const winner = getTeam(bracket.gf.w);
-            const winnerHTML = `<div class="round-col winner-col"><div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div><div class="match-area"><div class="winner-card" style="top: ${winnerTop}px;"><div class="winner-crown"><i class="fas fa-crown"></i></div><div class="winner-label">PHOENIX CUP S1</div><div class="winner-name">${winner.name!=='TBD'?winner.name.toUpperCase():'TBD'}</div><div class="winner-time">10 JUNI 2026</div></div></div></div>`;
-            tree.innerHTML = qfHTML + conn1HTML + sfHTML + conn2HTML + gfHTML + conn3HTML + winnerHTML;
-        }
+    function openModal(id) {
+        var t = teams.find(function(x){ return x.id === id; });
+        if (!t) return;
+        document.getElementById('modalLogo').textContent = t.short;
+        document.getElementById('modalLogo').style.background = t.bg;
+        document.getElementById('modalName').textContent = t.name;
+        document.getElementById('leaderAva').textContent = t.leader.name.charAt(0);
+        document.getElementById('leaderName').textContent = t.leader.name;
+        document.getElementById('leaderWA').href = 'https://wa.me/62' + t.leader.wa.substring(1);
+        document.getElementById('rosterBody').innerHTML = t.roster.map(function(p, i) {
+            return '<tr><td>' + (i+1) + '</td><td><span class="role-tag role-' + p.role.toLowerCase() + '">' + p.role + '</span></td><td style="font-weight:600;">' + p.name + '</td></tr>';
+        }).join('');
+        document.getElementById('rosterModal').classList.add('active');
+    }
 
-        function pickWinner(round, idx) {
-            if (!isAdmin) return;
-            let match = round==='qf'?bracket.qf[idx]:round==='sf'?bracket.sf[idx]:bracket.gf;
-            if (!match.t1 || !match.t2) return;
-            if (match.w===match.t1) { match.w=match.t2; match.s1=1; match.s2=2; }
-            else if (match.w===match.t2) { match.w=null; match.s1=null; match.s2=null; }
-            else { match.w=match.t1; match.s1=2; match.s2=1; }
-            if (round==='qf') {
-                const sfIdx=Math.floor(idx/2), slot=idx%2===0?'t1':'t2';
-                bracket.sf[sfIdx][slot]=match.w; bracket.sf[sfIdx].w=null; bracket.sf[sfIdx].s1=null; bracket.sf[sfIdx].s2=null;
-                bracket.gf.t1=null; bracket.gf.t2=null; bracket.gf.w=null; bracket.gf.s1=null; bracket.gf.s2=null;
-            } else if (round==='sf') {
-                const slot=idx===0?'t1':'t2';
-                bracket.gf[slot]=match.w; bracket.gf.w=null; bracket.gf.s1=null; bracket.gf.s2=null;
-            }
-            saveBracket(); renderAll();
-        }
+    function closeModal() {
+        document.getElementById('rosterModal').classList.remove('active');
+    }
 
-        function updateScore(round, idx, team, value) {
-            if (!isAdmin) return;
-            const val = value===''?null:parseInt(value);
-            let match = round==='qf'?bracket.qf[idx]:round==='sf'?bracket.sf[idx]:bracket.gf;
-            if (team===1) match.s1=val; else match.s2=val;
-            saveBracket();
-        }
-
-        function renderTeams() {
-            const grid = document.getElementById('teamsGrid');
-            if (!grid) return;
-            grid.innerHTML = teams.map(t=>`
-                <div class="team-card" onclick="openModal(${t.id})">
-                    <div class="tc-header">
-                        <div class="tc-logo" style="background: ${t.bg}">${t.short}</div>
-                        <div class="tc-info"><h4>${t.name}</h4><span>5 Pemain</span></div>
-                    </div>
-                    <div class="tc-stats">
-                        <div class="tc-stat"><div class="v">${t.roster.length}</div><div class="l">Pemain</div></div>
-                        <div class="tc-stat"><div class="v">${t.leader.name.split(' ')[0]}</div><div class="l">Leader</div></div>
-                        <div class="tc-stat"><div class="v">Aktif</div><div class="l">Status</div></div>
-                    </div>
-                    <button class="tc-btn" onclick="event.stopPropagation(); openModal(${t.id})"><i class="fas fa-eye"></i> Lihat Roster</button>
-                </div>`).join('');
-        }
-
-        function renderSchedule() {
-            const schedule = [
-                { time: "13:00", date: "5 JUNI", t1: 1, t2: 2 },
-                { time: "14:30", date: "5 JUNI", t1: 3, t2: 4 },
-                { time: "16:00", date: "5 JUNI", t1: 5, t2: 6 },
-                { time: "17:30", date: "5 JUNI", t1: 7, t2: 8 },
-                { time: "13:00", date: "6 JUNI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2 },
-                { time: "14:30", date: "6 JUNI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2 },
-                { time: "20:00", date: "8 JUNI", t1: bracket.gf.t1, t2: bracket.gf.t2 }
-            ];
-
-            const grid = document.getElementById('scheduleGrid');
-            if (!grid) return;
-            grid.innerHTML = schedule.map(s => {
-                const a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
-                const b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
-                const rtStatus = getMatchStatusRealTime(s.date, s.time);
-                const st = rtStatus === 'live' ? 'st-live' : rtStatus === 'done' ? 'st-done' : 'st-upcoming';
-                const stText = rtStatus === 'live' ? 'LIVE' : rtStatus === 'done' ? 'SELESAI' : 'AKAN DATANG';
-                return `
-                <div class="sc-card">
-                    <div class="sc-time"><div class="t">${s.time}</div><div class="d">${s.date}</div></div>
-                    <div class="sc-vs">
-                        <div class="sc-team">
-                            <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
-                            <span>${a.name}</span>
-                        </div>
-                        <div class="sc-divider">VS</div>
-                        <div class="sc-team">
-                            <span>${b.name}</span>
-                            <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
-                        </div>
-                    </div>
-                    <div class="sc-status ${st}">${stText}</div>
-                </div>`;
-            }).join('');
-        }
-
-        function openModal(id) {
-            const t = teams.find(x=>x.id===id);
-            if (!t) return;
-            document.getElementById('modalLogo').textContent = t.short;
-            document.getElementById('modalLogo').style.background = t.bg;
-            document.getElementById('modalName').textContent = t.name;
-            document.getElementById('leaderAva').textContent = t.leader.name.charAt(0);
-            document.getElementById('leaderName').textContent = t.leader.name;
-            document.getElementById('leaderWA').href = `https://wa.me/62${t.leader.wa.substring(1)}`;
-            document.getElementById('rosterBody').innerHTML = t.roster.map((p,i)=>`<tr><td>${i+1}</td><td><span class="role-tag role-${p.role.toLowerCase()}">${p.role}</span></td><td style="font-weight:600;">${p.name}</td></tr>`).join('');
-            document.getElementById('rosterModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('rosterModal').classList.remove('active');
-        }
-
-        document.getElementById('rosterModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
-        document.querySelectorAll('a[href^="#"]').forEach(a=>{
-            a.addEventListener('click', e=>{
-                e.preventDefault();
-                const t=document.querySelector(a.getAttribute('href'));
-                if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
-            });
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            e.preventDefault();
+            var t = document.querySelector(a.getAttribute('href'));
+            if (t) t.scrollIntoView({behavior:'smooth',block:'start'});
         });
+    });
 
-        // ===== INIT =====
-        setInterval(updateLiveClock, 1000);
-        updateLiveClock();
-        setInterval(renderSchedule, 30000); // refresh status setiap 30 detik
-        initFirebase();
-        renderTeams();
+    // ===== INIT =====
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+    setInterval(renderSchedule, 30000);
+    initFirebase();
+    renderTeams();
     </script>
 </body>
 </html>
