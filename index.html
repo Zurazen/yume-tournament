@@ -721,6 +721,25 @@
             display: none;
         }
         .login-error.active { display: block; }
+
+        .guest-btn {
+            padding: 0.9rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+        }
+        .guest-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(139,92,246,0.05);
+        }
 </style>
 
     <!-- Firebase SDK -->
@@ -735,15 +754,17 @@
         <button onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
     </div>
 
-    <div class="login-modal" id="loginModal">
-        <div class="login-box">
+    <div class="login-modal" id="loginModal" onclick="handleModalClick(event)">
+        <div class="login-box" onclick="event.stopPropagation()">
             <div class="logo-icon"><i class="fas fa-fire"></i></div>
             <h2>Admin Login</h2>
             <p>Masukkan password untuk mengubah score pertandingan</p>
             <input type="password" class="login-input" id="loginPass" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()">
-            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah!</div>
-            <button class="login-btn" onclick="adminLogin()" type="button">Masuk</button>
-            <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);">Atau klik di luar box untuk melihat sebagai pengunjung</p>
+            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
+            <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
+                <button class="login-btn" onclick="adminLogin()" type="button" style="flex: 1;">Masuk</button>
+                <button class="guest-btn" onclick="guestLogin()" type="button">Lihat sebagai Guest</button>
+            </div>
         </div>
     </div>
 
@@ -1006,20 +1027,34 @@
         const ADMIN_PASSWORD = 'yume30';
 
         function adminLogin() {
-            const pass = document.getElementById('loginPass').value;
+            const passInput = document.getElementById('loginPass');
+            const errorDiv = document.getElementById('loginError');
+            const modal = document.getElementById('loginModal');
+            const pass = passInput.value.trim();
+
             if (pass === ADMIN_PASSWORD) {
                 isAdmin = true;
-                document.getElementById('loginModal').style.display = 'none';
+                modal.style.display = 'none';
                 document.getElementById('adminBar').classList.add('active');
                 document.body.style.paddingTop = '40px';
+                errorDiv.classList.remove('active');
                 renderBracket();
                 renderTeams();
                 renderSchedule();
             } else {
-                document.getElementById('loginError').classList.add('active');
-                document.getElementById('loginPass').value = '';
-                document.getElementById('loginPass').focus();
+                errorDiv.classList.add('active');
+                passInput.value = '';
+                passInput.focus();
             }
+        }
+
+        function guestLogin() {
+            isAdmin = false;
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('loginError').classList.remove('active');
+            renderBracket();
+            renderTeams();
+            renderSchedule();
         }
 
         function adminLogout() {
@@ -1031,14 +1066,11 @@
             renderSchedule();
         }
 
-        // Close login modal by clicking outside (view as guest)
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('loginModal');
-            const loginBox = document.querySelector('.login-box');
-            if (modal && modal.style.display !== 'none' && loginBox && !loginBox.contains(e.target)) {
-                modal.style.display = 'none';
+        function handleModalClick(e) {
+            if (e.target.id === 'loginModal') {
+                guestLogin();
             }
-        });
+        }
 
         function updateScore(round, idx, teamNum, value) {
             if (!isAdmin) return;
