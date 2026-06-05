@@ -751,19 +751,19 @@
 <body>
     <div class="bg-glow"></div>    <div class="admin-bar" id="adminBar">
         <span><i class="fas fa-shield-alt"></i> ADMIN MODE - Score Input Aktif</span>
-        <button onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
+        <button ><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
     </div>
 
-    <div class="login-modal" id="loginModal" onclick="handleModalClick(event)">
+    <div class="login-modal" id="loginModal" >
         <div class="login-box" onclick="event.stopPropagation()">
             <div class="logo-icon"><i class="fas fa-fire"></i></div>
             <h2>Admin Login</h2>
             <p>Masukkan password untuk mengubah score pertandingan</p>
-            <input type="password" class="login-input" id="loginPass" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()">
+            <input type="password" class="login-input" id="loginPass" placeholder="Password..." >
             <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
             <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
-                <button class="login-btn" onclick="adminLogin()" type="button" style="flex: 1;">Masuk</button>
-                <button class="guest-btn" onclick="guestLogin()" type="button">Lihat sebagai Guest</button>
+                <button class="login-btn"  type="button" style="flex: 1;">Masuk</button>
+                <button class="guest-btn"  type="button">Lihat sebagai Guest</button>
             </div>
         </div>
     </div>
@@ -1030,12 +1030,15 @@
             const passInput = document.getElementById('loginPass');
             const errorDiv = document.getElementById('loginError');
             const modal = document.getElementById('loginModal');
+            if (!passInput || !modal) return;
+
             const pass = passInput.value.trim();
 
             if (pass === ADMIN_PASSWORD) {
                 isAdmin = true;
                 modal.style.display = 'none';
-                document.getElementById('adminBar').classList.add('active');
+                const adminBar = document.getElementById('adminBar');
+                if (adminBar) adminBar.classList.add('active');
                 document.body.style.paddingTop = '40px';
                 errorDiv.classList.remove('active');
                 renderBracket();
@@ -1050,8 +1053,10 @@
 
         function guestLogin() {
             isAdmin = false;
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('loginError').classList.remove('active');
+            const modal = document.getElementById('loginModal');
+            const errorDiv = document.getElementById('loginError');
+            if (modal) modal.style.display = 'none';
+            if (errorDiv) errorDiv.classList.remove('active');
             renderBracket();
             renderTeams();
             renderSchedule();
@@ -1059,7 +1064,8 @@
 
         function adminLogout() {
             isAdmin = false;
-            document.getElementById('adminBar').classList.remove('active');
+            const adminBar = document.getElementById('adminBar');
+            if (adminBar) adminBar.classList.remove('active');
             document.body.style.paddingTop = '0';
             renderBracket();
             renderTeams();
@@ -1070,6 +1076,32 @@
             if (e.target.id === 'loginModal') {
                 guestLogin();
             }
+        }
+
+        // Setup event listeners after DOM is ready
+        function setupEventListeners() {
+            const loginBtn = document.querySelector('.login-btn');
+            const guestBtn = document.querySelector('.guest-btn');
+            const logoutBtn = document.querySelector('#adminBar button');
+            const modal = document.getElementById('loginModal');
+            const passInput = document.getElementById('loginPass');
+
+            if (loginBtn) loginBtn.addEventListener('click', adminLogin);
+            if (guestBtn) guestBtn.addEventListener('click', guestLogin);
+            if (logoutBtn) logoutBtn.addEventListener('click', adminLogout);
+            if (modal) modal.addEventListener('click', handleModalClick);
+            if (passInput) {
+                passInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') adminLogin();
+                });
+            }
+        }
+
+        // Run setup when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupEventListeners);
+        } else {
+            setupEventListeners();
         }
 
         function updateScore(round, idx, teamNum, value) {
