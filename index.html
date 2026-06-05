@@ -1139,6 +1139,7 @@
         let bracket = JSON.parse(JSON.stringify(defaultBracket));
         let db = null;
         let bracketRef = null;
+        let scheduleRef = null;
         let firebaseOnline = false;
         let scheduleData = null;
 
@@ -1156,10 +1157,15 @@
 
         // Save scheduleData to localStorage
         function saveScheduleData() {
+            // Save to localStorage as backup
             try {
                 localStorage.setItem('phoenixCup_schedule', JSON.stringify(scheduleData));
             } catch (e) {
                 console.warn('Failed to save schedule to localStorage');
+            }
+            // Save to Firebase for real-time sync
+            if (firebaseOnline && scheduleRef) {
+                scheduleRef.set(scheduleData);
             }
         }
 
@@ -1182,12 +1188,14 @@
                 firebase.initializeApp(firebaseConfig);
                 db = firebase.database();
                 bracketRef = db.ref('bracket');
+                scheduleRef = db.ref('schedule');
                 firebaseOnline = true;
                 if (statusEl) {
                     statusEl.textContent = 'Terhubung ke Firebase (Online)';
                     statusEl.className = 'firebase-status online';
                 }
                 loadBracketFromFirebase();
+                loadScheduleFromFirebase();
             } catch (err) {
                 console.warn('Firebase gagal:', err.message);
                 firebaseOnline = false;
@@ -1212,6 +1220,31 @@
                     bracketRef.set(bracket);
                 }
                 renderBracket();
+                renderSchedule();
+            });
+        }
+
+        function loadScheduleFromFirebase() {
+            if (!scheduleRef) return;
+            scheduleRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    scheduleData = data;
+                } else {
+                    // Initialize with defaults if empty
+                    if (!scheduleData) {
+                        scheduleData = [
+                            { time: "13:00", date: "18 MEI", t1: 1, t2: 2, status: "done" },
+                            { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
+                            { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
+                            { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
+                            { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2, status: "upcoming" },
+                            { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: "upcoming" },
+                            { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2, status: "upcoming" }
+                        ];
+                    }
+                    scheduleRef.set(scheduleData);
+                }
                 renderSchedule();
             });
         }
