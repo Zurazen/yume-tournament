@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Yume Community Cup - Tournament</title>
+    <title>Phoenix Cup Season 1 - Tournament</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -939,7 +939,7 @@
             <h2>Admin Login</h2>
             <p>Masukkan password untuk mengubah score pertandingan</p>
             <input type="password" class="login-input" id="loginPass" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()">
-            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;"></span></div>
+            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
             <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
                 <button class="login-btn" onclick="adminLogin()" type="button" style="flex: 1;">Masuk</button>
                 <button class="guest-btn" onclick="guestLogin()" type="button">Lihat sebagai Guest</button>
@@ -953,7 +953,7 @@
             <div class="logo">
                 <img src="image.png" alt="Yume Store" class="logo-img">
                 <div class="logo-text">
-                    <h1>Yume Community Cup</h1>
+                    <h1>PHOENIX CUP</h1>
                     <span>SEASON 1</span>
                 </div>
             </div>
@@ -970,7 +970,7 @@
 
     <section class="hero" id="beranda">
         <div>
-            <h2>Yume Community Cup</h2>
+            <h2>PHOENIX CUP SEASON 1</h2>
             <div class="subtitle">SINGLE ELIMINATION</div>
             <div class="hero-badges">
                 <div class="badge"><i class="fas fa-users"></i> 8 TIM</div>
@@ -1029,7 +1029,7 @@
     </section>
 
     <footer class="footer">
-        <p> 2026 Yume Community Cup. All Rights Reserved.</p>
+        <p> 2024 Phoenix Cup. All Rights Reserved.</p>
         <div class="footer-social">
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-youtube"></i></a>
@@ -1141,6 +1141,27 @@
         let bracketRef = null;
         let firebaseOnline = false;
         let scheduleData = null;
+
+        // Load scheduleData from localStorage
+        function loadScheduleData() {
+            try {
+                const saved = localStorage.getItem('phoenixCup_schedule');
+                if (saved) {
+                    scheduleData = JSON.parse(saved);
+                }
+            } catch (e) {
+                console.warn('Failed to load schedule from localStorage');
+            }
+        }
+
+        // Save scheduleData to localStorage
+        function saveScheduleData() {
+            try {
+                localStorage.setItem('phoenixCup_schedule', JSON.stringify(scheduleData));
+            } catch (e) {
+                console.warn('Failed to save schedule to localStorage');
+            }
+        }
 
         // ===== FIREBASE INIT (with fallback) =====
         function initFirebase() {
@@ -1474,6 +1495,11 @@
         }
 
         function renderSchedule() {
+            // Load from localStorage if available
+            if (!scheduleData) {
+                loadScheduleData();
+            }
+            // Initialize defaults only if still no data
             if (!scheduleData) {
                 scheduleData = [
                     { time: "13:00", date: "18 MEI", t1: 1, t2: 2, status: "done" },
@@ -1484,6 +1510,7 @@
                     { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: "upcoming" },
                     { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2, status: "upcoming" }
                 ];
+                saveScheduleData();
             }
             // Update dynamic team references
             scheduleData[4].t1 = bracket.sf[0].t1; scheduleData[4].t2 = bracket.sf[0].t2;
@@ -1534,6 +1561,7 @@
             if (e) e.stopPropagation();
             if (!isAdmin) return;
             scheduleData[idx].status = status;
+            saveScheduleData();
             renderSchedule();
         }
 
