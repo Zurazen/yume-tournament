@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -33,6 +33,7 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .bg-glow {
@@ -56,7 +57,7 @@
         .nav {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -65,39 +66,41 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .logo-icon {
-            width: 44px; height: 44px;
+            width: 40px; height: 40px;
             background: linear-gradient(135deg, var(--primary), #6d28d9);
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: white;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+            flex-shrink: 0;
         }
 
         .logo-text h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 900;
             letter-spacing: 1px;
             color: white;
+            line-height: 1.2;
         }
 
         .logo-text span {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--primary);
             font-weight: 700;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             list-style: none;
         }
 
@@ -105,7 +108,7 @@
             color: var(--text-muted);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             transition: all 0.3s;
@@ -125,65 +128,103 @@
             box-shadow: 0 0 8px var(--primary);
         }
 
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(17, 17, 26, 0.98);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 99;
+        }
+        .mobile-nav.active { display: flex; }
+        .mobile-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .mobile-nav a:last-child { border-bottom: none; }
+        .mobile-nav a.active { color: var(--primary); }
+
         .hero {
             max-width: 1400px;
-            margin: 2.5rem auto;
-            padding: 0 2rem;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 3rem;
+            gap: 2rem;
             align-items: center;
         }
 
         .hero h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.4rem;
+            font-size: 2rem;
             font-weight: 900;
             color: white;
             margin-bottom: 0.3rem;
+            line-height: 1.2;
         }
 
         .hero .subtitle {
             color: var(--primary);
             font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 4px;
-            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            margin-bottom: 1.2rem;
         }
 
         .hero-badges {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
             flex-wrap: wrap;
         }
 
         .badge {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: var(--bg-card);
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 8px;
             border: 1px solid var(--border);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
         }
 
-        .badge i { color: var(--primary); font-size: 0.9rem; }
+        .badge i { color: var(--primary); font-size: 0.8rem; }
 
         .hero p {
             color: var(--text-muted);
             line-height: 1.7;
             max-width: 550px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .prize-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2.5rem 3rem;
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -198,37 +239,41 @@
         }
 
         .prize-icon {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             color: var(--accent);
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.4));
+            margin-bottom: 0.8rem;
+            filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.4));
         }
 
         .prize-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.3rem;
         }
 
         .prize-amount {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 900;
             color: var(--primary);
-            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
         }
 
         .section-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
             gap: 10px;
             color: white;
+            padding: 0 1.5rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .section-title i { color: var(--primary); }
@@ -236,48 +281,49 @@
         /* ===== BRACKET ===== */
         .bracket-section {
             max-width: 1400px;
-            margin: 3rem auto;
-            padding: 0 2rem;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
         }
 
         .bracket-wrapper {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .bracket-tree {
             display: flex;
             align-items: stretch;
-            min-width: 1100px;
-            height: 520px;
+            min-width: 900px;
+            height: 480px;
         }
 
         .round-col {
             display: flex;
             flex-direction: column;
-            width: 190px;
+            width: 170px;
             height: 100%;
             flex-shrink: 0;
             position: relative;
         }
 
         .connector-col {
-            width: 60px;
+            width: 50px;
             height: 100%;
             flex-shrink: 0;
             position: relative;
         }
 
         .winner-col {
-            width: 170px;
+            width: 150px;
         }
 
         .round-header {
             text-align: center;
-            height: 50px;
+            height: 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -286,13 +332,13 @@
 
         .round-header h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--primary);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .round-header span {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
         }
 
@@ -305,9 +351,9 @@
         .match-card {
             background: var(--bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 10px;
             width: 100%;
-            height: 90px;
+            height: 80px;
             position: absolute;
             left: 0;
             transition: all 0.3s;
@@ -320,20 +366,20 @@
         .match-card:hover {
             border-color: var(--border-hover);
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.1);
         }
 
         .match-tag {
             position: absolute;
-            top: -10px;
+            top: -8px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--primary);
             color: white;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 10px;
+            padding: 2px 8px;
+            border-radius: 8px;
             z-index: 10;
             letter-spacing: 1px;
             white-space: nowrap;
@@ -342,8 +388,8 @@
         .team-row {
             display: flex;
             align-items: center;
-            padding: 0.45rem 1rem;
-            gap: 10px;
+            padding: 0.35rem 0.8rem;
+            gap: 8px;
             border-bottom: 1px solid var(--border);
             transition: all 0.2s;
             flex: 1;
@@ -354,32 +400,32 @@
         .team-row.winner .team-n { color: var(--primary); font-weight: 700; }
 
         .team-logo-sm {
-            width: 28px; height: 28px;
-            border-radius: 6px;
+            width: 24px; height: 24px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             color: white;
             flex-shrink: 0;
         }
 
-        .team-n { flex: 1; font-weight: 500; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .team-n { flex: 1; font-weight: 500; font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .team-s {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            min-width: 20px;
+            font-size: 0.8rem;
+            min-width: 18px;
             text-align: center;
         }
 
         .match-time {
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-muted);
-            padding: 0.2rem;
+            padding: 0.15rem;
             background: rgba(139, 92, 246, 0.05);
             border-top: 1px solid var(--border);
             flex-shrink: 0;
@@ -411,298 +457,133 @@
         .winner-card {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(167, 139, 250, 0.1));
             border: 2px solid var(--primary);
-            border-radius: 16px;
-            padding: 1.2rem;
+            border-radius: 14px;
+            padding: 1rem;
             text-align: center;
             width: 100%;
-            height: 120px;
+            height: 100px;
             position: absolute;
             left: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 0.3rem;
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+            gap: 0.2rem;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
         }
 
         .winner-crown {
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: #fbbf24;
-            filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5));
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5));
         }
 
         .winner-label {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--primary);
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         .winner-name {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 900;
             color: white;
         }
 
         .winner-time {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
         }
 
         /* Rest of styles */
-        .teams-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
-        .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
-        .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+        .teams-section { max-width: 1400px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+        .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
         .team-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transition: transform 0.3s; }
         .team-card:hover::before { transform: scaleX(1); }
-        .team-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 8px 30px rgba(139, 92, 246, 0.1); }
-        .tc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
-        .tc-logo { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; color: white; flex-shrink: 0; }
-        .tc-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
-        .tc-info span { font-size: 0.75rem; color: var(--text-muted); }
-        .tc-stats { display: flex; gap: 1rem; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--border); }
+        .team-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.1); }
+        .tc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem; }
+        .tc-logo { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: white; flex-shrink: 0; }
+        .tc-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
+        .tc-info span { font-size: 0.7rem; color: var(--text-muted); }
+        .tc-stats { display: flex; gap: 1rem; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--border); }
         .tc-stat { text-align: center; flex: 1; }
-        .tc-stat .v { font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--primary); font-size: 1rem; }
-        .tc-stat .l { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .tc-btn { width: 100%; margin-top: 1rem; padding: 0.6rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--border); color: var(--primary); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .tc-stat .v { font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+        .tc-stat .l { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .tc-btn { width: 100%; margin-top: 0.8rem; padding: 0.5rem; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--border); color: var(--primary); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .tc-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .schedule-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
-        .schedule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
-        .sc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
-        .sc-card:hover { border-color: var(--border-hover); transform: translateX(4px); }
-        .sc-time { text-align: center; min-width: 65px; }
-        .sc-time .t { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1rem; color: var(--primary); }
-        .sc-time .d { font-size: 0.7rem; color: var(--text-muted); }
-        .sc-vs { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-        .sc-team { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; }
-        .sc-divider { font-family: 'Orbitron'; font-weight: 900; color: var(--primary); font-size: 0.75rem; }
-        .sc-status { padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .schedule-section { max-width: 1400px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .schedule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.8rem; }
+        .sc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; display: flex; align-items: center; gap: 0.8rem; transition: all 0.3s; }
+        .sc-card:hover { border-color: var(--border-hover); transform: translateX(3px); }
+        .sc-time { text-align: center; min-width: 55px; }
+        .sc-time .t { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--primary); }
+        .sc-time .d { font-size: 0.65rem; color: var(--text-muted); }
+        .sc-vs { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; }
+        .sc-team { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.8rem; min-width: 0; }
+        .sc-team span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sc-divider { font-family: 'Orbitron'; font-weight: 900; color: var(--primary); font-size: 0.7rem; flex-shrink: 0; }
+        .sc-status { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0; }
         .st-upcoming { background: rgba(139, 92, 246, 0.12); color: var(--primary); }
         .st-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); animation: blink 1.5s infinite; }
         .st-done { background: rgba(16, 185, 129, 0.12); color: var(--success); }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        .info-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem; }
-        .info-card h3 { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; }
+        .info-section { max-width: 1400px; margin: 2.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+        .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+        .info-card h3 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
         .info-card h3 i { color: var(--primary); }
-        .info-row { display: flex; justify-content: space-between; padding: 0.7rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .info-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
         .info-row:last-child { border-bottom: none; }
         .info-row .k { color: var(--text-muted); }
         .info-row .v { font-weight: 600; }
-        .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-top: 0.5rem; }
-        .partner-item { background: var(--bg); padding: 0.8rem; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); border: 1px solid var(--border); }
+        .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.5rem; }
+        .partner-item { background: var(--bg); padding: 0.7rem; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.75rem; color: var(--text-muted); border: 1px solid var(--border); }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem; }
         .modal-overlay.active { display: flex; }
-        .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease; }
+        .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease; }
         @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        .modal-header { padding: 1.8rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-        .modal-team { display: flex; align-items: center; gap: 14px; }
-        .modal-logo { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 700; color: white; }
-        .modal-team h2 { font-size: 1.2rem; }
-        .modal-team p { color: var(--text-muted); font-size: 0.85rem; }
-        .modal-close { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .modal-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .modal-team { display: flex; align-items: center; gap: 12px; }
+        .modal-logo { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; color: white; }
+        .modal-team h2 { font-size: 1.1rem; }
+        .modal-team p { color: var(--text-muted); font-size: 0.8rem; }
+        .modal-close { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         .modal-close:hover { background: var(--danger); color: white; border-color: var(--danger); }
-        .modal-body { padding: 1.8rem; }
-        .leader-box { background: var(--bg); border-radius: 12px; padding: 1.3rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
-        .leader-box h4 { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
+        .modal-body { padding: 1.5rem; }
+        .leader-box { background: var(--bg); border-radius: 10px; padding: 1.1rem; margin-bottom: 1.2rem; border: 1px solid var(--border); }
+        .leader-box h4 { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.8rem; }
         .leader-flex { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-        .leader-info { display: flex; align-items: center; gap: 12px; }
-        .leader-ava { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; }
-        .leader-n { font-weight: 700; }
-        .leader-r { font-size: 0.75rem; color: var(--text-muted); }
-        .wa-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #25d366, #128c7e); color: white; text-decoration: none; padding: 0.7rem 1.3rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: all 0.3s; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25); border: none; cursor: pointer; }
-        .wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4); }
+        .leader-info { display: flex; align-items: center; gap: 10px; }
+        .leader-ava { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 0.9rem; }
+        .leader-n { font-weight: 700; font-size: 0.9rem; }
+        .leader-r { font-size: 0.7rem; color: var(--text-muted); }
+        .wa-btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #25d366, #128c7e); color: white; text-decoration: none; padding: 0.6rem 1.1rem; border-radius: 8px; font-weight: 700; font-size: 0.8rem; transition: all 0.3s; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25); border: none; cursor: pointer; }
+        .wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
         .roster-table { width: 100%; border-collapse: collapse; }
-        .roster-table th { text-align: left; padding: 0.9rem; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); font-weight: 600; }
-        .roster-table td { padding: 0.9rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .roster-table th { text-align: left; padding: 0.7rem; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); font-weight: 600; }
+        .roster-table td { padding: 0.7rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
         .roster-table tr:last-child td { border-bottom: none; }
         .roster-table tr:hover td { background: rgba(139, 92, 246, 0.04); }
-        .role-tag { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .role-tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 5px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
         .role-exp { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
         .role-jungle { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
         .role-mid { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
         .role-gold { background: rgba(234, 179, 8, 0.12); color: #eab308; }
         .role-roam { background: rgba(139, 92, 246, 0.12); color: #8b5cf6; }
-        .wa-link { color: #25d366; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 500; transition: all 0.3s; }
-        .wa-link:hover { color: #128c7e; text-decoration: underline; }
 
-        .footer { background: var(--bg-card); border-top: 1px solid var(--border); margin-top: 4rem; padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
-        .footer-social { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
-        .footer-social a { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-decoration: none; transition: all 0.3s; border: 1px solid var(--border); }
+        .footer { background: var(--bg-card); border-top: 1px solid var(--border); margin-top: 3rem; padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+        .footer-social { display: flex; justify-content: center; gap: 0.8rem; margin-top: 0.8rem; }
+        .footer-social a { width: 36px; height: 36px; border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-decoration: none; transition: all 0.3s; border: 1px solid var(--border); }
         .footer-social a:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
-
-        .logo-img {
-            height: 44px;
-            width: auto;
-            border-radius: 8px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
-        }
-        .sc-status-edit {
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px dashed var(--primary);
-            background: rgba(139, 92, 246, 0.15);
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Poppins', sans-serif;
-        }
-        .sc-status-edit:hover {
-            background: var(--primary);
-            color: white;
-            border-style: solid;
-        }
-        .sc-status-edit.st-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); border-color: var(--danger); }
-        .sc-status-edit.st-live:hover { background: var(--danger); color: white; }
-        .sc-status-edit.st-done { background: rgba(16, 185, 129, 0.12); color: var(--success); border-color: var(--success); }
-        .sc-status-edit.st-done:hover { background: var(--success); color: white; }
-
-        
-        .sc-status-select {
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px solid var(--primary);
-            background: rgba(139, 92, 246, 0.15);
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Poppins', sans-serif;
-            outline: none;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            padding-right: 26px;
-        }
-        .sc-status-select:hover {
-            background: var(--primary);
-            color: white;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-        }
-        .sc-status-select:focus {
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-        .sc-status-select option {
-            background: var(--bg-card);
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-        .sc-status-select option[value="live"] {
-            color: var(--danger);
-        }
-        .sc-status-select option[value="done"] {
-            color: var(--success);
-        }
-
-        @media (max-width: 968px) {
-            .hero { grid-template-columns: 1fr; text-align: center; }
-            .hero-badges { justify-content: center; }
-            .info-section { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-            .bracket-tree { min-width: 900px; height: 440px; }
-            .match-card { height: 80px; }
-            .team-row { padding: 0.35rem 0.8rem; }
-            .connector-col { width: 50px; }
-            .winner-card { height: 100px; padding: 1rem; }
-        }
-        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
-        .logo-img {
-            height: 44px;
-            width: auto;
-            border-radius: 8px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
-        }
-        .sc-status-edit {
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px dashed var(--primary);
-            background: rgba(139, 92, 246, 0.15);
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Poppins', sans-serif;
-        }
-        .sc-status-edit:hover {
-            background: var(--primary);
-            color: white;
-            border-style: solid;
-        }
-        .sc-status-edit.st-live { background: rgba(239, 68, 68, 0.15); color: var(--danger); border-color: var(--danger); }
-        .sc-status-edit.st-live:hover { background: var(--danger); color: white; }
-        .sc-status-edit.st-done { background: rgba(16, 185, 129, 0.12); color: var(--success); border-color: var(--success); }
-        .sc-status-edit.st-done:hover { background: var(--success); color: white; }
-
-        
-        .sc-status-select {
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px solid var(--primary);
-            background: rgba(139, 92, 246, 0.15);
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Poppins', sans-serif;
-            outline: none;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            padding-right: 26px;
-        }
-        .sc-status-select:hover {
-            background: var(--primary);
-            color: white;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-        }
-        .sc-status-select:focus {
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-        .sc-status-select option {
-            background: var(--bg-card);
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-        .sc-status-select option[value="live"] {
-            color: var(--danger);
-        }
-        .sc-status-select option[value="done"] {
-            color: var(--success);
-        }
-
-        @media (max-width: 968px) { .mobile-menu-btn { display: block; } }
 
         .score-input {
             background: transparent;
@@ -710,8 +591,8 @@
             color: var(--text-muted);
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 0.85rem;
-            width: 30px;
+            font-size: 0.8rem;
+            width: 28px;
             text-align: center;
             cursor: default;
             outline: none;
@@ -720,13 +601,13 @@
         .score-input.admin-mode {
             background: rgba(139,92,246,0.15);
             border: 1px solid var(--primary);
-            border-radius: 6px;
+            border-radius: 5px;
             color: var(--primary);
             cursor: text;
-            padding: 0.15rem 0.3rem;
+            padding: 0.1rem 0.25rem;
         }
         .score-input.admin-mode:focus {
-            box-shadow: 0 0 0 3px rgba(139,92,246,0.2);
+            box-shadow: 0 0 0 2px rgba(139,92,246,0.2);
         }
         .score-input::-webkit-inner-spin-button,
         .score-input::-webkit-outer-spin-button {
@@ -742,19 +623,19 @@
         }
         .match-card.admin-mode:hover {
             border-color: var(--primary);
-            box-shadow: 0 5px 20px rgba(139,92,246,0.15);
+            box-shadow: 0 5px 15px rgba(139,92,246,0.15);
         }
         .match-card .edit-hint {
             display: none;
             position: absolute;
-            bottom: -22px;
+            bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--primary);
             white-space: nowrap;
             background: var(--bg-card);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
             border: 1px solid var(--border);
         }
@@ -769,12 +650,12 @@
             right: 0;
             background: linear-gradient(90deg, var(--primary), #6d28d9);
             color: white;
-            padding: 0.5rem 2rem;
+            padding: 0.5rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 9999;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             transform: translateY(-100%);
             transition: transform 0.3s;
@@ -784,11 +665,11 @@
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 0.3rem 0.8rem;
+            padding: 0.25rem 0.7rem;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: all 0.3s;
         }
         .admin-bar button:hover { background: rgba(255,255,255,0.3); }
@@ -808,41 +689,41 @@
         .login-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2.5rem;
+            border-radius: 16px;
+            padding: 2rem;
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             position: relative;
         }
         .login-box h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
             color: white;
         }
         .login-box p {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+            margin-bottom: 1.2rem;
         }
         .login-box .logo-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 1.5rem;
-            font-size: 1.8rem;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1.2rem;
+            font-size: 1.5rem;
         }
         .login-input {
             width: 100%;
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1rem;
             background: var(--bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 10px;
             color: var(--text);
             font-size: 1rem;
             font-family: 'Poppins', sans-serif;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             outline: none;
             transition: all 0.3s;
         }
@@ -852,13 +733,13 @@
         }
         .login-btn {
             width: 100%;
-            padding: 0.9rem;
+            padding: 0.8rem;
             background: linear-gradient(135deg, var(--primary), #6d28d9);
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             color: white;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
@@ -869,20 +750,20 @@
         }
         .login-error {
             color: var(--danger);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             margin-top: 0.5rem;
             display: none;
         }
         .login-error.active { display: block; }
 
         .guest-btn {
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1rem;
             background: transparent;
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 10px;
             color: var(--text-muted);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
@@ -895,10 +776,10 @@
         }
         .login-close-x {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 32px;
-            height: 32px;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
             border: 1px solid var(--border);
             background: transparent;
@@ -911,25 +792,123 @@
         }
         .login-close-x:hover { background: var(--danger); color: white; border-color: var(--danger); }
         .firebase-status {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
-            margin-top: 0.8rem;
+            margin-top: 0.6rem;
         }
         .firebase-status.offline { color: #ef4444; }
         .firebase-status.online { color: #10b981; }
+
+        .sc-status-select {
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--primary);
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            padding-right: 24px;
+        }
+        .sc-status-select:hover {
+            background: var(--primary);
+            color: white;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+        .sc-status-select:focus {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        .sc-status-select option {
+            background: var(--bg-card);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .sc-status-select option[value="live"] { color: var(--danger); }
+        .sc-status-select option[value="done"] { color: var(--success); }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        @media (max-width: 968px) {
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .hero-badges { justify-content: center; }
+            .prize-card { margin: 0 auto; max-width: 280px; }
+            .info-section { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .bracket-tree { min-width: 800px; height: 420px; }
+            .match-card { height: 72px; }
+            .team-row { padding: 0.3rem 0.6rem; }
+            .connector-col { width: 40px; }
+            .winner-card { height: 90px; padding: 0.8rem; }
+            .round-col { width: 150px; }
+            .winner-col { width: 130px; }
+        }
+
+        @media (max-width: 640px) {
+            .hero h2 { font-size: 1.5rem; }
+            .hero .subtitle { font-size: 0.8rem; }
+            .section-title { font-size: 0.9rem; padding: 0 1rem; }
+            .bracket-section, .teams-section, .schedule-section, .info-section { padding: 0 1rem; }
+            .bracket-wrapper { padding: 1rem 0.5rem; border-radius: 12px; }
+            .bracket-tree { min-width: 700px; height: 380px; }
+            .match-card { height: 68px; border-radius: 8px; }
+            .team-row { padding: 0.25rem 0.5rem; gap: 6px; }
+            .team-logo-sm { width: 22px; height: 22px; font-size: 0.6rem; }
+            .team-n { font-size: 0.75rem; }
+            .team-s { font-size: 0.75rem; }
+            .match-tag { font-size: 0.55rem; padding: 1px 6px; top: -7px; }
+            .match-time { font-size: 0.5rem; }
+            .round-header h3 { font-size: 0.65rem; }
+            .round-header span { font-size: 0.55rem; }
+            .round-col { width: 135px; }
+            .connector-col { width: 35px; }
+            .winner-col { width: 115px; }
+            .winner-card { height: 80px; padding: 0.6rem; }
+            .winner-crown { font-size: 1.2rem; }
+            .winner-name { font-size: 0.7rem; }
+            .winner-label { font-size: 0.55rem; }
+            .winner-time { font-size: 0.55rem; }
+            .schedule-grid { grid-template-columns: 1fr; }
+            .sc-card { padding: 0.8rem; }
+            .sc-time .t { font-size: 0.8rem; }
+            .sc-team { font-size: 0.75rem; }
+            .sc-divider { font-size: 0.65rem; }
+            .teams-grid { grid-template-columns: 1fr; }
+            .info-card { padding: 1.2rem; }
+            .nav { padding: 0.8rem 1rem; }
+            .logo-icon { width: 36px; height: 36px; font-size: 1rem; }
+            .logo-text h1 { font-size: 0.9rem; }
+            .logo-text span { font-size: 0.6rem; }
+            .modal { max-width: 95vw; }
+            .modal-header { padding: 1.2rem; }
+            .modal-body { padding: 1.2rem; }
+            .leader-flex { flex-direction: column; align-items: flex-start; }
+            .login-box { padding: 1.5rem; }
+            .admin-bar { padding: 0.4rem 1rem; font-size: 0.75rem; }
+        }
     </style>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js?v=2"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js?v=2"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js?v=3"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js?v=3"></script>
 <base target="_blank">
 </head>
 <body>
     <div class="bg-glow"></div>
     <div class="admin-bar" id="adminBar">
         <span><i class="fas fa-shield-alt"></i> ADMIN MODE - Score Input Aktif</span>
-        <button onclick="adminLogout()" type="button"><i class="fas fa-sign-out-alt"></i> Keluar Admin</button>
+        <button onclick="adminLogout()" type="button"><i class="fas fa-sign-out-alt"></i> Keluar</button>
     </div>
 
     <div class="login-modal" id="loginModal" onclick="if(event.target === this) guestLogin();">
@@ -939,10 +918,10 @@
             <h2>Admin Login</h2>
             <p>Masukkan password untuk mengubah score pertandingan</p>
             <input type="password" class="login-input" id="loginPass" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()">
-            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
-            <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
+            <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> Password salah! <span style="color: var(--text-muted); font-size: 0.7rem; display: block; margin-top: 4px;">Hint: yume30</span></div>
+            <div style="display: flex; gap: 0.6rem; margin-top: 0.5rem;">
                 <button class="login-btn" onclick="adminLogin()" type="button" style="flex: 1;">Masuk</button>
-                <button class="guest-btn" onclick="guestLogin()" type="button">Lihat sebagai Guest</button>
+                <button class="guest-btn" onclick="guestLogin()" type="button">Guest</button>
             </div>
             <div class="firebase-status" id="firebaseStatus">Menghubungkan ke Firebase...</div>
         </div>
@@ -951,7 +930,7 @@
     <header class="header">
         <nav class="nav">
             <div class="logo">
-                <img src="image.png" alt="Yume Store" class="logo-img">
+                <div class="logo-icon"><i class="fas fa-fire"></i></div>
                 <div class="logo-text">
                     <h1>PHOENIX CUP</h1>
                     <span>SEASON 1</span>
@@ -964,8 +943,15 @@
                 <li><a href="#jadwal">Jadwal</a></li>
                 <li><a href="#info">Info</a></li>
             </ul>
-            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
         </nav>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="#beranda" class="active" onclick="closeMobileMenu()">Beranda</a>
+            <a href="#turnamen" onclick="closeMobileMenu()">Turnamen</a>
+            <a href="#tim" onclick="closeMobileMenu()">Tim</a>
+            <a href="#jadwal" onclick="closeMobileMenu()">Jadwal</a>
+            <a href="#info" onclick="closeMobileMenu()">Info</a>
+        </div>
     </header>
 
     <section class="hero" id="beranda">
@@ -1061,11 +1047,11 @@
                             </div>
                         </div>
                         <a href="#" class="wa-btn" id="leaderWA" target="_blank">
-                            <i class="fab fa-whatsapp"></i> Hubungi Leader
+                            <i class="fab fa-whatsapp"></i> Hubungi
                         </a>
                     </div>
                 </div>
-                <h4 style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Roster Pemain</h4>
+                <h4 style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Roster Pemain</h4>
                 <table class="roster-table">
                     <thead><tr><th>No</th><th>Role</th><th>Nama</th></tr></thead>
                     <tbody id="rosterBody"></tbody>
@@ -1133,48 +1119,29 @@
             gf: { id: "GF", t1: null, t2: null, time: "22 MEI - 20:00 WIB", s1: null, s2: null, w: null }
         };
 
+        // Default schedule status map (by match id) - this is the ONLY thing that persists independently
+        const defaultScheduleStatus = {
+            "QF1": "done", "QF2": "done", "QF3": "done", "QF4": "done",
+            "SF1": "upcoming", "SF2": "upcoming", "GF": "upcoming"
+        };
+
         // ===== STATE =====
         let isAdmin = false;
         const ADMIN_PASSWORD = 'yume30';
         let bracket = JSON.parse(JSON.stringify(defaultBracket));
+        let scheduleStatus = JSON.parse(JSON.stringify(defaultScheduleStatus));
         let db = null;
         let bracketRef = null;
-        let scheduleRef = null;
+        let scheduleStatusRef = null;
         let firebaseOnline = false;
-        let scheduleData = null;
+        let dataLoaded = false;
 
-        // Load scheduleData from localStorage
-        function loadScheduleData() {
-            try {
-                const saved = localStorage.getItem('phoenixCup_schedule');
-                if (saved) {
-                    scheduleData = JSON.parse(saved);
-                }
-            } catch (e) {
-                console.warn('Failed to load schedule from localStorage');
-            }
-        }
-
-        // Save scheduleData to localStorage
-        function saveScheduleData() {
-            // Save to localStorage as backup
-            try {
-                localStorage.setItem('phoenixCup_schedule', JSON.stringify(scheduleData));
-            } catch (e) {
-                console.warn('Failed to save schedule to localStorage');
-            }
-            // Save to Firebase for real-time sync
-            if (firebaseOnline && scheduleRef) {
-                scheduleRef.set(scheduleData);
-            }
-        }
-
-        // ===== FIREBASE INIT (with fallback) =====
+        // ===== FIREBASE INIT =====
         function initFirebase() {
             const statusEl = document.getElementById('firebaseStatus');
             try {
                 if (typeof firebase === 'undefined') {
-                    throw new Error('Firebase SDK tidak ter-load. Cek koneksi internet atau ad-blocker.');
+                    throw new Error('Firebase SDK tidak ter-load.');
                 }
                 const firebaseConfig = {
                     apiKey: "AIzaSyClv4xQB48RwQc5UQazz6wP8ttu1M4SmKg",
@@ -1188,14 +1155,13 @@
                 firebase.initializeApp(firebaseConfig);
                 db = firebase.database();
                 bracketRef = db.ref('bracket');
-                scheduleRef = db.ref('schedule');
+                scheduleStatusRef = db.ref('scheduleStatus');
                 firebaseOnline = true;
                 if (statusEl) {
                     statusEl.textContent = 'Terhubung ke Firebase (Online)';
                     statusEl.className = 'firebase-status online';
                 }
-                loadBracketFromFirebase();
-                loadScheduleFromFirebase();
+                loadFromFirebase();
             } catch (err) {
                 console.warn('Firebase gagal:', err.message);
                 firebaseOnline = false;
@@ -1203,15 +1169,44 @@
                     statusEl.textContent = 'Mode Offline - Data lokal aktif';
                     statusEl.className = 'firebase-status offline';
                 }
-                // Tetap render pakai data default
-                renderBracket();
-                renderTeams();
-                renderSchedule();
+                loadFromLocalStorage();
+                renderAll();
             }
         }
 
-        function loadBracketFromFirebase() {
-            if (!bracketRef) return;
+        function loadFromLocalStorage() {
+            try {
+                const savedBracket = localStorage.getItem('phoenixCup_bracket');
+                const savedStatus = localStorage.getItem('phoenixCup_scheduleStatus');
+                if (savedBracket) bracket = JSON.parse(savedBracket);
+                if (savedStatus) scheduleStatus = JSON.parse(savedStatus);
+            } catch (e) {
+                console.warn('LocalStorage load failed');
+            }
+        }
+
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('phoenixCup_bracket', JSON.stringify(bracket));
+                localStorage.setItem('phoenixCup_scheduleStatus', JSON.stringify(scheduleStatus));
+            } catch (e) {
+                console.warn('LocalStorage save failed');
+            }
+        }
+
+        function loadFromFirebase() {
+            if (!bracketRef || !scheduleStatusRef) return;
+
+            let bracketReady = false;
+            let statusReady = false;
+
+            const checkReady = () => {
+                if (bracketReady && statusReady) {
+                    dataLoaded = true;
+                    renderAll();
+                }
+            };
+
             bracketRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
@@ -1219,40 +1214,26 @@
                 } else {
                     bracketRef.set(bracket);
                 }
-                renderBracket();
-                renderSchedule();
+                bracketReady = true;
+                checkReady();
             });
-        }
 
-        function loadScheduleFromFirebase() {
-            if (!scheduleRef) return;
-            scheduleRef.on('value', (snapshot) => {
+            scheduleStatusRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    scheduleData = data;
+                    scheduleStatus = data;
                 } else {
-                    // Initialize with defaults if empty
-                    if (!scheduleData) {
-                        scheduleData = [
-                            { time: "13:00", date: "18 MEI", t1: 1, t2: 2, status: "done" },
-                            { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
-                            { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
-                            { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
-                            { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2, status: "upcoming" },
-                            { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: "upcoming" },
-                            { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2, status: "upcoming" }
-                        ];
-                    }
-                    scheduleRef.set(scheduleData);
+                    scheduleStatusRef.set(scheduleStatus);
                 }
-                renderSchedule();
+                statusReady = true;
+                checkReady();
             });
         }
 
-        function saveBracket() {
-            if (firebaseOnline && bracketRef) {
-                bracketRef.set(bracket);
-            }
+        function saveAll() {
+            saveToLocalStorage();
+            if (firebaseOnline && bracketRef) bracketRef.set(bracket);
+            if (firebaseOnline && scheduleStatusRef) scheduleStatusRef.set(scheduleStatus);
         }
 
         // ===== ADMIN FUNCTIONS =====
@@ -1270,9 +1251,7 @@
                 if (adminBar) adminBar.classList.add('active');
                 document.body.style.paddingTop = '40px';
                 errorDiv.classList.remove('active');
-                renderBracket();
-                renderTeams();
-                renderSchedule();
+                renderAll();
             } else {
                 errorDiv.classList.add('active');
                 passInput.value = '';
@@ -1287,9 +1266,7 @@
             if (modal) modal.classList.add('hidden');
             if (errorDiv) errorDiv.classList.remove('active');
             document.body.style.paddingTop = '0';
-            renderBracket();
-            renderTeams();
-            renderSchedule();
+            renderAll();
         }
 
         function adminLogout() {
@@ -1297,18 +1274,25 @@
             const adminBar = document.getElementById('adminBar');
             if (adminBar) adminBar.classList.remove('active');
             document.body.style.paddingTop = '0';
-            renderBracket();
-            renderTeams();
-            renderSchedule();
+            renderAll();
+        }
+
+        // ===== MOBILE MENU =====
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mobileNav');
+            nav.classList.toggle('active');
+        }
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').classList.remove('active');
         }
 
         // ===== BRACKET LAYOUT MATH =====
-        const CONTAINER_H = 520;
-        const HEADER_H = 50;
-        const MATCH_H = 90;
-        const WINNER_H = 120;
+        const CONTAINER_H = 480;
+        const HEADER_H = 40;
+        const MATCH_H = 80;
+        const WINNER_H = 100;
         const AREA_H = CONTAINER_H - HEADER_H;
-        const CONN_W = 60;
+        const CONN_W = 50;
 
         const qfGap = (AREA_H - 4 * MATCH_H) / 5;
         const qfTops = [
@@ -1485,8 +1469,8 @@
                 bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
             }
 
-            saveBracket();
-            renderBracket();
+            saveAll();
+            renderAll();
         }
 
         function updateScore(round, idx, team, value) {
@@ -1500,7 +1484,7 @@
             if (team === 1) match.s1 = val;
             else match.s2 = val;
 
-            saveBracket();
+            saveAll();
         }
 
         function renderTeams() {
@@ -1527,42 +1511,34 @@
             `).join('');
         }
 
-        function renderSchedule() {
-            // Load from localStorage if available
-            if (!scheduleData) {
-                loadScheduleData();
-            }
-            // Initialize defaults only if still no data
-            if (!scheduleData) {
-                scheduleData = [
-                    { time: "13:00", date: "18 MEI", t1: 1, t2: 2, status: "done" },
-                    { time: "14:30", date: "18 MEI", t1: 3, t2: 4, status: "done" },
-                    { time: "16:00", date: "18 MEI", t1: 5, t2: 6, status: "done" },
-                    { time: "17:30", date: "18 MEI", t1: 7, t2: 8, status: "done" },
-                    { time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2, status: "upcoming" },
-                    { time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: "upcoming" },
-                    { time: "20:00", date: "22 MEI", t1: bracket.gf.t1, t2: bracket.gf.t2, status: "upcoming" }
-                ];
-                saveScheduleData();
-            }
-            // Update dynamic team references
-            scheduleData[4].t1 = bracket.sf[0].t1; scheduleData[4].t2 = bracket.sf[0].t2;
-            scheduleData[5].t1 = bracket.sf[1].t1; scheduleData[5].t2 = bracket.sf[1].t2;
-            scheduleData[6].t1 = bracket.gf.t1; scheduleData[6].t2 = bracket.gf.t2;
-            const schedule = scheduleData;
+        // Schedule is DERIVED from bracket + scheduleStatus map
+        // This ensures team references always match bracket, but status is independently controlled
+        function getScheduleItems() {
+            return [
+                { id: "QF1", time: "13:00", date: "18 MEI", t1: bracket.qf[0].t1, t2: bracket.qf[0].t2, status: scheduleStatus["QF1"] || "upcoming" },
+                { id: "QF2", time: "14:30", date: "18 MEI", t1: bracket.qf[1].t1, t2: bracket.qf[1].t2, status: scheduleStatus["QF2"] || "upcoming" },
+                { id: "QF3", time: "16:00", date: "18 MEI", t1: bracket.qf[2].t1, t2: bracket.qf[2].t2, status: scheduleStatus["QF3"] || "upcoming" },
+                { id: "QF4", time: "17:30", date: "18 MEI", t1: bracket.qf[3].t1, t2: bracket.qf[3].t2, status: scheduleStatus["QF4"] || "upcoming" },
+                { id: "SF1", time: "13:00", date: "19 MEI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2, status: scheduleStatus["SF1"] || "upcoming" },
+                { id: "SF2", time: "14:30", date: "19 MEI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2, status: scheduleStatus["SF2"] || "upcoming" },
+                { id: "GF",  time: "20:00", date: "22 MEI", t1: bracket.gf.t1,    t2: bracket.gf.t2,    status: scheduleStatus["GF"]  || "upcoming" }
+            ];
+        }
 
+        function renderSchedule() {
+            const schedule = getScheduleItems();
             const grid = document.getElementById('scheduleGrid');
             if (!grid) return;
+
             grid.innerHTML = schedule.map((s, idx) => {
                 const a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
                 const b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
                 const st = s.status === 'live' ? 'st-live' : s.status === 'done' ? 'st-done' : 'st-upcoming';
                 const stText = s.status === 'live' ? 'ONGOING' : s.status === 'done' ? 'SELESAI' : 'AKAN DATANG';
 
-                // Admin gets a dropdown select, guest gets static badge
                 let statusEl;
                 if (isAdmin) {
-                    statusEl = `<select class="sc-status-select" onchange="setScheduleStatus(${idx}, this.value, event)" title="Pilih status pertandingan">
+                    statusEl = `<select class="sc-status-select" onchange="setScheduleStatus('${s.id}', this.value, event)" title="Pilih status pertandingan">
                         <option value="upcoming" ${s.status === 'upcoming' ? 'selected' : ''}>AKAN DATANG</option>
                         <option value="live" ${s.status === 'live' ? 'selected' : ''}>ONGOING</option>
                         <option value="done" ${s.status === 'done' ? 'selected' : ''}>SELESAI</option>
@@ -1590,11 +1566,11 @@
             }).join('');
         }
 
-        function setScheduleStatus(idx, status, e) {
+        function setScheduleStatus(matchId, status, e) {
             if (e) e.stopPropagation();
             if (!isAdmin) return;
-            scheduleData[idx].status = status;
-            saveScheduleData();
+            scheduleStatus[matchId] = status;
+            saveAll();
             renderSchedule();
         }
 
@@ -1635,10 +1611,15 @@
             });
         });
 
+        function renderAll() {
+            renderBracket();
+            renderTeams();
+            renderSchedule();
+        }
+
         // ===== INIT =====
         initFirebase();
         renderTeams();
-        renderSchedule();
     </script>
 </body>
 </html>
