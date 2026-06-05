@@ -922,111 +922,7 @@
     </div>
 
     <script>
-        // Firebase Configuration - REAL CONFIG FROM FIREBASE CONSOLE
-        const firebaseConfig = {
-            apiKey: "AIzaSyClv4xQB48RwQc5UQazz6wP8ttu1M4SmKg",
-            authDomain: "phoenix-cup-s1.firebaseapp.com",
-            databaseURL: "https://phoenix-cup-s1-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "phoenix-cup-s1",
-            storageBucket: "phoenix-cup-s1.firebasestorage.app",
-            messagingSenderId: "1098346610922",
-            appId: "1:1098346610922:web:0f2000413780fe47afd793"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        let isAdmin = false;
-        const ADMIN_PASSWORD = 'yume30';
-
-        function adminLogin() {
-            const passInput = document.getElementById('loginPass');
-            const errorDiv = document.getElementById('loginError');
-            const modal = document.getElementById('loginModal');
-            if (!passInput || !modal) return;
-
-            const pass = passInput.value.trim();
-
-            if (pass === ADMIN_PASSWORD) {
-                isAdmin = true;
-                modal.style.display = 'none';
-                const adminBar = document.getElementById('adminBar');
-                if (adminBar) adminBar.classList.add('active');
-                document.body.style.paddingTop = '40px';
-                errorDiv.classList.remove('active');
-                renderBracket();
-                renderTeams();
-                renderSchedule();
-            } else {
-                errorDiv.classList.add('active');
-                passInput.value = '';
-                passInput.focus();
-            }
-        }
-
-        function guestLogin() {
-            isAdmin = false;
-            const modal = document.getElementById('loginModal');
-            const errorDiv = document.getElementById('loginError');
-            if (modal) modal.style.display = 'none';
-            if (errorDiv) errorDiv.classList.remove('active');
-            renderBracket();
-            renderTeams();
-            renderSchedule();
-        }
-
-        function adminLogout() {
-            isAdmin = false;
-            const adminBar = document.getElementById('adminBar');
-            if (adminBar) adminBar.classList.remove('active');
-            document.body.style.paddingTop = '0';
-            renderBracket();
-            renderTeams();
-            renderSchedule();
-        }
-
-        function handleModalClick(e) {
-            if (e.target.id === 'loginModal') {
-                guestLogin();
-            }
-        }
-
-        function handleModalClick(e) {
-            if (e.target.id === 'loginModal') {
-                guestLogin();
-            }
-        }
-
-        function setupEventListeners() {
-            const loginBtn = document.querySelector('.login-btn');
-            const guestBtn = document.querySelector('.guest-btn');
-            const logoutBtn = document.querySelector('#adminBar button');
-            const modal = document.getElementById('loginModal');
-            const passInput = document.getElementById('loginPass');
-
-            if (loginBtn) loginBtn.addEventListener('click', adminLogin);
-            if (guestBtn) guestBtn.addEventListener('click', guestLogin);
-            if (logoutBtn) logoutBtn.addEventListener('click', adminLogout);
-            if (modal) modal.addEventListener('click', handleModalClick);
-            if (passInput) {
-                passInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') adminLogin();
-                });
-            }
-        }
-
-        // Run setup when DOM is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', setupEventListeners);
-        } else {
-            setupEventListeners();
-        }
-
-        const bracketRef = db.ref('bracket');
-
-        const ADMIN_HASH = 'e3ca144d6c3fc440';
-        let bracket = null; // Will be loaded from Firebase
-
+        // ===== DATA =====
         const teams = [
             { id: 1, name: "Team Alpha", short: "TA", bg: "linear-gradient(135deg, #8b5cf6, #6d28d9)", leader: { name: "Rizky Pratama", wa: "081234567890" }, roster: [
                 { role: "EXP", name: "Rizky Pratama", wa: "081234567890" }, { role: "JUNGLE", name: "Dimas Maulana", wa: "082134567891" },
@@ -1070,68 +966,171 @@
             ]}
         ];
 
-        // Load bracket from Firebase (real-time)
+        const defaultBracket = {
+            qf: [
+                { id: "QF1", t1: 1, t2: 2, time: "5 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
+                { id: "QF2", t1: 3, t2: 4, time: "5 JUNI - 14:30 WIB", s1: null, s2: null, w: null },
+                { id: "QF3", t1: 5, t2: 6, time: "5 JUNI - 16:00 WIB", s1: null, s2: null, w: null },
+                { id: "QF4", t1: 7, t2: 8, time: "5 JUNI - 17:30 WIB", s1: null, s2: null, w: null }
+            ],
+            sf: [
+                { id: "SF1", t1: null, t2: null, time: "6 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
+                { id: "SF2", t1: null, t2: null, time: "6 JUNI - 14:30 WIB", s1: null, s2: null, w: null }
+            ],
+            gf: { id: "GF", t1: null, t2: null, time: "8 JUNI - 20:00 WIB", s1: null, s2: null, w: null }
+        };
+
+        // ===== STATE =====
+        let isAdmin = false;
+        const ADMIN_PASSWORD = 'yume30';
+        let bracket = JSON.parse(JSON.stringify(defaultBracket));
+        let db = null;
+        let bracketRef = null;
+        let firebaseOnline = false;
+
+        // ===== REAL-TIME HELPERS =====
+        function getWIBDate() {
+            return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+        }
+
+        function parseMatchDateTime(dateStr, timeStr) {
+            const monthMap = { 'JAN': 0, 'FEB': 1, 'MAR': 2, 'APR': 3, 'MEI': 4, 'JUN': 5, 'JUL': 6, 'AGU': 7, 'SEP': 8, 'OKT': 9, 'NOV': 10, 'DES': 11 };
+            const dp = dateStr.trim().split(/\s+/);
+            const day = parseInt(dp[0]);
+            const month = monthMap[(dp[1] || 'JUN').toUpperCase()] ?? 5;
+            const year = dp[2] ? parseInt(dp[2]) : new Date().getFullYear();
+            const tp = timeStr.trim().split(':');
+            const hour = parseInt(tp[0]);
+            const minute = parseInt(tp[1]);
+            return new Date(year, month, day, hour, minute, 0);
+        }
+
+        function getMatchStatusRealTime(dateStr, timeStr) {
+            const now = getWIBDate();
+            const matchTime = parseMatchDateTime(dateStr, timeStr);
+            const diffMs = now.getTime() - matchTime.getTime();
+            const diffHours = diffMs / (1000 * 60 * 60);
+            if (diffHours < -1) return 'upcoming';
+            if (diffHours >= -1 && diffHours <= 2) return 'live';
+            return 'done';
+        }
+
+        // ===== LIVE CLOCK =====
+        function updateLiveClock() {
+            const now = getWIBDate();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const mo = ['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV','DES'][now.getMonth()];
+            const y = now.getFullYear();
+            const clockTime = document.getElementById('clockTime');
+            const clockDate = document.getElementById('clockDate');
+            if (clockTime) clockTime.textContent = h + ':' + m + ':' + s + ' WIB';
+            if (clockDate) clockDate.textContent = d + ' ' + mo + ' ' + y;
+        }
+
+        // ===== FIREBASE =====
+        function initFirebase() {
+            const statusEl = document.getElementById('firebaseStatus');
+            try {
+                if (typeof firebase === 'undefined') throw new Error('Firebase SDK tidak ter-load');
+                const firebaseConfig = {
+                    apiKey: "AIzaSyClv4xQB48RwQc5UQazz6wP8ttu1M4SmKg",
+                    authDomain: "phoenix-cup-s1.firebaseapp.com",
+                    databaseURL: "https://phoenix-cup-s1-default-rtdb.asia-southeast1.firebasedatabase.app",
+                    projectId: "phoenix-cup-s1",
+                    storageBucket: "phoenix-cup-s1.firebasestorage.app",
+                    messagingSenderId: "1098346610922",
+                    appId: "1:1098346610922:web:0f2000413780fe47afd793"
+                };
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+                bracketRef = db.ref('bracket');
+                firebaseOnline = true;
+                if (statusEl) { statusEl.textContent = 'Terhubung ke Firebase (Online)'; statusEl.className = 'firebase-status online'; }
+                loadBracketFromFirebase();
+            } catch (err) {
+                console.warn('Firebase gagal:', err.message);
+                firebaseOnline = false;
+                if (statusEl) { statusEl.textContent = 'Mode Offline - Data lokal aktif'; statusEl.className = 'firebase-status offline'; }
+                renderAll();
+            }
+        }
+
         function loadBracketFromFirebase() {
+            if (!bracketRef) return;
             bracketRef.on('value', (snapshot) => {
                 const data = snapshot.val();
-                if (data) {
-                    bracket = data;
-                } else {
-                    // Initialize default bracket if none exists
-                    bracket = {
-                        qf: [
-                            { id: "QF1", t1: 1, t2: 2, time: "5 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
-                            { id: "QF2", t1: 3, t2: 4, time: "5 JUNI - 14:30 WIB", s1: null, s2: null, w: null },
-                            { id: "QF3", t1: 5, t2: 6, time: "5 JUNI - 16:00 WIB", s1: null, s2: null, w: null },
-                            { id: "QF4", t1: 7, t2: 8, time: "5 JUNI - 17:30 WIB", s1: null, s2: null, w: null }
-                        ],
-                        sf: [
-                            { id: "SF1", t1: null, t2: null, time: "6 JUNI - 13:00 WIB", s1: null, s2: null, w: null },
-                            { id: "SF2", t1: null, t2: null, time: "6 JUNI - 14:30 WIB", s1: null, s2: null, w: null }
-                        ],
-                        gf: { id: "GF", t1: null, t2: null, time: "8 JUNI - 20:00 WIB", s1: null, s2: null, w: null }
-                    };
-                    bracketRef.set(bracket);
-                }
-                renderBracket();
-                renderSchedule();
+                if (data) bracket = data;
+                else bracketRef.set(bracket);
+                renderAll();
             });
         }
 
-        function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
+        function saveBracket() {
+            if (firebaseOnline && bracketRef) bracketRef.set(bracket);
+        }
 
-        // ===== BRACKET LAYOUT MATH =====
-        const CONTAINER_H = 520;
-        const HEADER_H = 50;
-        const MATCH_H = 90;
-        const WINNER_H = 120;
-        const AREA_H = CONTAINER_H - HEADER_H; // 470
+        function renderAll() {
+            renderBracket();
+            renderTeams();
+            renderSchedule();
+        }
+
+        // ===== ADMIN =====
+        function adminLogin() {
+            const passInput = document.getElementById('loginPass');
+            const errorDiv = document.getElementById('loginError');
+            const modal = document.getElementById('loginModal');
+            if (!passInput || !modal) return;
+            if (passInput.value.trim() === ADMIN_PASSWORD) {
+                isAdmin = true;
+                modal.classList.add('hidden');
+                const adminBar = document.getElementById('adminBar');
+                if (adminBar) adminBar.classList.add('active');
+                document.body.style.paddingTop = '40px';
+                errorDiv.classList.remove('active');
+                renderAll();
+            } else {
+                errorDiv.classList.add('active');
+                passInput.value = '';
+                passInput.focus();
+            }
+        }
+
+        function guestLogin() {
+            isAdmin = false;
+            const modal = document.getElementById('loginModal');
+            const errorDiv = document.getElementById('loginError');
+            if (modal) modal.classList.add('hidden');
+            if (errorDiv) errorDiv.classList.remove('active');
+            document.body.style.paddingTop = '0';
+            renderAll();
+        }
+
+        function adminLogout() {
+            isAdmin = false;
+            const adminBar = document.getElementById('adminBar');
+            if (adminBar) adminBar.classList.remove('active');
+            document.body.style.paddingTop = '0';
+            renderAll();
+        }
+
+        // ===== BRACKET MATH =====
+        const CONTAINER_H = 520, HEADER_H = 50, MATCH_H = 90, WINNER_H = 120;
+        const AREA_H = CONTAINER_H - HEADER_H;
         const CONN_W = 60;
+        const qfGap = (AREA_H - 4 * MATCH_H) / 5;
+        const qfTops = [qfGap, qfGap + MATCH_H + qfGap, qfGap + 2*(MATCH_H + qfGap), qfGap + 3*(MATCH_H + qfGap)];
+        const qfCenters = qfTops.map(t => t + MATCH_H/2);
+        const sfCenters = [(qfCenters[0] + qfCenters[1])/2, (qfCenters[2] + qfCenters[3])/2];
+        const sfTops = sfCenters.map(c => c - MATCH_H/2);
+        const gfCenter = (sfCenters[0] + sfCenters[1])/2;
+        const gfTop = gfCenter - MATCH_H/2;
+        const winnerTop = gfCenter - WINNER_H/2;
 
-        // QF positions: evenly distributed in AREA_H
-        const qfGap = (AREA_H - 4 * MATCH_H) / 5; // (470-360)/5 = 22
-        const qfTops = [
-            qfGap,                                    // 22
-            qfGap + MATCH_H + qfGap,                  // 134
-            qfGap + 2*(MATCH_H + qfGap),              // 246
-            qfGap + 3*(MATCH_H + qfGap)               // 358
-        ];
-        const qfCenters = qfTops.map(t => t + MATCH_H/2); // [67, 179, 291, 403]
-
-        // SF positions: centered between QF pairs
-        const sfCenters = [
-            (qfCenters[0] + qfCenters[1]) / 2, // 123
-            (qfCenters[2] + qfCenters[3]) / 2  // 347
-        ];
-        const sfTops = sfCenters.map(c => c - MATCH_H/2); // [78, 302]
-
-        // GF center = midpoint of SF centers
-        const gfCenter = (sfCenters[0] + sfCenters[1]) / 2; // 235
-        const gfTop = gfCenter - MATCH_H/2; // 190
-
-        // Winner center = same as GF center
-        const winnerCenter = gfCenter; // 235
-        const winnerTop = winnerCenter - WINNER_H/2; // 175
+        function getTeam(id) { return teams.find(t => t.id === id) || { name: "TBD", short: "?", bg: "#2d2d44" }; }
 
         function renderMatchCard(m, top, onclick, round, idx) {
             const a = getTeam(m.t1), b = getTeam(m.t2);
@@ -1141,201 +1140,111 @@
             const s2Display = isAdmin ? `<input type="number" class="score-input admin-mode" value="${s2Val}" min="0" oninput="updateScore('${round}', ${idx}, 2, this.value)" onclick="event.stopPropagation()">` : `<span class="score-input">${m.s2 !== null ? m.s2 : '-'}</span>`;
             const adminClass = isAdmin ? 'admin-mode' : '';
             const editHint = isAdmin ? '<div class="edit-hint">Klik score untuk edit</div>' : '';
-
-            return `
-                <div class="match-card ${adminClass}" style="top: ${top}px;" onclick="${onclick}">
-                    <div class="match-tag">${m.id}</div>
-                    <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
-                        <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
-                        <div class="team-n">${a.name}</div>
-                        <div class="team-s">${s1Display}</div>
-                    </div>
-                    <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
-                        <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
-                        <div class="team-n">${b.name}</div>
-                        <div class="team-s">${s2Display}</div>
-                    </div>
-                    <div class="match-time">${m.time}</div>
-                    ${editHint}
-                </div>`;
+            return `<div class="match-card ${adminClass}" style="top: ${top}px;" onclick="${onclick}">
+                <div class="match-tag">${m.id}</div>
+                <div class="team-row ${m.w === m.t1 ? 'winner' : ''}">
+                    <div class="team-logo-sm" style="background: ${a.bg}">${a.short}</div>
+                    <div class="team-n">${a.name}</div>
+                    <div class="team-s">${s1Display}</div>
+                </div>
+                <div class="team-row ${m.w === m.t2 ? 'winner' : ''}">
+                    <div class="team-logo-sm" style="background: ${b.bg}">${b.short}</div>
+                    <div class="team-n">${b.name}</div>
+                    <div class="team-s">${s2Display}</div>
+                </div>
+                <div class="match-time">${m.time}</div>
+                ${editHint}
+            </div>`;
         }
 
         function renderBracket() {
             const tree = document.getElementById('bracketTree');
-
-            // QF Round
-            const qfHTML = `
-                <div class="round-col">
-                    <div class="round-header"><h3>QUARTER FINAL</h3><span>5 JUNI 2026</span></div>
-                    <div class="match-area">
-                        ${bracket.qf.map((m, i) => renderMatchCard(m, qfTops[i], `pickWinner('qf', ${i})`, 'qf', i)).join('')}
-                    </div>
-                </div>
-            `;
-
-            // Connector QF -> SF
-            const conn1HTML = `
-                <div class="connector-col">
-                    <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <div class="match-area">
-                        <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
-                            <!-- QF1 -> SF1 -->
-                            <line x1="0" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${qfCenters[0]}" class="${bracket.qf[0].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[0].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W}" y2="${sfCenters[0]}" class="${bracket.qf[0].w && bracket.qf[1].w ? 'active' : ''}"/>
-
-                            <!-- QF2 -> SF1 -->
-                            <line x1="0" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${qfCenters[1]}" class="${bracket.qf[1].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[1].w ? 'active' : ''}"/>
-
-                            <!-- QF3 -> SF2 -->
-                            <line x1="0" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${qfCenters[2]}" class="${bracket.qf[2].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[2].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W}" y2="${sfCenters[1]}" class="${bracket.qf[2].w && bracket.qf[3].w ? 'active' : ''}"/>
-
-                            <!-- QF4 -> SF2 -->
-                            <line x1="0" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${qfCenters[3]}" class="${bracket.qf[3].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[3].w ? 'active' : ''}"/>
-                        </svg>
-                    </div>
-                </div>
-            `;
-
-            // SF Round
-            const sfHTML = `
-                <div class="round-col">
-                    <div class="round-header"><h3>SEMI FINAL</h3><span>6 JUNI 2026</span></div>
-                    <div class="match-area">
-                        ${bracket.sf.map((m, i) => renderMatchCard(m, sfTops[i], `pickWinner('sf', ${i})`, 'sf', i)).join('')}
-                    </div>
-                </div>
-            `;
-
-            // Connector SF -> GF
-            const conn2HTML = `
-                <div class="connector-col">
-                    <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <div class="match-area">
-                        <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
-                            <!-- SF1 -> GF -->
-                            <line x1="0" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.sf[0].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[0].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.sf[0].w && bracket.sf[1].w ? 'active' : ''}"/>
-
-                            <!-- SF2 -> GF -->
-                            <line x1="0" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.sf[1].w ? 'active' : ''}"/>
-                            <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[1].w ? 'active' : ''}"/>
-                        </svg>
-                    </div>
-                </div>
-            `;
-
-            // GF Round
-            const gfHTML = `
-                <div class="round-col">
-                    <div class="round-header"><h3>GRAND FINAL</h3><span>8 JUNI 2026</span></div>
-                    <div class="match-area">
-                        ${renderMatchCard(bracket.gf, gfTop, `pickWinner('gf', 0)`, 'gf', 0)}
-                    </div>
-                </div>
-            `;
-
-            // Connector GF -> Winner
-            const conn3HTML = `
-                <div class="connector-col">
-                    <div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div>
-                    <div class="match-area">
-                        <svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
-                            <line x1="0" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.gf.w ? 'active' : ''}"/>
-                        </svg>
-                    </div>
-                </div>
-            `;
-
-            // Winner
+            if (!tree) return;
+            const qfHTML = `<div class="round-col"><div class="round-header"><h3>QUARTER FINAL</h3><span>5 JUNI 2026</span></div><div class="match-area">${bracket.qf.map((m,i)=>renderMatchCard(m,qfTops[i],`pickWinner('qf',${i})`,'qf',i)).join('')}</div></div>`;
+            const conn1HTML = `<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
+                <line x1="0" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${qfCenters[0]}" class="${bracket.qf[0].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${qfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[0].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W}" y2="${sfCenters[0]}" class="${bracket.qf[0].w&&bracket.qf[1].w?'active':''}"/>
+                <line x1="0" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${qfCenters[1]}" class="${bracket.qf[1].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${qfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.qf[1].w?'active':''}"/>
+                <line x1="0" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${qfCenters[2]}" class="${bracket.qf[2].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${qfCenters[2]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[2].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W}" y2="${sfCenters[1]}" class="${bracket.qf[2].w&&bracket.qf[3].w?'active':''}"/>
+                <line x1="0" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${qfCenters[3]}" class="${bracket.qf[3].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${qfCenters[3]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.qf[3].w?'active':''}"/>
+            </svg></div></div>`;
+            const sfHTML = `<div class="round-col"><div class="round-header"><h3>SEMI FINAL</h3><span>6 JUNI 2026</span></div><div class="match-area">${bracket.sf.map((m,i)=>renderMatchCard(m,sfTops[i],`pickWinner('sf',${i})`,'sf',i)).join('')}</div></div>`;
+            const conn2HTML = `<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none">
+                <line x1="0" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${sfCenters[0]}" class="${bracket.sf[0].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${sfCenters[0]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[0].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.sf[0].w&&bracket.sf[1].w?'active':''}"/>
+                <line x1="0" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${sfCenters[1]}" class="${bracket.sf[1].w?'active':''}"/>
+                <line x1="${CONN_W/2}" y1="${sfCenters[1]}" x2="${CONN_W/2}" y2="${gfCenter}" class="${bracket.sf[1].w?'active':''}"/>
+            </svg></div></div>`;
+            const gfHTML = `<div class="round-col"><div class="round-header"><h3>GRAND FINAL</h3><span>8 JUNI 2026</span></div><div class="match-area">${renderMatchCard(bracket.gf,gfTop,`pickWinner('gf',0)`,'gf',0)}</div></div>`;
+            const conn3HTML = `<div class="connector-col"><div class="round-header" style="opacity:0;"><h3>.</h3><span>.</span></div><div class="match-area"><svg class="connector-svg" viewBox="0 0 ${CONN_W} ${AREA_H}" preserveAspectRatio="none"><line x1="0" y1="${gfCenter}" x2="${CONN_W}" y2="${gfCenter}" class="${bracket.gf.w?'active':''}"/></svg></div></div>`;
             const winner = getTeam(bracket.gf.w);
-            const winnerHTML = `
-                <div class="round-col winner-col">
-                    <div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div>
-                    <div class="match-area">
-                        <div class="winner-card" style="top: ${winnerTop}px;">
-                            <div class="winner-crown"><i class="fas fa-crown"></i></div>
-                            <div class="winner-label">PHOENIX CUP S1</div>
-                            <div class="winner-name">${winner.name !== 'TBD' ? winner.name.toUpperCase() : 'TBD'}</div>
-                            <div class="winner-time">10 JUNI 2026</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
+            const winnerHTML = `<div class="round-col winner-col"><div class="round-header"><h3>JUARA</h3><span>CHAMPION</span></div><div class="match-area"><div class="winner-card" style="top: ${winnerTop}px;"><div class="winner-crown"><i class="fas fa-crown"></i></div><div class="winner-label">PHOENIX CUP S1</div><div class="winner-name">${winner.name!=='TBD'?winner.name.toUpperCase():'TBD'}</div><div class="winner-time">10 JUNI 2026</div></div></div></div>`;
             tree.innerHTML = qfHTML + conn1HTML + sfHTML + conn2HTML + gfHTML + conn3HTML + winnerHTML;
         }
 
         function pickWinner(round, idx) {
             if (!isAdmin) return;
-            let match;
-            if (round === 'qf') match = bracket.qf[idx];
-            else if (round === 'sf') match = bracket.sf[idx];
-            else match = bracket.gf;
-
+            let match = round==='qf'?bracket.qf[idx]:round==='sf'?bracket.sf[idx]:bracket.gf;
             if (!match.t1 || !match.t2) return;
-
-            if (match.w === match.t1) { match.w = match.t2; match.s1 = 1; match.s2 = 2; }
-            else if (match.w === match.t2) { match.w = null; match.s1 = null; match.s2 = null; }
-            else { match.w = match.t1; match.s1 = 2; match.s2 = 1; }
-
-            if (round === 'qf') {
-                const sfIdx = Math.floor(idx / 2);
-                const slot = idx % 2 === 0 ? 't1' : 't2';
-                bracket.sf[sfIdx][slot] = match.w;
-                bracket.sf[sfIdx].w = null;
-                bracket.sf[sfIdx].s1 = null; bracket.sf[sfIdx].s2 = null;
-                bracket.gf.t1 = null; bracket.gf.t2 = null; bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
-            } else if (round === 'sf') {
-                const slot = idx === 0 ? 't1' : 't2';
-                bracket.gf[slot] = match.w;
-                bracket.gf.w = null; bracket.gf.s1 = null; bracket.gf.s2 = null;
+            if (match.w===match.t1) { match.w=match.t2; match.s1=1; match.s2=2; }
+            else if (match.w===match.t2) { match.w=null; match.s1=null; match.s2=null; }
+            else { match.w=match.t1; match.s1=2; match.s2=1; }
+            if (round==='qf') {
+                const sfIdx=Math.floor(idx/2), slot=idx%2===0?'t1':'t2';
+                bracket.sf[sfIdx][slot]=match.w; bracket.sf[sfIdx].w=null; bracket.sf[sfIdx].s1=null; bracket.sf[sfIdx].s2=null;
+                bracket.gf.t1=null; bracket.gf.t2=null; bracket.gf.w=null; bracket.gf.s1=null; bracket.gf.s2=null;
+            } else if (round==='sf') {
+                const slot=idx===0?'t1':'t2';
+                bracket.gf[slot]=match.w; bracket.gf.w=null; bracket.gf.s1=null; bracket.gf.s2=null;
             }
+            saveBracket(); renderAll();
+        }
 
-            // Save to Firebase
-            bracketRef.set(bracket);
+        function updateScore(round, idx, team, value) {
+            if (!isAdmin) return;
+            const val = value===''?null:parseInt(value);
+            let match = round==='qf'?bracket.qf[idx]:round==='sf'?bracket.sf[idx]:bracket.gf;
+            if (team===1) match.s1=val; else match.s2=val;
+            saveBracket();
         }
 
         function renderTeams() {
             const grid = document.getElementById('teamsGrid');
-            grid.innerHTML = teams.map(t => `
+            if (!grid) return;
+            grid.innerHTML = teams.map(t=>`
                 <div class="team-card" onclick="openModal(${t.id})">
                     <div class="tc-header">
                         <div class="tc-logo" style="background: ${t.bg}">${t.short}</div>
-                        <div class="tc-info">
-                            <h4>${t.name}</h4>
-                            <span>5 Pemain</span>
-                        </div>
+                        <div class="tc-info"><h4>${t.name}</h4><span>5 Pemain</span></div>
                     </div>
                     <div class="tc-stats">
                         <div class="tc-stat"><div class="v">${t.roster.length}</div><div class="l">Pemain</div></div>
                         <div class="tc-stat"><div class="v">${t.leader.name.split(' ')[0]}</div><div class="l">Leader</div></div>
                         <div class="tc-stat"><div class="v">Aktif</div><div class="l">Status</div></div>
                     </div>
-                    <button class="tc-btn" onclick="event.stopPropagation(); openModal(${t.id})">
-                        <i class="fas fa-eye"></i> Lihat Roster
-                    </button>
-                </div>
-            `).join('');
+                    <button class="tc-btn" onclick="event.stopPropagation(); openModal(${t.id})"><i class="fas fa-eye"></i> Lihat Roster</button>
+                </div>`).join('');
         }
 
         function renderSchedule() {
             const schedule = [
-                { time: "13:00", date: "5 JUNI", t1: 1, t2: 2, status: "done" },
-                { time: "14:30", date: "5 JUNI", t1: 3, t2: 4, status: "done" },
-                { time: "16:00", date: "5 JUNI", t1: 5, t2: 6, status: "done" },
-                { time: "17:30", date: "5 JUNI", t1: 7, t2: 8, status: "done" },
-                { time: "13:00", date: "6 JUNI", t1: 1, t2: 3, status: "upcoming" },
-                { time: "14:30", date: "6 JUNI", t1: 6, t2: 7, status: "upcoming" },
-                { time: "20:00", date: "8 JUNI", t1: null, t2: null, status: "upcoming" }
+                { time: "13:00", date: "5 JUNI", t1: 1, t2: 2 },
+                { time: "14:30", date: "5 JUNI", t1: 3, t2: 4 },
+                { time: "16:00", date: "5 JUNI", t1: 5, t2: 6 },
+                { time: "17:30", date: "5 JUNI", t1: 7, t2: 8 },
+                { time: "13:00", date: "6 JUNI", t1: bracket.sf[0].t1, t2: bracket.sf[0].t2 },
+                { time: "14:30", date: "6 JUNI", t1: bracket.sf[1].t1, t2: bracket.sf[1].t2 },
+                { time: "20:00", date: "8 JUNI", t1: bracket.gf.t1, t2: bracket.gf.t2 }
             ];
 
             const grid = document.getElementById('scheduleGrid');
+            if (!grid) return;
             grid.innerHTML = schedule.map(s => {
                 const a = s.t1 ? getTeam(s.t1) : { name: "TBD", short: "?", bg: "#2d2d44" };
                 const b = s.t2 ? getTeam(s.t2) : { name: "TBD", short: "?", bg: "#2d2d44" };
@@ -1362,7 +1271,7 @@
         }
 
         function openModal(id) {
-            const t = teams.find(x => x.id === id);
+            const t = teams.find(x=>x.id===id);
             if (!t) return;
             document.getElementById('modalLogo').textContent = t.short;
             document.getElementById('modalLogo').style.background = t.bg;
@@ -1370,15 +1279,7 @@
             document.getElementById('leaderAva').textContent = t.leader.name.charAt(0);
             document.getElementById('leaderName').textContent = t.leader.name;
             document.getElementById('leaderWA').href = `https://wa.me/62${t.leader.wa.substring(1)}`;
-
-            document.getElementById('rosterBody').innerHTML = t.roster.map((p, i) => `
-                <tr>
-                    <td>${i + 1}</td>
-                    <td><span class="role-tag role-${p.role.toLowerCase()}">${p.role}</span></td>
-                    <td style="font-weight: 600;">${p.name}</td>
-                </tr>
-            `).join('');
-
+            document.getElementById('rosterBody').innerHTML = t.roster.map((p,i)=>`<tr><td>${i+1}</td><td><span class="role-tag role-${p.role.toLowerCase()}">${p.role}</span></td><td style="font-weight:600;">${p.name}</td></tr>`).join('');
             document.getElementById('rosterModal').classList.add('active');
         }
 
@@ -1386,19 +1287,20 @@
             document.getElementById('rosterModal').classList.remove('active');
         }
 
-        document.getElementById('rosterModal').addEventListener('click', e => {
-            if (e.target === e.currentTarget) closeModal();
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(a => {
-            a.addEventListener('click', e => {
+        document.getElementById('rosterModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
+        document.querySelectorAll('a[href^="#"]').forEach(a=>{
+            a.addEventListener('click', e=>{
                 e.preventDefault();
-                const t = document.querySelector(a.getAttribute('href'));
-                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const t=document.querySelector(a.getAttribute('href'));
+                if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
             });
         });
 
-        loadBracketFromFirebase();
+        // ===== INIT =====
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+        setInterval(renderSchedule, 30000); // refresh status setiap 30 detik
+        initFirebase();
         renderTeams();
     </script>
 </body>
