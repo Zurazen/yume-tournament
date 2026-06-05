@@ -675,7 +675,7 @@
                 </div>
                 <h4 style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">Roster Pemain</h4>
                 <table class="roster-table">
-                    <thead><tr><th>No</th><th>Role</th><th>Nama</th><th>No. WhatsApp</th></tr></thead>
+                    <thead><tr><th>No</th><th>Role</th><th>Nama</th></tr></thead>
                     <tbody id="rosterBody"></tbody>
                 </table>
             </div>
@@ -1007,11 +1007,6 @@
                     <td>${i + 1}</td>
                     <td><span class="role-tag role-${p.role.toLowerCase()}">${p.role}</span></td>
                     <td style="font-weight: 600;">${p.name}</td>
-                    <td>
-                        <a href="https://wa.me/62${p.wa.substring(1)}" class="wa-link" target="_blank">
-                            <i class="fab fa-whatsapp"></i> ${p.wa}
-                        </a>
-                    </td>
                 </tr>
             `).join('');
 
